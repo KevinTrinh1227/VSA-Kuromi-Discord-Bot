@@ -1,0 +1,20 @@
+{
+  "1377259383594946642": {
+    "channel_id": 1377173031901724763,
+    "message_id": 1377259383594946642,
+    "question": "Some question test",
+    "options": [
+      "test option 1",
+      "test option 2",
+      "test option 3"
+    ],
+    "expires_at": "2025-05-28T07:18:25.188432",
+    "votes": {
+      "test option 1": [],
+      "test option 2": [],
+      "test option 3": [
+        1052324387845574687
+      ]
+    }
+  }
+}
