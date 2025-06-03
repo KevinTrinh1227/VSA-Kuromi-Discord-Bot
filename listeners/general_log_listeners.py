@@ -113,7 +113,8 @@ class joinleave(commands.Cog):
             description=description,
             colour=embed_color
         )
-        embed2.timestamp = datetime.datetime.datetime.now()
+        # Fixed: use datetime.datetime.now() instead of datetime.datetime.datetime.now()
+        embed2.timestamp = datetime.datetime.now()
         embed2.set_footer(text=footer_text, icon_url=member.guild.icon.url)
         try:
             await member.send(embed=embed2)

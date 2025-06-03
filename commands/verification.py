@@ -47,8 +47,11 @@ class VerificationModal(Modal, title='📋 | VSA Member Verification'):
         import datetime
 
         # Strip inputs
-        first_name = self.first_name.value.strip()
-        last_name = self.last_name.value.strip()
+        raw_first = self.first_name.value.strip()
+        raw_last  = self.last_name.value.strip()
+        first_name = raw_first.capitalize()
+        last_name  = raw_last.capitalize()
+
         birthday_raw = self.birthday.value.strip()
         psid = self.psid.value.strip()
 
