@@ -11,6 +11,12 @@ config.json
 #Ignore .zip files
 .zip
 
+# ignore normalize file
+normalize.py
+
+# ignore verified user data json
+verified_user_data.json
+
 #Ignore JSON file filled with all server member's data
 verified_accounts.json
 user_data.json

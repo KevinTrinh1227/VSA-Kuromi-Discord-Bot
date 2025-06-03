@@ -5,7 +5,7 @@ import datetime
 import json
 import asyncio
 import io
-import chat_exporter
+import chat_exporter  # 
 
 # Load config.json
 with open('config.json') as json_file:
@@ -59,10 +59,14 @@ class Roles(View):
                 )
                 embed.timestamp = datetime.datetime.now()
                 if guild.icon:
-                    embed.set_footer(text=ticket_template["footer_text"].format(guild_name=guild.name),
-                                     icon_url=guild.icon.url)
+                    embed.set_footer(
+                        text=ticket_template["footer_text"].format(guild_name=guild.name),
+                        icon_url=guild.icon.url
+                    )
                 else:
-                    embed.set_footer(text=ticket_template["footer_text"].format(guild_name=guild.name))
+                    embed.set_footer(
+                        text=ticket_template["footer_text"].format(guild_name=guild.name)
+                    )
                 await user.send(embed=embed)
                 # log warning
                 log = discord.Embed(
@@ -93,7 +97,7 @@ class Roles(View):
             description=(
                 "Please describe your issue clearly and a staff member will assist you shortly.\n\n"
                 f"Ticket Issuer: {user.mention}\n"
-                f"Use `{bot_prefix}close` to close this ticket."
+                "Use `/closeticket` to close this ticket."
             ),
             color=embed_color
         )
@@ -128,10 +132,14 @@ class Ticket(commands.Cog):
         embed.timestamp = datetime.datetime.now()
         if ctx.guild.icon:
             embed.set_thumbnail(url=ctx.guild.icon.url)
-            embed.set_footer(text=ticket_template["footer_text"].format(guild_name=ctx.guild.name),
-                             icon_url=ctx.guild.icon.url)
+            embed.set_footer(
+                text=ticket_template["footer_text"].format(guild_name=ctx.guild.name),
+                icon_url=ctx.guild.icon.url
+            )
         else:
-            embed.set_footer(text=ticket_template["footer_text"].format(guild_name=ctx.guild.name))
+            embed.set_footer(
+                text=ticket_template["footer_text"].format(guild_name=ctx.guild.name)
+            )
         await ctx.send(embed=embed, view=Roles())
 
     @commands.hybrid_command(aliases=["close"], brief="closeticket",
@@ -140,10 +148,13 @@ class Ticket(commands.Cog):
         if not ctx.channel.name.startswith("ticket-"):
             return
 
-        # confirmation embed
+        # confirmation embed (only the user who ran /closeticket can click)
         confirm = discord.Embed(
             title="🎟️ | Confirmation",
-            description="Click the button below to close this ticket.",
+            description=(
+                "Click the button below to close this ticket. "
+                "Only the user who ran `/closeticket` can close it."
+            ),
             color=embed_color
         )
         confirm.timestamp = datetime.datetime.now()
@@ -155,7 +166,7 @@ class Ticket(commands.Cog):
         button = Button(label="Close Ticket", style=discord.ButtonStyle.red)
         async def cb(inter: discord.Interaction):
             if inter.user == ctx.author:
-                pass  # proceed
+                await inter.response.defer()  # acknowledge so “This interaction failed” won’t appear
             else:
                 await inter.response.send_message("Not authorized.", ephemeral=True)
         button.callback = cb
@@ -174,16 +185,13 @@ class Ticket(commands.Cog):
             await ctx.send("Timed out, ticket not closed.")
             return
 
-        # export transcript
-        transcript = await chat_exporter.export(ctx.channel)
-        if transcript:
-            fp = io.BytesIO(transcript.encode())
-            file = discord.File(fp, filename=f"transcript-{ctx.channel.name}.html")
-            tc = self.client.get_channel(transcript_chan_id)
-            m = await tc.send(file=file)
-            link = await chat_exporter.link(m)
+        # ── EXPORT THE HTML AS A DOWNLOADABLE FILE ──
+        transcript_html = await chat_exporter.export(ctx.channel)
+        if transcript_html:
+            fp = io.BytesIO(transcript_html.encode("utf-8"))
+            file_transcript = discord.File(fp, filename=f"transcript-{ctx.channel.name}.html")
         else:
-            link = None
+            file_transcript = None
 
         # identify user
         parts = ctx.channel.name.split("-")
@@ -191,23 +199,71 @@ class Ticket(commands.Cog):
         user = discord.utils.get(ctx.guild.members, name=username)
         user_id = user.id if user else None
 
-        # log to transcripts channel
-        log_embed = discord.Embed(
-            title="🎟️ | Ticket Closed",
-            url=link or "",
-            description=f"Transcript: {link or 'N/A'}\nIssuer ID: {user_id}",
-            color=embed_color
-        )
-        log_embed.timestamp = datetime.datetime.now()
-        if ctx.guild.icon:
-            log_embed.set_footer(text=f"©️ {ctx.guild.name}", icon_url=ctx.guild.icon.url)
-        tc = self.client.get_channel(bot_logs_id)
-        await tc.send(embed=log_embed)
+        # ── ATTEMPT TO DM THE USER & TRACK SUCCESS ──
+        dm_success = False
+        if user and transcript_html:
+            dm_embed = discord.Embed(
+                title=f"🎟️ | {username}'s Ticket Transcript",
+                description="Here is your ticket transcript (attached below). Please save it if needed.",
+                color=embed_color
+            )
+            dm_embed.timestamp = datetime.datetime.now()
+            if ctx.guild.icon:
+                dm_embed.set_footer(text=f"©️ {ctx.guild.name}", icon_url=ctx.guild.icon.url)
+            try:
+                await user.send(embed=dm_embed)
+                fp3 = io.BytesIO(transcript_html.encode("utf-8"))
+                dm_file = discord.File(fp3, filename=f"transcript-{ctx.channel.name}.html")
+                await user.send(file=dm_file)
+                dm_success = True
+            except discord.Forbidden:
+                dm_success = False
+
+        # ── SEND TO TRANSCRIPTS CHANNEL (embed + file) ──
+        tc_transcripts = self.client.get_channel(transcript_chan_id)
+        if transcript_html:
+            if user:
+                user_tag = f"<@{user_id}>"
+                username_only = user.name
+            else:
+                user_tag = "Unknown User"
+                username_only = "Unknown"
+
+            # Choose status text based on DM success
+            if dm_success:
+                dm_status_text = "DM successfully sent! 🟢"
+            else:
+                dm_status_text = "User's DMs are closed! 🔴"
+
+            embed = discord.Embed(
+                title=f"🎟️ | {ctx.channel.name} Closed",
+                description=(
+                    f"Issuer ID: `{user_id}`\n"
+                    f"Issuer: {user_tag} ({username_only})\n"
+                    f"Transcript was sent to issuer: {dm_status_text}\n\n"
+                    f"{ctx.channel.name} transcript download below."
+                ),
+                color=embed_color
+            )
+            embed.timestamp = datetime.datetime.now()
+            if user and user.avatar:
+                embed.set_thumbnail(url=user.avatar.url)
+            embed.set_footer(text=f"©️ {ctx.guild.name}")
+            await tc_transcripts.send(embed=embed)
+
+            # Attach the transcript file
+            await tc_transcripts.send(file=file_transcript)
+        else:
+            if user:
+                await tc_transcripts.send(
+                    f"<@{user_id}> ({user.name})'s DMs are closed; transcript not delivered."
+                )
+            else:
+                await tc_transcripts.send("Transcript generation failed; user not found.")
 
         # notify ticket channel
         close_embed = discord.Embed(
             title="🎟️ | Closed | This ticket is now locked",
-            url=link or "",
             description=(
                 "Your support ticket is now locked. A transcript copy has been recorded.\n"
                 "This channel will be deleted in 1 minute."
@@ -219,24 +275,10 @@ class Ticket(commands.Cog):
             close_embed.set_footer(text=f"©️ {ctx.guild.name}", icon_url=ctx.guild.icon.url)
         await ctx.send(embed=close_embed)
 
-        # DM transcript to user if possible
-        if user:
-            dm_embed = discord.Embed(
-                title=f"🎟️ | {username}'s Ticket Transcript",
-                url=link or "",
-                description="Here is your ticket transcript. Please save it if needed.",
-                color=embed_color
-            )
-            dm_embed.timestamp = datetime.datetime.now()
-            if ctx.guild.icon:
-                dm_embed.set_footer(text=f"©️ {ctx.guild.name}", icon_url=ctx.guild.icon.url)
-            try:
-                await user.send(embed=dm_embed)
-            except discord.Forbidden:
-                await tc.send(f"{username}'s DMs are closed; transcript not delivered.")
-
         await asyncio.sleep(60)
         await ctx.channel.delete()
+
+
 
 async def setup(client):
     await client.add_cog(Ticket(client))
