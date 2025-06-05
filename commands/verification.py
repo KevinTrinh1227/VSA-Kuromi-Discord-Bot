@@ -6,6 +6,8 @@ from discord.ui import Modal, TextInput, View, Button
 import json
 import os
 import datetime
+from utils.family_utils import is_family_member
+
 
 # Load configuration
 CONFIG_PATH = 'config.json'
@@ -126,7 +128,7 @@ class VerificationModal(Modal, title='📋 | VSA Member Verification'):
         embed = discord.Embed(
             title='Are you a member of the Slytherin Family?',
             description=(
-                'Click **Yes** if you are a member of this family, and **No** if you aren’t. '
+                'Click **Yes** if you are a member of this family, and **No** if you aren\'t. '
                 '**Note** we will verify using your information. If there is an issue please contact the family chair **Peter Nguyen**.'
             ),
             color=int(cfg['general']['embed_color'].strip('#'), 16)
@@ -141,17 +143,28 @@ class VerificationModal(Modal, title='📋 | VSA Member Verification'):
             @discord.ui.button(label="Yes, I'm in Slytherin Fam.", style=discord.ButtonStyle.green)
             async def yes(self, interaction: discord.Interaction, button: Button):
                 await interaction.response.defer(ephemeral=True)
-                await self.next_step(interaction, True)
+                psid = interaction.client._verification_data.get("psid")
+
+                if psid and is_family_member(psid):
+                    await self.next_step(interaction, True)
+                else:
+                    await interaction.followup.send(
+                        f"❌ We couldn't find your information in the family list. Please open a <#{TICKET_CHANNEL_ID}> if you believe this to be a mistake.",
+                        ephemeral=True
+                    )
+                    await self.next_step(interaction, False)
+
 
             @discord.ui.button(label="No, I'm not but I'll join!", style=discord.ButtonStyle.red)
             async def no(self, interaction: discord.Interaction, button: Button):
                 await interaction.response.defer(ephemeral=True)
                 await self.next_step(interaction, False)
 
+
             async def next_step(self, interaction: discord.Interaction, in_family: bool):
                 data = interaction.client._verification_data
                 data['in_family'] = in_family
-                fam_status = 'Yes' if in_family else 'No'
+                fam_status = 'Yes (you were found on our family list)' if in_family else 'No'
 
                 # Confirmation embed
                 confirm = discord.Embed(
@@ -246,6 +259,9 @@ class VerificationModal(Modal, title='📋 | VSA Member Verification'):
 
         # Send the "Are you in family?" embed with its view
         await interaction.response.send_message(embed=embed, view=FamilyView(), ephemeral=True)
+        
+        
+        
 
 
 # Cog to post lobby
@@ -330,6 +346,95 @@ class VerificationLobby(commands.Cog):
             embed.set_footer(text=f'©️ {self.bot.guilds[0].name}')
             view = self.StartVerificationView()
             await chan.send(embed=embed, view=view)
+            
+    @commands.hybrid_command(name="verifiedstats", description="Show server stats from verified user data.")
+    async def verifiedstats(self, ctx: commands.Context):
+        with open(VERIFICATIONS_FILE, "r") as f:
+            data = json.load(f)
+
+        total_users = len(data)
+        users_with_stats = sum(1 for u in data.values() if "stats" in u)
+        total_in_family = sum(1 for u in data.values() if u["general"].get("in_family", False))
+        total_not_in_family = total_users - total_in_family
+        percent_in_family = (total_in_family / total_users) * 100 if total_users > 0 else 0
+
+        # EXP & coins
+        total_exp = sum(u.get("stats", {}).get("exp", 0) for u in data.values())
+        avg_exp = total_exp / total_users if total_users else 0
+        total_coins = sum(u.get("stats", {}).get("coins", 0) for u in data.values())
+        avg_coins = total_coins / total_users if total_users else 0
+
+        top_exp_user = max(data.items(), key=lambda x: x[1].get("stats", {}).get("exp", 0), default=(None, {}))
+        top_coin_user = max(data.items(), key=lambda x: x[1].get("stats", {}).get("coins", 0), default=(None, {}))
+        top_msg_user = max(data.items(), key=lambda x: x[1].get("stats", {}).get("total_messages_sent", 0), default=(None, {}))
+
+        # Messages
+        total_msgs = sum(u.get("stats", {}).get("total_messages_sent", 0) for u in data.values())
+        avg_msgs = total_msgs / total_users if total_users else 0
+
+        # Timestamps
+        newest = max(data.values(), key=lambda u: u["general"]["timestamp"])
+        oldest = min(data.values(), key=lambda u: u["general"]["timestamp"])
+
+        # Birth months
+        from collections import Counter
+        import datetime
+        birth_months = Counter()
+        name_counter = Counter()
+
+        for u in data.values():
+            # Birth month
+            try:
+                dt = datetime.datetime.strptime(u["general"]["birthday"], "%m/%d/%Y")
+                birth_months[dt.strftime("%B")] += 1
+            except:
+                pass
+            # Name counts
+            name_counter[u["general"]["first_name"]] += 1
+
+        most_common_month = birth_months.most_common(1)[0][0] if birth_months else "N/A"
+        most_common_name = name_counter.most_common(1)[0][0] if name_counter else "N/A"
+        current_month = datetime.datetime.now().strftime("%B")
+        current_month_bdays = birth_months.get(current_month, 0)
+
+        # Format embed
+        embed = discord.Embed(
+            title=f"📊 | {ctx.guild.name} Statistics",
+            color=int(cfg['general']['embed_color'].strip('#'), 16)
+        )
+
+        embed.description = (
+            f"**👥 General Info**\n"
+            f"• Total Verified Users: `{total_users}`\n"
+            f"• Newest Verified: `{newest['general']['first_name']} {newest['general']['last_name']}`\n"
+            f"• Oldest Verified: `{oldest['general']['first_name']} {oldest['general']['last_name']}`\n\n"
+
+            f"**🏠 Family Membership**\n"
+            f"• In Family: `{total_in_family}` ({percent_in_family:.1f}%)\n"
+            f"• Not in Family: `{total_not_in_family}`\n\n"
+
+            f"**📈 EXP & 💰 Coins**\n"
+            f"• Total EXP: `{round(total_exp, 2)}`\n"
+            f"• Avg EXP: `{round(avg_exp, 2)}`\n"
+            f"• Most EXP: `{top_exp_user[1]['general']['first_name']} {top_exp_user[1]['general']['last_name']}` ({top_exp_user[1].get('stats', {}).get('exp', 0)} EXP)\n"
+            f"• Total Coins: `{total_coins}`\n"
+            f"• Avg Coins: `{round(avg_coins, 2)}`\n"
+            f"• Richest User: `{top_coin_user[1]['general']['first_name']} {top_coin_user[1]['general']['last_name']}` ({top_coin_user[1].get('stats', {}).get('coins', 0)} coins)\n\n"
+
+            f"**💬 Activity**\n"
+            f"• Users with Activity Stats: `{users_with_stats}`\n"
+            f"• Total Messages Sent: `{total_msgs}`\n"
+            f"• Avg Messages/User: `{round(avg_msgs, 2)}`\n"
+            f"• Top Chatter: `{top_msg_user[1]['general']['first_name']} {top_msg_user[1]['general']['last_name']}` ({top_msg_user[1].get('stats', {}).get('total_messages_sent', 0)} messages)\n\n"
+
+            f"**🎂 Birthdays & Names**\n"
+            f"• Most Common First Name: `{most_common_name}`\n"
+            f"• Most Common Birth Month: `{most_common_month}`\n"
+            f"• Birthdays This Month ({current_month}): `{current_month_bdays}`\n"
+        )
+
+        await ctx.send(embed=embed)
+
 
 
 async def setup(bot):

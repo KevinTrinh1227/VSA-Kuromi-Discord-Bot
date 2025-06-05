@@ -4,3 +4,4 @@ python-dotenv==1.0.1
 pytz==2025.1
 chat-exporter
 pillow==11.1.0
+python-dateutil
