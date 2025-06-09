@@ -4,7 +4,6 @@ import json
 
 # Load configuration
 CONFIG_PATH = 'config.json'
-VERIFICATIONS_FILE = 'verified_user_data.json'
 
 # Load config.json
 with open(CONFIG_PATH) as f:

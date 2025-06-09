@@ -3,6 +3,7 @@ from discord.ext import commands
 from discord import app_commands
 import json
 from datetime import datetime
+from utils.users_utils import get_verified_users
 
 with open('config.json') as json_file:
     config_data = json.load(json_file)
@@ -16,14 +17,11 @@ nick_after     = nick_template.get("format_after_seperator", "{first_name} {last
 currency_name  = config_data.get("features", {}).get("coin_level_system", {}).get("currency_name", "coins")
 currency_label = currency_name.capitalize()
 
-VERIFIED_USER_FILE = "verified_user_data.json"
-
 class LeaderboardsCog(commands.Cog):
     def __init__(self, client):
         self.client = client
         try:
-            with open(VERIFIED_USER_FILE, "r") as f:
-                self.user_data = json.load(f)
+            self.user_data = get_verified_users()
         except FileNotFoundError:
             self.user_data = {}
 
@@ -67,6 +65,7 @@ class LeaderboardsCog(commands.Cog):
         value_fn = lambda stats: ""
 
         total_members = len(ctx.guild.members)
+        #print(self.user_data)
 
         if category == "exp":
             key = lambda x: x[1].get("stats", {}).get("level", 0)

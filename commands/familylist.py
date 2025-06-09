@@ -2,9 +2,9 @@ import discord
 from discord.ext import commands
 from discord import app_commands
 import json
+from utils.users_utils import get_verified_users
 
 FAMILY_FILE = "list_of_family_members.json"
-VERIFIED_FILE = "verified_user_data.json"
 CONFIG_FILE = "config.json"
 
 with open(CONFIG_FILE) as f:
@@ -21,10 +21,6 @@ def load_family_data():
 def save_family_data(data):
     with open(FAMILY_FILE, "w") as f:
         json.dump(data, f, indent=2)
-
-def load_verified_data():
-    with open(VERIFIED_FILE, "r") as f:
-        return json.load(f)
 
 class FamilyList(commands.Cog):
     def __init__(self, bot):
@@ -70,7 +66,8 @@ class FamilyList(commands.Cog):
         visibility_value = visibility.value if visibility else None
 
         family_data = load_family_data()
-        verified_data = load_verified_data()
+        verified_data = get_verified_users()
+
 
         # Everyone can run only view public or just view with no param (default to public)
         # Everything else is admin only + ephemeral responses (only visible to caller)

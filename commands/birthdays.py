@@ -4,6 +4,7 @@ from discord import app_commands
 import json
 from datetime import datetime
 from collections import defaultdict
+from utils.users_utils import get_verified_users
 
 # Load config
 with open('config.json') as json_file:
@@ -38,8 +39,7 @@ class Birthdays(commands.Cog):
     )
     @app_commands.describe(role="Filter birthdays by this role (optional)")
     async def birthdays(self, ctx: commands.Context, role: discord.Role = None):
-        with open("verified_user_data.json", "r") as f:
-            user_data = json.load(f)
+        user_data = get_verified_users()
 
         now = datetime.now()
         month_map = defaultdict(list)

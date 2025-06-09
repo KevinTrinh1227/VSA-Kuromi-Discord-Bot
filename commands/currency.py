@@ -3,9 +3,10 @@ from discord.ext import commands
 import json
 import random
 import datetime
+from utils.users_utils import get_verified_users, save_verified_users
+
 
 CONFIG_FILE = 'config.json'
-USER_DATA_FILE = 'verified_user_data.json'
 
 # Load configuration
 with open(CONFIG_FILE) as json_file:
@@ -35,8 +36,7 @@ class CoinflipCog(commands.Cog):
     )
     @commands.cooldown(1, cool_down_time, commands.BucketType.user)
     async def coinflip(self, ctx: commands.Context, bet: int, choice: str):
-        with open(USER_DATA_FILE, 'r') as f:
-            user_data = json.load(f)
+        user_data = get_verified_users()
 
         if not coinflip_enabled:
             await ctx.send("❌ The coin and level system is disabled.")
@@ -111,8 +111,8 @@ class CoinflipCog(commands.Cog):
         embed.set_footer(text=f"©️ {ctx.guild.name} • {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}", icon_url=ctx.guild.icon.url)
         await ctx.send(embed=embed)
 
-        with open(USER_DATA_FILE, 'w') as f:
-            json.dump(user_data, f, indent=2)
+        save_verified_users(user_data)
+        
 
     @commands.hybrid_command(
         name="pay",
@@ -130,8 +130,7 @@ class CoinflipCog(commands.Cog):
             await ctx.send("❌ Please enter a positive amount to send.")
             return
 
-        with open(USER_DATA_FILE, 'r') as f:
-            user_data = json.load(f)
+        user_data = get_verified_users()
 
         sender_id = str(ctx.author.id)
         receiver_id = str(member.id)
@@ -188,8 +187,8 @@ class CoinflipCog(commands.Cog):
         embed.set_footer(text=f"©️ {ctx.guild.name}", icon_url=ctx.guild.icon.url)
         await ctx.send(embed=embed)
 
-        with open(USER_DATA_FILE, 'w') as f:
-            json.dump(user_data, f, indent=2)
+        save_verified_users(user_data)
+
 
 
 async def setup(client):

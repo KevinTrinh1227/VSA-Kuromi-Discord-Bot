@@ -4,6 +4,8 @@ import json
 import random
 import time
 import datetime
+from utils.users_utils import get_verified_users, save_verified_users
+
 
 # Load config once at startup
 with open('config.json') as json_file:
@@ -19,7 +21,6 @@ family_name = config_data["general"].get("family_name", "N/A")
 currency_name = config_data.get("features", {}).get("coin_level_system", {}).get("currency_name", "coins")
 currency_label = currency_name.capitalize()
 
-VERIFIED_USER_FILE = "verified_user_data.json"
 
 # Feature flags
 coin_level_config = config_data.get("features", {}).get("coin_level_system", {})
@@ -40,14 +41,12 @@ class LevelingCog(commands.Cog):
 
     def load_user_data(self):
         try:
-            with open(VERIFIED_USER_FILE, "r") as f:
-                self.user_data = json.load(f)
+            self.user_data = get_verified_users()
         except FileNotFoundError:
             self.user_data = {}
 
     def save_user_data(self):
-        with open(VERIFIED_USER_FILE, "w") as f:
-            json.dump(self.user_data, f, indent=2)
+        save_verified_users(self.user_data)
 
     def build_progress_bar(self, exp, level):
         needed_exp = self.get_required_exp(level)

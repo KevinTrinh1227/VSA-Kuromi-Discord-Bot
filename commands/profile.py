@@ -6,9 +6,7 @@ import json
 from dateutil import parser as date_parser
 import datetime
 from zoneinfo import ZoneInfo
-
-# Path to the verified users JSON
-VERIFIED_USER_FILE = "verified_user_data.json"
+from utils.users_utils import get_verified_users
 
 # Load config once at startup
 with open('config.json') as json_file:
@@ -23,15 +21,11 @@ currency_label = currency_name.capitalize()
 class ProfileCog(commands.Cog):
     def __init__(self, client):
         self.client = client
-        # Load verified users data
-        self.load_user_data()
+        self.user_data = get_verified_users()
 
     def load_user_data(self):
-        try:
-            with open(VERIFIED_USER_FILE, "r") as f:
-                self.user_data = json.load(f)
-        except FileNotFoundError:
-            self.user_data = {}
+        self.user_data = get_verified_users()
+
 
     @commands.hybrid_command(
         name="profile",

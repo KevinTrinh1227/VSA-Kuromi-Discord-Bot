@@ -7,11 +7,11 @@ import json
 import os
 import datetime
 from utils.family_utils import is_family_member
+from utils.users_utils import get_verified_users, save_verified_users, get_unverified_users, save_unverified_users
 
 
 # Load configuration
 CONFIG_PATH = 'config.json'
-VERIFICATIONS_FILE = 'verified_user_data.json'
 
 # Load config.json
 with open(CONFIG_PATH) as f:
@@ -25,18 +25,6 @@ UNVER_ROLE_ID = int(cfg['role_ids']['unverified_vsa_member'])
 TICKET_CHANNEL_ID = int(cfg['text_channel_ids']['tickets_menu'])
 STAFF_ROLE_ID = int(cfg['role_ids']['staff_member'])
 FAMILY_LEAD_ROLE_ID = int(cfg['role_ids']['family_lead'])
-
-# Helper functions
-
-def load_verifications():
-    if os.path.exists(VERIFICATIONS_FILE):
-        with open(VERIFICATIONS_FILE, 'r') as vf:
-            return json.load(vf)
-    return {}
-
-def save_verifications(data):
-    with open(VERIFICATIONS_FILE, 'w') as vf:
-        json.dump(data, vf, indent=2)
 
 # Modal for collecting user info
 class VerificationModal(Modal, title='📋 | VSA Member Verification'):
@@ -97,7 +85,7 @@ class VerificationModal(Modal, title='📋 | VSA Member Verification'):
         birthdate_formatted_str = birth_date.strftime("%b %d, %Y")  # e.g., "Dec 27, 2002"
 
         user_id_str = str(interaction.user.id)
-        verifications = load_verifications()
+        verifications = get_verified_users()
 
         # Check if user is already verified
         if user_id_str in verifications:
@@ -224,7 +212,7 @@ class VerificationModal(Modal, title='📋 | VSA Member Verification'):
                             await user.add_roles(user.guild.get_role(FAM_ROLE_ID), reason='Family Member')
 
                         # Save record
-                        verifs = load_verifications()
+                        verifs = get_verified_users()
                         formatted_birthday = datetime.datetime.strptime(
                             rec["birthday"], "%b %d, %Y"
                         ).strftime("%m/%d/%Y")
@@ -238,7 +226,19 @@ class VerificationModal(Modal, title='📋 | VSA Member Verification'):
                                 "in_family": rec["in_family"]
                             }
                         }
-                        save_verifications(verifs)
+                        
+                        # Move from unverified to verified, keep discord_profile if exists
+                        unverified = get_unverified_users()
+                        user_id_str = str(user.id)
+                        if user_id_str in unverified:
+                            discord_profile = unverified[user_id_str].get("discord_profile", {})
+                            verifs[user_id_str]["discord_profile"] = discord_profile
+                            del unverified[user_id_str]
+                            save_unverified_users(unverified)
+
+                        # Save verified users file after update
+                        save_verified_users(verifs)
+
 
                         # Send confirmation and close
                         await interaction.response.send_message('✅ You have been verified!', ephemeral=True)
@@ -349,8 +349,7 @@ class VerificationLobby(commands.Cog):
             
     @commands.hybrid_command(name="verifiedstats", description="Show server stats from verified user data.")
     async def verifiedstats(self, ctx: commands.Context):
-        with open(VERIFICATIONS_FILE, "r") as f:
-            data = json.load(f)
+        data = get_verified_users
 
         total_users = len(data)
         users_with_stats = sum(1 for u in data.values() if "stats" in u)

@@ -1,13 +1,14 @@
 import discord
 from discord.ext import commands, tasks
 import json
-from datetime import datetime, time  # ✅ Make sure both are imported
+from datetime import datetime, time
 import pytz
+from utils.users_utils import get_verified_users, save_verified_users
+
 
 with open("config.json") as f:
     config = json.load(f)
 
-USER_DATA_PATH = "verified_user_data.json"
 GUILD_ID = int(config["general"]["discord_server_guild_id"])
 FAMILY_ROLE_ID = int(config["role_ids"]["family_member"])
 FAM_BDAY_CHANNEL_ID = int(config["features"]["birthdays"]["fam_birthdays_announce_channel"])
@@ -29,16 +30,30 @@ class BirthdayListener(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.announced_today = set()
-        self.daily_birthday_check.start()
+        self.testing_mode = False  # <-- Set True to test every minute, False for daily at midnight CST
+        if self.testing_mode:
+            self.daily_birthday_check_test.start()
+        else:
+            self.daily_birthday_check.start()
         self.monthly_reminder_check.start()
 
     def cog_unload(self):
         self.daily_birthday_check.cancel()
+        self.daily_birthday_check_test.cancel()
         self.monthly_reminder_check.cancel()
 
-    def load_user_data(self):
-        with open(USER_DATA_PATH, "r") as f:
-            return json.load(f)
+
+    @staticmethod
+    def is_valid_birthday(bday_str):
+        try:
+            parts = bday_str.split("/")
+            if len(parts) < 2:
+                return False
+            month = int(parts[0])
+            day = int(parts[1])
+            return 1 <= month <= 12 and 1 <= day <= 31
+        except Exception:
+            return False
 
     def get_today_mmdd(self):
         return datetime.now(CST).strftime("%m/%d")
@@ -66,47 +81,103 @@ class BirthdayListener(commands.Cog):
             if member.avatar:
                 embed.set_thumbnail(url=member.avatar.url)
 
-            # Send and store the mention message
             mention_msg = await channel.send(f"||{member.mention}||")
-
-            # Only delete if the message matches exactly
             if mention_msg.content == f"||{member.mention}||":
                 await mention_msg.delete()
             msg = await channel.send(embed=embed)
             for emoji in ("🎀", "🎉", "❤️", "🎂", "🥳", "🎁", "🫶"):
                 await msg.add_reaction(emoji)
 
-    @tasks.loop(time=time(0, 0, tzinfo=CST))  # ✅ Use 'time' directly
+    # --- DAILY BIRTHDAY CHECK TASK ---
+    # Normal operation: runs once daily at midnight CST
+    @tasks.loop(time=time(0, 0, tzinfo=CST))
     async def daily_birthday_check(self):
+        #print(f"[Birthday Check] Running daily_birthday_check at {datetime.now(CST).strftime('%Y-%m-%d %H:%M:%S')}")
         self.announced_today.clear()
         today = self.get_today_mmdd()
         guild = await self.fetch_guild()
         if guild is None:
             return
 
-        user_data = self.load_user_data()
+        user_data = get_verified_users()
         fam_birthdays = []
         gen_birthdays = []
 
         for uid, data in user_data.items():
             general = data.get("general", {})
             birthday = general.get("birthday")
-            if not birthday or birthday[:5] != today:
+            if not birthday or not self.is_valid_birthday(birthday) or birthday[:5] != today:
                 continue
             member = guild.get_member(int(uid))
             if not member or member.id in self.announced_today:
                 continue
 
-            if any(role.id == FAMILY_ROLE_ID for role in member.roles):
+            if hasattr(member, "roles") and any(role.id == FAMILY_ROLE_ID for role in member.roles):
                 fam_birthdays.append((member, birthday))
             else:
                 gen_birthdays.append((member, birthday))
+
+        fam_channel = gen_channel = None
 
         if fam_birthdays or gen_birthdays:
             fam_channel = guild.get_channel(FAM_BDAY_CHANNEL_ID)
             gen_channel = guild.get_channel(GEN_BDAY_CHANNEL_ID)
 
-        if fam_channel:
+        if fam_channel and fam_birthdays:
+            await self.send_family_embed(fam_channel, fam_birthdays)
+
+        if gen_channel:
+            for member, birthday in fam_birthdays:
+                msg = await gen_channel.send(
+                    f"**🎀 Happy birthday to our family member {member.mention}! 🎀** (<#{FAM_BDAY_CHANNEL_ID}>)"
+                )
+                for emoji in ("❤️", "🎉", "🥳"):
+                    await msg.add_reaction(emoji)
+
+            for member, _ in gen_birthdays:
+                msg = await gen_channel.send(
+                    f"🎉 Happy birthday {member.mention}! Have an amazing day today!"
+                )
+                for emoji in ("❤️", "🎉"):
+                    await msg.add_reaction(emoji)
+
+        self.announced_today.update(m.id for m, _ in fam_birthdays + gen_birthdays)
+
+    # --- TESTING MODE: RUNS EVERY 1 MINUTE ---
+    @tasks.loop(minutes=1)
+    async def daily_birthday_check_test(self):
+        #print(f"[Birthday Check] Running TEST daily_birthday_check at {datetime.now(CST).strftime('%Y-%m-%d %H:%M:%S')}")
+        self.announced_today.clear()
+        today = self.get_today_mmdd()
+        guild = await self.fetch_guild()
+        if guild is None:
+            return
+
+        user_data = get_verified_users()
+        fam_birthdays = []
+        gen_birthdays = []
+
+        for uid, data in user_data.items():
+            general = data.get("general", {})
+            birthday = general.get("birthday")
+            if not birthday or not self.is_valid_birthday(birthday) or birthday[:5] != today:
+                continue
+            member = guild.get_member(int(uid))
+            if not member or member.id in self.announced_today:
+                continue
+
+            if hasattr(member, "roles") and any(role.id == FAMILY_ROLE_ID for role in member.roles):
+                fam_birthdays.append((member, birthday))
+            else:
+                gen_birthdays.append((member, birthday))
+
+        fam_channel = gen_channel = None
+
+        if fam_birthdays or gen_birthdays:
+            fam_channel = guild.get_channel(FAM_BDAY_CHANNEL_ID)
+            gen_channel = guild.get_channel(GEN_BDAY_CHANNEL_ID)
+
+        if fam_channel and fam_birthdays:
             await self.send_family_embed(fam_channel, fam_birthdays)
 
         if gen_channel:
@@ -136,7 +207,7 @@ class BirthdayListener(commands.Cog):
         if guild is None:
             return
 
-        user_data = self.load_user_data()
+        user_data = get_verified_users()
         current_month = self.get_current_month()
 
         fam_members = []
@@ -145,7 +216,7 @@ class BirthdayListener(commands.Cog):
         for uid, data in user_data.items():
             general = data.get("general", {})
             birthday = general.get("birthday")
-            if not birthday:
+            if not birthday or not self.is_valid_birthday(birthday):
                 continue
 
             if int(birthday.split("/")[0]) != current_month:
