@@ -58,6 +58,8 @@ class LeaderboardsCog(commands.Cog):
     @app_commands.describe(category="The category to view (exp, coins, coinflips)")
     async def leaderboards(self, ctx, category: str):
         category = category.lower()
+        
+        self.user_data = get_verified_users()
 
         sorted_users = []
         misc_stats = ""
