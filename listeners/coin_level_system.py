@@ -100,7 +100,6 @@ class LevelingCog(commands.Cog):
         if (not self.coin_level_system_enabled
             or message.author.bot
             or message.content.startswith(command_prefix)
-            or "ticket" in message.channel.name.lower()
             or str(message.channel.id) in blacklisted_channel_ids):
             return
 

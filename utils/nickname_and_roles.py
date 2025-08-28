@@ -1,91 +1,62 @@
-import json
 import discord
-from utils.users_utils import get_verified_users
+import json
+import os
 
-CONFIG_FILE = "config.json"
+# ─── Load config safely ───────────────────────────────────────────
+try:
+    with open("config.json", "r") as f:
+        config = json.load(f)
+except (FileNotFoundError, json.JSONDecodeError) as e:
+    print(f"[Config] Failed to load config.json: {e}")
+    config = {}
 
-async def rename_user(member: discord.Member):
+async def rename_user(member: discord.Member, user_id_str: str, points: int, first_name: str, last_name: str):
     """
-    Rename a Discord member according to the nickname template in config
-    based on their saved verified user data.
+    Rename a member using a nickname template from config.json.
     """
-    user_id_str = str(member.id)
-
-    # Load verified user data
     try:
-        verified_data = get_verified_users()
-    except (FileNotFoundError, json.JSONDecodeError):
-        return  # No data, skip
+        nick_config = config.get("nickname_templates", {})
+        if not nick_config.get("rename_nickname_feature", False):
+            return  # Feature disabled
 
-    if user_id_str not in verified_data:
-        return  # No saved data for this user
+        before = nick_config.get("format_before_seperator", "{points}")
+        sep    = nick_config.get("seperator_symbol", " | ")
+        after  = nick_config.get("format_after_seperator", "{first_name} {last_name} ✔")
 
-    user_info = verified_data[user_id_str]
+        nickname = (
+            before.replace("{points}", str(points))
+            + sep
+            + after
+                .replace("{first_name}", first_name)
+                .replace("{last_name}", last_name)
+        )
 
-    # Load config file
-    try:
-        with open(CONFIG_FILE, "r") as f:
-            config = json.load(f)
-    except (FileNotFoundError, json.JSONDecodeError):
-        return
+        if member.nick != nickname:
+            try:
+                await member.edit(nick=nickname, reason="Auto-renamed via verification system")
+            except discord.Forbidden:
+                print(f"[Rename] Permission denied renaming user {user_id_str}.")
+            except discord.HTTPException as http_err:
+                print(f"[Rename] HTTP error renaming {user_id_str}: {http_err}")
+    except Exception as e:
+        print(f"[Rename] Unexpected error in rename_user for {user_id_str}: {e}")
 
-    nickname_templates = config.get("nickname_templates", {})
-    format_before = nickname_templates.get("format_before_seperator", "")
-    separator = nickname_templates.get("seperator_symbol", " | ")
-    format_after = nickname_templates.get("format_after_seperator", "")
-
-    # Extract info to replace placeholders, fallback to empty strings or zeroes
-    level = user_info.get("level", 0)
-    if level == 0:
-        level = user_info.get("general", {}).get("level", 0)
-    first_name = user_info.get("first_name", "") or user_info.get("general", {}).get("first_name", "")
-    last_name = user_info.get("last_name", "") or user_info.get("general", {}).get("last_name", "")
-
-    # Replace placeholders in format strings
-    before_text = format_before.replace("{level}", str(level))
-    after_text = format_after.replace("{first_name}", first_name).replace("{last_name}", last_name)
-
-    new_nick = f"{before_text}{separator}{after_text}".strip()
-
-    if new_nick and new_nick != member.display_name:
-        try:
-            await member.edit(nick=new_nick)
-        except discord.Forbidden:
-            pass
-        except Exception as e:
-            print(f"Error renaming user {member}: {e}")
-
-async def assign_roles(user_id: int, role_ids: list[str], guild: discord.Guild):
+async def assign_roles(member: discord.Member, role_ids):
     """
-    Assign roles from role_ids list (strings) to user specified by user_id in the given guild.
+    Assign each role in role_ids to the member, ignoring any missing roles
+    or permission errors.
     """
-    member = guild.get_member(user_id)
-    if not member:
+    guild = member.guild  # we can always get guild from member
+    for role_id in role_ids:
         try:
-            member = await guild.fetch_member(user_id)
-        except discord.NotFound:
-            return  # User not found in guild
-        except Exception as e:
-            print(f"Error fetching member {user_id}: {e}")
-            return
-
-    roles_to_add = []
-    guild_roles = {role.id: role for role in guild.roles}
-
-    for role_id_str in role_ids:
-        try:
-            role_id = int(role_id_str)
-        except ValueError:
-            continue  # Skip invalid role IDs
-
-        role = guild_roles.get(role_id)
-        if role and role not in member.roles:
-            roles_to_add.append(role)
-
-    if roles_to_add:
-        try:
-            await member.add_roles(*roles_to_add, reason="Restoring roles on rejoin")
+            role = discord.utils.get(guild.roles, id=role_id)
+            if role:
+                await member.add_roles(role, reason="Verified VSA Member")
+            else:
+                print(f"[Roles] Role ID {role_id} not found in guild {guild.id}.")
         except discord.Forbidden:
-            pass
+            print(f"[Roles] Permission denied adding role {role_id} to {member.id}.")
+        except discord.HTTPException as http_err:
+            print(f"[Roles] HTTP error adding role {role_id} to {member.id}: {http_err}")
         except Exception as e:
-            print(f"Error assigning roles to {member}: {e}")
+            print(f"[Roles] Unexpected error for role {role_id}, member {member.id}: {e}")

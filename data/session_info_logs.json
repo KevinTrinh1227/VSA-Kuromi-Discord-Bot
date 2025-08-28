@@ -1,0 +1,2284 @@
+[
+  {
+    "session_number": 1,
+    "id": "20250810T033717001",
+    "session_start_time": "2025-08-10T08:37:17.141660+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 3:37 AM CST",
+    "session_end_time": "2025-08-10T08:37:17.141894+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 3:37 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 0
+    }
+  },
+  {
+    "session_number": 2,
+    "id": "20250810T033723002",
+    "session_start_time": "2025-08-10T08:37:23.686215+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 3:37 AM CST",
+    "session_end_time": "2025-08-10T08:37:23.687466+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 3:37 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 0
+    }
+  },
+  {
+    "session_number": 3,
+    "id": "20250810T033803003",
+    "session_start_time": "2025-08-10T08:38:03.023879+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 3:38 AM CST",
+    "session_end_time": "2025-08-10T08:38:09.956759+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 3:38 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 6
+    }
+  },
+  {
+    "session_number": 4,
+    "id": "20250810T033849004",
+    "session_start_time": "2025-08-10T08:38:49.642732+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 3:38 AM CST",
+    "session_end_time": "2025-08-10T08:39:40.394121+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 3:39 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 50
+    }
+  },
+  {
+    "session_number": 5,
+    "id": "20250810T033942005",
+    "session_start_time": "2025-08-10T08:39:42.701464+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 3:39 AM CST",
+    "session_end_time": "2025-08-10T08:40:38.845577+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 3:40 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 56
+    }
+  },
+  {
+    "session_number": 6,
+    "id": "20250810T034039006",
+    "session_start_time": "2025-08-10T08:40:39.663923+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 3:40 AM CST",
+    "session_end_time": "2025-08-10T08:44:08.122552+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 3:44 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 3,
+      "seconds": 28
+    }
+  },
+  {
+    "session_number": 7,
+    "id": "20250810T034409007",
+    "session_start_time": "2025-08-10T08:44:09.429625+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 3:44 AM CST",
+    "session_end_time": "2025-08-10T08:51:33.330143+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 3:51 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 7,
+      "seconds": 23
+    }
+  },
+  {
+    "session_number": 8,
+    "id": "20250810T035225008",
+    "session_start_time": "2025-08-10T08:52:25.028232+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 3:52 AM CST",
+    "session_end_time": "2025-08-10T08:53:45.118434+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 3:53 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 1,
+      "seconds": 20
+    }
+  },
+  {
+    "session_number": 9,
+    "id": "20250810T035345009",
+    "session_start_time": "2025-08-10T08:53:45.841105+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 3:53 AM CST",
+    "session_end_time": "2025-08-10T08:53:58.624702+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 3:53 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 12
+    }
+  },
+  {
+    "session_number": 10,
+    "id": "20250810T0353590010",
+    "session_start_time": "2025-08-10T08:53:59.673952+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 3:53 AM CST",
+    "session_end_time": "2025-08-10T08:54:30.177437+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 3:54 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 30
+    }
+  },
+  {
+    "session_number": 11,
+    "id": "20250810T0354360011",
+    "session_start_time": "2025-08-10T08:54:36.320067+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 3:54 AM CST",
+    "session_end_time": "2025-08-10T08:55:46.779734+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 3:55 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 1,
+      "seconds": 10
+    }
+  },
+  {
+    "session_number": 12,
+    "id": "20250810T0355470012",
+    "session_start_time": "2025-08-10T08:55:47.494620+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 3:55 AM CST",
+    "session_end_time": "2025-08-10T08:56:27.572720+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 3:56 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 40
+    }
+  },
+  {
+    "session_number": 13,
+    "id": "20250810T0356280013",
+    "session_start_time": "2025-08-10T08:56:28.234874+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 3:56 AM CST",
+    "session_end_time": "2025-08-10T08:56:49.893339+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 3:56 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 21
+    }
+  },
+  {
+    "session_number": 14,
+    "id": "20250810T0356500014",
+    "session_start_time": "2025-08-10T08:56:50.738490+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 3:56 AM CST",
+    "session_end_time": "2025-08-10T09:00:53.730762+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 4:00 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 4,
+      "seconds": 2
+    }
+  },
+  {
+    "session_number": 15,
+    "id": "20250810T0401030015",
+    "session_start_time": "2025-08-10T09:01:03.435220+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 4:01 AM CST",
+    "session_end_time": "2025-08-10T09:02:57.744363+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 4:02 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 1,
+      "seconds": 54
+    }
+  },
+  {
+    "session_number": 16,
+    "id": "20250810T0402590016",
+    "session_start_time": "2025-08-10T09:02:59.111307+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 4:02 AM CST",
+    "session_end_time": "2025-08-10T09:04:04.217638+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 4:04 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 1,
+      "seconds": 5
+    }
+  },
+  {
+    "session_number": 17,
+    "id": "20250810T0404070017",
+    "session_start_time": "2025-08-10T09:04:07.042294+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 4:04 AM CST",
+    "session_end_time": "2025-08-10T09:11:39.235679+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 4:11 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 7,
+      "seconds": 32
+    }
+  },
+  {
+    "session_number": 18,
+    "id": "20250810T0419070018",
+    "session_start_time": "2025-08-10T09:19:07.839811+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 4:19 AM CST",
+    "session_end_time": "2025-08-10T09:25:13.407945+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 4:25 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 6,
+      "seconds": 5
+    }
+  },
+  {
+    "session_number": 19,
+    "id": "20250810T0425140019",
+    "session_start_time": "2025-08-10T09:25:14.082028+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 4:25 AM CST",
+    "session_end_time": "2025-08-10T09:30:38.183381+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 4:30 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 5,
+      "seconds": 24
+    }
+  },
+  {
+    "session_number": 20,
+    "id": "20250810T0432080020",
+    "session_start_time": "2025-08-10T09:32:08.551253+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 4:32 AM CST",
+    "session_end_time": "2025-08-10T09:32:14.120055+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 4:32 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 5
+    }
+  },
+  {
+    "session_number": 21,
+    "id": "20250810T0433020021",
+    "session_start_time": "2025-08-10T09:33:02.774813+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 4:33 AM CST",
+    "session_end_time": "2025-08-10T09:33:20.437566+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 4:33 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 17
+    }
+  },
+  {
+    "session_number": 22,
+    "id": "20250810T0433210022",
+    "session_start_time": "2025-08-10T09:33:21.200361+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 4:33 AM CST",
+    "session_end_time": "2025-08-10T09:36:30.731773+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 4:36 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 3,
+      "seconds": 9
+    }
+  },
+  {
+    "session_number": 23,
+    "id": "20250810T0436310023",
+    "session_start_time": "2025-08-10T09:36:31.953982+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 4:36 AM CST",
+    "session_end_time": "2025-08-10T09:40:20.036974+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 4:40 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 3,
+      "seconds": 48
+    }
+  },
+  {
+    "session_number": 24,
+    "id": "20250810T0440260024",
+    "session_start_time": "2025-08-10T09:40:26.957375+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 4:40 AM CST",
+    "session_end_time": "2025-08-10T09:40:44.515600+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 4:40 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 17
+    }
+  },
+  {
+    "session_number": 25,
+    "id": "20250810T0440450025",
+    "session_start_time": "2025-08-10T09:40:45.439257+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 4:40 AM CST",
+    "session_end_time": "2025-08-10T09:42:14.456340+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 4:42 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 1,
+      "seconds": 29
+    }
+  },
+  {
+    "session_number": 26,
+    "id": "20250810T0442150026",
+    "session_start_time": "2025-08-10T09:42:15.551703+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 4:42 AM CST",
+    "session_end_time": "2025-08-10T09:43:14.103322+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 4:43 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 58
+    }
+  },
+  {
+    "session_number": 27,
+    "id": "20250810T0443540027",
+    "session_start_time": "2025-08-10T09:43:54.901951+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 4:43 AM CST",
+    "session_end_time": "2025-08-10T09:45:09.115270+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 4:45 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 1,
+      "seconds": 14
+    }
+  },
+  {
+    "session_number": 28,
+    "id": "20250810T0445100028",
+    "session_start_time": "2025-08-10T09:45:10.030697+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 4:45 AM CST",
+    "session_end_time": "2025-08-10T09:50:45.092468+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 4:50 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 5,
+      "seconds": 35
+    }
+  },
+  {
+    "session_number": 29,
+    "id": "20250810T0450450029",
+    "session_start_time": "2025-08-10T09:50:45.967166+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 4:50 AM CST",
+    "session_end_time": "2025-08-10T09:50:52.392200+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 4:50 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 6
+    }
+  },
+  {
+    "session_number": 30,
+    "id": "20250810T0451150030",
+    "session_start_time": "2025-08-10T09:51:15.854080+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 4:51 AM CST",
+    "session_end_time": "2025-08-10T09:51:36.025883+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 4:51 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 20
+    }
+  },
+  {
+    "session_number": 31,
+    "id": "20250810T0451360031",
+    "session_start_time": "2025-08-10T09:51:36.905970+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 4:51 AM CST",
+    "session_end_time": "2025-08-10T09:52:20.194286+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 4:52 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 43
+    }
+  },
+  {
+    "session_number": 32,
+    "id": "20250810T0452540032",
+    "session_start_time": "2025-08-10T09:52:54.826122+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 4:52 AM CST",
+    "session_end_time": "2025-08-10T10:00:39.043071+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 5:00 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 7,
+      "seconds": 44
+    }
+  },
+  {
+    "session_number": 33,
+    "id": "20250810T0500390033",
+    "session_start_time": "2025-08-10T10:00:39.935541+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 5:00 AM CST",
+    "session_end_time": "2025-08-10T10:01:04.755918+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 5:01 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 24
+    }
+  },
+  {
+    "session_number": 34,
+    "id": "20250810T0501270034",
+    "session_start_time": "2025-08-10T10:01:27.419999+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 5:01 AM CST",
+    "session_end_time": "2025-08-10T10:01:47.722109+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 5:01 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 20
+    }
+  },
+  {
+    "session_number": 35,
+    "id": "20250810T0504010035",
+    "session_start_time": "2025-08-10T10:04:01.505007+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 5:04 AM CST",
+    "session_end_time": "2025-08-10T10:04:50.004008+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 5:04 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 48
+    }
+  },
+  {
+    "session_number": 36,
+    "id": "20250810T0504510036",
+    "session_start_time": "2025-08-10T10:04:51.186757+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 5:04 AM CST",
+    "session_end_time": "2025-08-10T10:05:56.443234+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 5:05 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 1,
+      "seconds": 5
+    }
+  },
+  {
+    "session_number": 37,
+    "id": "20250810T0505580037",
+    "session_start_time": "2025-08-10T10:05:58.929512+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 5:05 AM CST",
+    "session_end_time": "2025-08-10T10:10:14.123677+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 5:10 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 4,
+      "seconds": 15
+    }
+  },
+  {
+    "session_number": 38,
+    "id": "20250810T0510160038",
+    "session_start_time": "2025-08-10T10:10:16.240193+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 5:10 AM CST",
+    "session_end_time": "2025-08-10T10:12:31.495939+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 5:12 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 2,
+      "seconds": 15
+    }
+  },
+  {
+    "session_number": 39,
+    "id": "20250810T0512320039",
+    "session_start_time": "2025-08-10T10:12:32.321227+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 5:12 AM CST",
+    "session_end_time": "2025-08-10T10:14:13.921836+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 5:14 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 1,
+      "seconds": 41
+    }
+  },
+  {
+    "session_number": 40,
+    "id": "20250810T0514150040",
+    "session_start_time": "2025-08-10T10:14:15.083622+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 5:14 AM CST",
+    "session_end_time": "2025-08-10T10:15:53.071379+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 5:15 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 1,
+      "seconds": 37
+    }
+  },
+  {
+    "session_number": 41,
+    "id": "20250810T0515540041",
+    "session_start_time": "2025-08-10T10:15:54.823932+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 5:15 AM CST",
+    "session_end_time": "2025-08-10T10:19:11.239520+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 5:19 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 3,
+      "seconds": 16
+    }
+  },
+  {
+    "session_number": 42,
+    "id": "20250810T0521480042",
+    "session_start_time": "2025-08-10T10:21:48.131797+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 5:21 AM CST",
+    "session_end_time": "2025-08-10T10:26:43.024132+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 5:26 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 4,
+      "seconds": 54
+    }
+  },
+  {
+    "session_number": 43,
+    "id": "20250810T0526430043",
+    "session_start_time": "2025-08-10T10:26:43.849264+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 5:26 AM CST",
+    "session_end_time": "2025-08-10T10:28:59.386544+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 5:28 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 2,
+      "seconds": 15
+    }
+  },
+  {
+    "session_number": 44,
+    "id": "20250810T0529400044",
+    "session_start_time": "2025-08-10T10:29:40.312008+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 5:29 AM CST",
+    "session_end_time": "2025-08-10T10:35:48.337615+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 5:35 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 6,
+      "seconds": 8
+    }
+  },
+  {
+    "session_number": 45,
+    "id": "20250810T0535490045",
+    "session_start_time": "2025-08-10T10:35:49.983646+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 5:35 AM CST",
+    "session_end_time": "2025-08-10T10:38:45.685446+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 5:38 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 2,
+      "seconds": 55
+    }
+  },
+  {
+    "session_number": 46,
+    "id": "20250810T0538480046",
+    "session_start_time": "2025-08-10T10:38:48.194447+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 5:38 AM CST",
+    "session_end_time": "2025-08-10T10:44:16.495321+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 5:44 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 5,
+      "seconds": 28
+    }
+  },
+  {
+    "session_number": 47,
+    "id": "20250810T0544170047",
+    "session_start_time": "2025-08-10T10:44:17.570498+00:00",
+    "formatted_cst_session_start_timestamp": "8/10/2025, 5:44 AM CST",
+    "session_end_time": "2025-08-10T10:49:44.540183+00:00",
+    "formatted_cst_session_end_timestamp": "8/10/2025, 5:49 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 5,
+      "seconds": 26
+    }
+  },
+  {
+    "session_number": 48,
+    "id": "20250812T0100520048",
+    "session_start_time": "2025-08-12T06:00:52.445606+00:00",
+    "formatted_cst_session_start_timestamp": "8/12/2025, 1:00 AM CST",
+    "session_end_time": "2025-08-12T06:02:21.220004+00:00",
+    "formatted_cst_session_end_timestamp": "8/12/2025, 1:02 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 1,
+      "seconds": 28
+    }
+  },
+  {
+    "session_number": 49,
+    "id": "20250812T0102220049",
+    "session_start_time": "2025-08-12T06:02:22.594394+00:00",
+    "formatted_cst_session_start_timestamp": "8/12/2025, 1:02 AM CST",
+    "session_end_time": "2025-08-12T07:28:13.013204+00:00",
+    "formatted_cst_session_end_timestamp": "8/12/2025, 2:28 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 1,
+      "minutes": 25,
+      "seconds": 50
+    }
+  },
+  {
+    "session_number": 50,
+    "id": "20250812T0228130050",
+    "session_start_time": "2025-08-12T07:28:13.013204+00:00",
+    "formatted_cst_session_start_timestamp": "8/12/2025, 2:28 AM CST",
+    "session_end_time": "2025-08-12T07:28:34.515009+00:00",
+    "formatted_cst_session_end_timestamp": "8/12/2025, 2:28 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 21
+    }
+  },
+  {
+    "session_number": 51,
+    "id": "20250812T0228350051",
+    "session_start_time": "2025-08-12T07:28:35.201280+00:00",
+    "formatted_cst_session_start_timestamp": "8/12/2025, 2:28 AM CST",
+    "session_end_time": "2025-08-12T07:31:06.474781+00:00",
+    "formatted_cst_session_end_timestamp": "8/12/2025, 2:31 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 2,
+      "seconds": 31
+    }
+  },
+  {
+    "session_number": 52,
+    "id": "20250812T0231120052",
+    "session_start_time": "2025-08-12T07:31:12.606879+00:00",
+    "formatted_cst_session_start_timestamp": "8/12/2025, 2:31 AM CST",
+    "session_end_time": "2025-08-12T07:31:41.518620+00:00",
+    "formatted_cst_session_end_timestamp": "8/12/2025, 2:31 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 28
+    }
+  },
+  {
+    "session_number": 53,
+    "id": "20250812T0231480053",
+    "session_start_time": "2025-08-12T07:31:48.719478+00:00",
+    "formatted_cst_session_start_timestamp": "8/12/2025, 2:31 AM CST",
+    "session_end_time": "2025-08-12T07:35:46.400628+00:00",
+    "formatted_cst_session_end_timestamp": "8/12/2025, 2:35 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 3,
+      "seconds": 57
+    }
+  },
+  {
+    "session_number": 54,
+    "id": "20250812T0237000054",
+    "session_start_time": "2025-08-12T07:37:00.163055+00:00",
+    "formatted_cst_session_start_timestamp": "8/12/2025, 2:37 AM CST",
+    "session_end_time": "2025-08-12T07:37:00.163712+00:00",
+    "formatted_cst_session_end_timestamp": "8/12/2025, 2:37 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 0
+    }
+  },
+  {
+    "session_number": 55,
+    "id": "20250812T0237220055",
+    "session_start_time": "2025-08-12T07:37:22.483286+00:00",
+    "formatted_cst_session_start_timestamp": "8/12/2025, 2:37 AM CST",
+    "session_end_time": "2025-08-12T07:38:25.429267+00:00",
+    "formatted_cst_session_end_timestamp": "8/12/2025, 2:38 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 1,
+      "seconds": 2
+    }
+  },
+  {
+    "session_number": 56,
+    "id": "20250812T0238260056",
+    "session_start_time": "2025-08-12T07:38:26.388405+00:00",
+    "formatted_cst_session_start_timestamp": "8/12/2025, 2:38 AM CST",
+    "session_end_time": "2025-08-12T07:38:54.490819+00:00",
+    "formatted_cst_session_end_timestamp": "8/12/2025, 2:38 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 28
+    }
+  },
+  {
+    "session_number": 57,
+    "id": "20250812T0238550057",
+    "session_start_time": "2025-08-12T07:38:55.045093+00:00",
+    "formatted_cst_session_start_timestamp": "8/12/2025, 2:38 AM CST",
+    "session_end_time": "2025-08-12T07:39:07.886933+00:00",
+    "formatted_cst_session_end_timestamp": "8/12/2025, 2:39 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 12
+    }
+  },
+  {
+    "session_number": 58,
+    "id": "20250812T0239080058",
+    "session_start_time": "2025-08-12T07:39:08.513496+00:00",
+    "formatted_cst_session_start_timestamp": "8/12/2025, 2:39 AM CST",
+    "session_end_time": "2025-08-12T07:39:21.565197+00:00",
+    "formatted_cst_session_end_timestamp": "8/12/2025, 2:39 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 13
+    }
+  },
+  {
+    "session_number": 59,
+    "id": "20250812T0239220059",
+    "session_start_time": "2025-08-12T07:39:22.209872+00:00",
+    "formatted_cst_session_start_timestamp": "8/12/2025, 2:39 AM CST",
+    "session_end_time": "2025-08-12T07:40:17.103226+00:00",
+    "formatted_cst_session_end_timestamp": "8/12/2025, 2:40 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 54
+    }
+  },
+  {
+    "session_number": 60,
+    "id": "20250812T0241230060",
+    "session_start_time": "2025-08-12T07:41:23.159383+00:00",
+    "formatted_cst_session_start_timestamp": "8/12/2025, 2:41 AM CST",
+    "session_end_time": "2025-08-12T07:42:30.241499+00:00",
+    "formatted_cst_session_end_timestamp": "8/12/2025, 2:42 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 1,
+      "seconds": 7
+    }
+  },
+  {
+    "session_number": 61,
+    "id": "20250812T0242300061",
+    "session_start_time": "2025-08-12T07:42:30.979588+00:00",
+    "formatted_cst_session_start_timestamp": "8/12/2025, 2:42 AM CST",
+    "session_end_time": "2025-08-12T07:42:41.220220+00:00",
+    "formatted_cst_session_end_timestamp": "8/12/2025, 2:42 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 10
+    }
+  },
+  {
+    "session_number": 62,
+    "id": "20250812T0243410062",
+    "session_start_time": "2025-08-12T07:43:41.126784+00:00",
+    "formatted_cst_session_start_timestamp": "8/12/2025, 2:43 AM CST",
+    "session_end_time": "2025-08-12T07:46:12.231484+00:00",
+    "formatted_cst_session_end_timestamp": "8/12/2025, 2:46 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 2,
+      "seconds": 31
+    }
+  },
+  {
+    "session_number": 63,
+    "id": "20250812T0246130063",
+    "session_start_time": "2025-08-12T07:46:13.393906+00:00",
+    "formatted_cst_session_start_timestamp": "8/12/2025, 2:46 AM CST",
+    "session_end_time": "2025-08-12T07:47:24.918284+00:00",
+    "formatted_cst_session_end_timestamp": "8/12/2025, 2:47 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 1,
+      "seconds": 11
+    }
+  },
+  {
+    "session_number": 64,
+    "id": "20250812T0253570064",
+    "session_start_time": "2025-08-12T07:53:57.023876+00:00",
+    "formatted_cst_session_start_timestamp": "8/12/2025, 2:53 AM CST",
+    "session_end_time": "2025-08-12T07:56:16.918423+00:00",
+    "formatted_cst_session_end_timestamp": "8/12/2025, 2:56 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 2,
+      "seconds": 19
+    }
+  },
+  {
+    "session_number": 65,
+    "id": "20250812T0256170065",
+    "session_start_time": "2025-08-12T07:56:17.745524+00:00",
+    "formatted_cst_session_start_timestamp": "8/12/2025, 2:56 AM CST",
+    "session_end_time": "2025-08-12T07:58:29.594060+00:00",
+    "formatted_cst_session_end_timestamp": "8/12/2025, 2:58 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 2,
+      "seconds": 11
+    }
+  },
+  {
+    "session_number": 66,
+    "id": "20250812T0259170066",
+    "session_start_time": "2025-08-12T07:59:17.209345+00:00",
+    "formatted_cst_session_start_timestamp": "8/12/2025, 2:59 AM CST",
+    "session_end_time": "2025-08-12T08:00:02.240766+00:00",
+    "formatted_cst_session_end_timestamp": "8/12/2025, 3:00 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 45
+    }
+  },
+  {
+    "session_number": 67,
+    "id": "20250812T0300030067",
+    "session_start_time": "2025-08-12T08:00:03.044549+00:00",
+    "formatted_cst_session_start_timestamp": "8/12/2025, 3:00 AM CST",
+    "session_end_time": "2025-08-12T08:01:52.457735+00:00",
+    "formatted_cst_session_end_timestamp": "8/12/2025, 3:01 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 1,
+      "seconds": 49
+    }
+  },
+  {
+    "session_number": 68,
+    "id": "20250812T0302260068",
+    "session_start_time": "2025-08-12T08:02:26.629258+00:00",
+    "formatted_cst_session_start_timestamp": "8/12/2025, 3:02 AM CST",
+    "session_end_time": "2025-08-12T08:02:34.815318+00:00",
+    "formatted_cst_session_end_timestamp": "8/12/2025, 3:02 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 8
+    }
+  },
+  {
+    "session_number": 69,
+    "id": "20250812T0302350069",
+    "session_start_time": "2025-08-12T08:02:35.627703+00:00",
+    "formatted_cst_session_start_timestamp": "8/12/2025, 3:02 AM CST",
+    "session_end_time": "2025-08-12T08:03:18.830693+00:00",
+    "formatted_cst_session_end_timestamp": "8/12/2025, 3:03 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 43
+    }
+  },
+  {
+    "session_number": 70,
+    "id": "20250812T0303200070",
+    "session_start_time": "2025-08-12T08:03:20.007349+00:00",
+    "formatted_cst_session_start_timestamp": "8/12/2025, 3:03 AM CST",
+    "session_end_time": "2025-08-12T08:03:58.532768+00:00",
+    "formatted_cst_session_end_timestamp": "8/12/2025, 3:03 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 38
+    }
+  },
+  {
+    "session_number": 71,
+    "id": "20250812T0304230071",
+    "session_start_time": "2025-08-12T08:04:23.040758+00:00",
+    "formatted_cst_session_start_timestamp": "8/12/2025, 3:04 AM CST",
+    "session_end_time": "2025-08-12T08:06:07.366050+00:00",
+    "formatted_cst_session_end_timestamp": "8/12/2025, 3:06 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 1,
+      "seconds": 44
+    }
+  },
+  {
+    "session_number": 72,
+    "id": "20250812T0306200072",
+    "session_start_time": "2025-08-12T08:06:20.301370+00:00",
+    "formatted_cst_session_start_timestamp": "8/12/2025, 3:06 AM CST",
+    "session_end_time": "2025-08-12T08:06:37.422479+00:00",
+    "formatted_cst_session_end_timestamp": "8/12/2025, 3:06 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 17
+    }
+  },
+  {
+    "session_number": 73,
+    "id": "20250812T0306380073",
+    "session_start_time": "2025-08-12T08:06:38.348134+00:00",
+    "formatted_cst_session_start_timestamp": "8/12/2025, 3:06 AM CST",
+    "session_end_time": "2025-08-12T08:07:54.440678+00:00",
+    "formatted_cst_session_end_timestamp": "8/12/2025, 3:07 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 1,
+      "seconds": 16
+    }
+  },
+  {
+    "session_number": 74,
+    "id": "20250812T0307550074",
+    "session_start_time": "2025-08-12T08:07:55.221280+00:00",
+    "formatted_cst_session_start_timestamp": "8/12/2025, 3:07 AM CST",
+    "session_end_time": "2025-08-12T08:09:06.403378+00:00",
+    "formatted_cst_session_end_timestamp": "8/12/2025, 3:09 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 1,
+      "seconds": 11
+    }
+  },
+  {
+    "session_number": 75,
+    "id": "20250812T0309070075",
+    "session_start_time": "2025-08-12T08:09:07.623529+00:00",
+    "formatted_cst_session_start_timestamp": "8/12/2025, 3:09 AM CST",
+    "session_end_time": "2025-08-12T08:09:51.739275+00:00",
+    "formatted_cst_session_end_timestamp": "8/12/2025, 3:09 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 44
+    }
+  },
+  {
+    "session_number": 76,
+    "id": "20250812T0309520076",
+    "session_start_time": "2025-08-12T08:09:52.627381+00:00",
+    "formatted_cst_session_start_timestamp": "8/12/2025, 3:09 AM CST",
+    "session_end_time": "2025-08-12T08:10:13.671482+00:00",
+    "formatted_cst_session_end_timestamp": "8/12/2025, 3:10 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 21
+    }
+  },
+  {
+    "session_number": 77,
+    "id": "20250828T0337050077",
+    "session_start_time": "2025-08-28T08:37:05.565906+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 3:37 AM CST",
+    "session_end_time": "2025-08-28T08:40:19.624840+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 3:40 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 3,
+      "seconds": 14
+    }
+  },
+  {
+    "session_number": 78,
+    "id": "20250828T0340210078",
+    "session_start_time": "2025-08-28T08:40:21.574760+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 3:40 AM CST",
+    "session_end_time": "2025-08-28T08:48:23.630381+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 3:48 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 8,
+      "seconds": 2
+    }
+  },
+  {
+    "session_number": 79,
+    "id": "20250828T0348250079",
+    "session_start_time": "2025-08-28T08:48:25.145610+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 3:48 AM CST",
+    "session_end_time": "2025-08-28T09:41:24.194453+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 4:41 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 52,
+      "seconds": 59
+    }
+  },
+  {
+    "session_number": 80,
+    "id": "20250828T0441260080",
+    "session_start_time": "2025-08-28T09:41:26.068507+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 4:41 AM CST",
+    "session_end_time": "2025-08-28T09:41:53.108597+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 4:41 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 27
+    }
+  },
+  {
+    "session_number": 81,
+    "id": "20250828T0441540081",
+    "session_start_time": "2025-08-28T09:41:54.729068+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 4:41 AM CST",
+    "session_end_time": "2025-08-28T09:42:08.304163+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 4:42 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 13
+    }
+  },
+  {
+    "session_number": 82,
+    "id": "20250828T0442280082",
+    "session_start_time": "2025-08-28T09:42:28.992925+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 4:42 AM CST",
+    "session_end_time": "2025-08-28T09:43:04.195205+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 4:43 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 35
+    }
+  },
+  {
+    "session_number": 83,
+    "id": "20250828T0450500083",
+    "session_start_time": "2025-08-28T09:50:50.951451+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 4:50 AM CST",
+    "session_end_time": "2025-08-28T09:52:16.928150+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 4:52 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 1,
+      "seconds": 25
+    }
+  },
+  {
+    "session_number": 84,
+    "id": "20250828T0452180084",
+    "session_start_time": "2025-08-28T09:52:18.414087+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 4:52 AM CST",
+    "session_end_time": "2025-08-28T09:53:49.063544+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 4:53 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 1,
+      "seconds": 30
+    }
+  },
+  {
+    "session_number": 85,
+    "id": "20250828T0453500085",
+    "session_start_time": "2025-08-28T09:53:50.360541+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 4:53 AM CST",
+    "session_end_time": "2025-08-28T09:54:07.781864+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 4:54 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 17
+    }
+  },
+  {
+    "session_number": 86,
+    "id": "20250828T0454080086",
+    "session_start_time": "2025-08-28T09:54:08.503602+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 4:54 AM CST",
+    "session_end_time": "2025-08-28T09:54:50.487863+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 4:54 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 41
+    }
+  },
+  {
+    "session_number": 87,
+    "id": "20250828T0454510087",
+    "session_start_time": "2025-08-28T09:54:51.252140+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 4:54 AM CST",
+    "session_end_time": "2025-08-28T09:55:39.520739+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 4:55 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 48
+    }
+  },
+  {
+    "session_number": 88,
+    "id": "20250828T0459380088",
+    "session_start_time": "2025-08-28T09:59:38.540143+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 4:59 AM CST",
+    "session_end_time": "2025-08-28T10:00:32.391097+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 5:00 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 53
+    }
+  },
+  {
+    "session_number": 89,
+    "id": "20250828T0500330089",
+    "session_start_time": "2025-08-28T10:00:33.242401+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 5:00 AM CST",
+    "session_end_time": "2025-08-28T10:04:08.159260+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 5:04 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 3,
+      "seconds": 34
+    }
+  },
+  {
+    "session_number": 90,
+    "id": "20250828T0508280090",
+    "session_start_time": "2025-08-28T10:08:28.987772+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 5:08 AM CST",
+    "session_end_time": "2025-08-28T10:13:57.099817+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 5:13 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 5,
+      "seconds": 28
+    }
+  },
+  {
+    "session_number": 91,
+    "id": "20250828T0513570091",
+    "session_start_time": "2025-08-28T10:13:57.904319+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 5:13 AM CST",
+    "session_end_time": "2025-08-28T10:14:19.668681+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 5:14 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 21
+    }
+  },
+  {
+    "session_number": 92,
+    "id": "20250828T0514200092",
+    "session_start_time": "2025-08-28T10:14:20.469194+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 5:14 AM CST",
+    "session_end_time": "2025-08-28T10:14:26.402425+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 5:14 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 5
+    }
+  },
+  {
+    "session_number": 93,
+    "id": "20250828T0514280093",
+    "session_start_time": "2025-08-28T10:14:28.496378+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 5:14 AM CST",
+    "session_end_time": "2025-08-28T10:18:03.685078+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 5:18 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 3,
+      "seconds": 35
+    }
+  },
+  {
+    "session_number": 94,
+    "id": "20250828T0518050094",
+    "session_start_time": "2025-08-28T10:18:05.520367+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 5:18 AM CST",
+    "session_end_time": "2025-08-28T10:20:13.065754+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 5:20 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 2,
+      "seconds": 7
+    }
+  },
+  {
+    "session_number": 95,
+    "id": "20250828T0520130095",
+    "session_start_time": "2025-08-28T10:20:13.846258+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 5:20 AM CST",
+    "session_end_time": "2025-08-28T10:22:55.065025+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 5:22 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 2,
+      "seconds": 41
+    }
+  },
+  {
+    "session_number": 96,
+    "id": "20250828T0523060096",
+    "session_start_time": "2025-08-28T10:23:06.294248+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 5:23 AM CST",
+    "session_end_time": "2025-08-28T10:26:34.907362+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 5:26 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 3,
+      "seconds": 28
+    }
+  },
+  {
+    "session_number": 97,
+    "id": "20250828T0526350097",
+    "session_start_time": "2025-08-28T10:26:35.579147+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 5:26 AM CST",
+    "session_end_time": "2025-08-28T10:28:01.222056+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 5:28 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 1,
+      "seconds": 25
+    }
+  },
+  {
+    "session_number": 98,
+    "id": "20250828T0528110098",
+    "session_start_time": "2025-08-28T10:28:11.564167+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 5:28 AM CST",
+    "session_end_time": "2025-08-28T10:33:15.717540+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 5:33 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 5,
+      "seconds": 4
+    }
+  },
+  {
+    "session_number": 99,
+    "id": "20250828T0533240099",
+    "session_start_time": "2025-08-28T10:33:24.211812+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 5:33 AM CST",
+    "session_end_time": "2025-08-28T10:34:55.429784+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 5:34 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 1,
+      "seconds": 31
+    }
+  },
+  {
+    "session_number": 100,
+    "id": "20250828T05345600100",
+    "session_start_time": "2025-08-28T10:34:56.205513+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 5:34 AM CST",
+    "session_end_time": "2025-08-28T10:37:02.369588+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 5:37 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 2,
+      "seconds": 6
+    }
+  },
+  {
+    "session_number": 101,
+    "id": "20250828T05383400101",
+    "session_start_time": "2025-08-28T10:38:34.678306+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 5:38 AM CST",
+    "session_end_time": "2025-08-28T10:41:40.454296+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 5:41 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 3,
+      "seconds": 5
+    }
+  },
+  {
+    "session_number": 102,
+    "id": "20250828T05414800102",
+    "session_start_time": "2025-08-28T10:41:48.359718+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 5:41 AM CST",
+    "session_end_time": "2025-08-28T10:44:02.914524+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 5:44 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 2,
+      "seconds": 14
+    }
+  },
+  {
+    "session_number": 103,
+    "id": "20250828T05533700103",
+    "session_start_time": "2025-08-28T10:53:37.222429+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 5:53 AM CST",
+    "session_end_time": "2025-08-28T11:02:29.163728+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 6:02 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 8,
+      "seconds": 51
+    }
+  },
+  {
+    "session_number": 104,
+    "id": "20250828T06024400104",
+    "session_start_time": "2025-08-28T11:02:44.085541+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 6:02 AM CST",
+    "session_end_time": "2025-08-28T11:03:12.252383+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 6:03 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 28
+    }
+  },
+  {
+    "session_number": 105,
+    "id": "20250828T06031500105",
+    "session_start_time": "2025-08-28T11:03:15.323190+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 6:03 AM CST",
+    "session_end_time": "2025-08-28T11:15:17.881103+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 6:15 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 12,
+      "seconds": 2
+    }
+  },
+  {
+    "session_number": 106,
+    "id": "20250828T06151800106",
+    "session_start_time": "2025-08-28T11:15:18.629653+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 6:15 AM CST",
+    "session_end_time": "2025-08-28T11:18:18.738278+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 6:18 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 3,
+      "seconds": 0
+    }
+  },
+  {
+    "session_number": 107,
+    "id": "20250828T06182600107",
+    "session_start_time": "2025-08-28T11:18:26.514091+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 6:18 AM CST",
+    "session_end_time": "2025-08-28T11:20:53.050148+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 6:20 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 2,
+      "seconds": 26
+    }
+  },
+  {
+    "session_number": 108,
+    "id": "20250828T06205300108",
+    "session_start_time": "2025-08-28T11:20:53.868372+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 6:20 AM CST",
+    "session_end_time": "2025-08-28T11:21:47.601766+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 6:21 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 53
+    }
+  },
+  {
+    "session_number": 109,
+    "id": "20250828T06214800109",
+    "session_start_time": "2025-08-28T11:21:48.359144+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 6:21 AM CST",
+    "session_end_time": "2025-08-28T11:24:45.446659+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 6:24 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 2,
+      "seconds": 57
+    }
+  },
+  {
+    "session_number": 110,
+    "id": "20250828T06244600110",
+    "session_start_time": "2025-08-28T11:24:46.418471+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 6:24 AM CST",
+    "session_end_time": "2025-08-28T11:29:32.565526+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 6:29 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 4,
+      "seconds": 46
+    }
+  },
+  {
+    "session_number": 111,
+    "id": "20250828T06330000111",
+    "session_start_time": "2025-08-28T11:33:00.498152+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 6:33 AM CST",
+    "session_end_time": "2025-08-28T11:34:43.854446+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 6:34 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 1,
+      "seconds": 43
+    }
+  },
+  {
+    "session_number": 112,
+    "id": "20250828T06450600112",
+    "session_start_time": "2025-08-28T11:45:06.168323+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 6:45 AM CST",
+    "session_end_time": "2025-08-28T11:45:49.959820+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 6:45 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 43
+    }
+  },
+  {
+    "session_number": 113,
+    "id": "20250828T06455300113",
+    "session_start_time": "2025-08-28T11:45:53.226205+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 6:45 AM CST",
+    "session_end_time": "2025-08-28T11:46:01.525104+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 6:46 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 8
+    }
+  },
+  {
+    "session_number": 114,
+    "id": "20250828T06460900114",
+    "session_start_time": "2025-08-28T11:46:09.665360+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 6:46 AM CST",
+    "session_end_time": "2025-08-28T11:46:19.554346+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 6:46 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 9
+    }
+  },
+  {
+    "session_number": 115,
+    "id": "20250828T07074000115",
+    "session_start_time": "2025-08-28T12:07:40.306908+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 7:07 AM CST",
+    "session_end_time": "2025-08-28T12:13:19.891769+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 7:13 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 5,
+      "seconds": 39
+    }
+  },
+  {
+    "session_number": 116,
+    "id": "20250828T07132000116",
+    "session_start_time": "2025-08-28T12:13:20.732725+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 7:13 AM CST",
+    "session_end_time": "2025-08-28T12:18:04.375244+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 7:18 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 4,
+      "seconds": 43
+    }
+  },
+  {
+    "session_number": 117,
+    "id": "20250828T07180900117",
+    "session_start_time": "2025-08-28T12:18:09.875824+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 7:18 AM CST",
+    "session_end_time": "2025-08-28T12:19:47.855201+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 7:19 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 1,
+      "seconds": 37
+    }
+  },
+  {
+    "session_number": 118,
+    "id": "20250828T07264600118",
+    "session_start_time": "2025-08-28T12:26:46.108038+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 7:26 AM CST",
+    "session_end_time": "2025-08-28T12:27:14.916388+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 7:27 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 28
+    }
+  },
+  {
+    "session_number": 119,
+    "id": "20250828T07271700119",
+    "session_start_time": "2025-08-28T12:27:17.425260+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 7:27 AM CST",
+    "session_end_time": "2025-08-28T12:28:18.792666+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 7:28 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 1,
+      "seconds": 1
+    }
+  },
+  {
+    "session_number": 120,
+    "id": "20250828T07282000120",
+    "session_start_time": "2025-08-28T12:28:20.163693+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 7:28 AM CST",
+    "session_end_time": "2025-08-28T12:35:03.412957+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 7:35 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 6,
+      "seconds": 43
+    }
+  },
+  {
+    "session_number": 121,
+    "id": "20250828T07354700121",
+    "session_start_time": "2025-08-28T12:35:47.261722+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 7:35 AM CST",
+    "session_end_time": "2025-08-28T12:41:47.346003+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 7:41 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 6,
+      "seconds": 0
+    }
+  },
+  {
+    "session_number": 122,
+    "id": "20250828T07415000122",
+    "session_start_time": "2025-08-28T12:41:50.399602+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 7:41 AM CST",
+    "session_end_time": "2025-08-28T12:43:35.264508+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 7:43 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 1,
+      "seconds": 44
+    }
+  },
+  {
+    "session_number": 123,
+    "id": "20250828T07433600123",
+    "session_start_time": "2025-08-28T12:43:36.181089+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 7:43 AM CST",
+    "session_end_time": "2025-08-28T12:45:00.607868+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 7:45 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 1,
+      "seconds": 24
+    }
+  },
+  {
+    "session_number": 124,
+    "id": "20250828T07450100124",
+    "session_start_time": "2025-08-28T12:45:01.422109+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 7:45 AM CST",
+    "session_end_time": "2025-08-28T12:46:26.882110+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 7:46 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 1,
+      "seconds": 25
+    }
+  },
+  {
+    "session_number": 125,
+    "id": "20250828T07462700125",
+    "session_start_time": "2025-08-28T12:46:27.654988+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 7:46 AM CST",
+    "session_end_time": "2025-08-28T12:51:38.941507+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 7:51 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 5,
+      "seconds": 11
+    }
+  },
+  {
+    "session_number": 126,
+    "id": "20250828T07514100126",
+    "session_start_time": "2025-08-28T12:51:41.552456+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 7:51 AM CST",
+    "session_end_time": "2025-08-28T12:55:53.233304+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 7:55 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 4,
+      "seconds": 11
+    }
+  },
+  {
+    "session_number": 127,
+    "id": "20250828T07555400127",
+    "session_start_time": "2025-08-28T12:55:54.047122+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 7:55 AM CST",
+    "session_end_time": "2025-08-28T12:59:05.054384+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 7:59 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 3,
+      "seconds": 11
+    }
+  },
+  {
+    "session_number": 128,
+    "id": "20250828T07590500128",
+    "session_start_time": "2025-08-28T12:59:05.844661+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 7:59 AM CST",
+    "session_end_time": "2025-08-28T13:05:36.706213+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 8:05 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 6,
+      "seconds": 30
+    }
+  },
+  {
+    "session_number": 129,
+    "id": "20250828T08053700129",
+    "session_start_time": "2025-08-28T13:05:37.486887+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 8:05 AM CST",
+    "session_end_time": "2025-08-28T13:07:02.929902+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 8:07 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 1,
+      "seconds": 25
+    }
+  },
+  {
+    "session_number": 130,
+    "id": "20250828T08070400130",
+    "session_start_time": "2025-08-28T13:07:04.107073+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 8:07 AM CST",
+    "session_end_time": "2025-08-28T13:09:36.501803+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 8:09 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 2,
+      "seconds": 32
+    }
+  },
+  {
+    "session_number": 131,
+    "id": "20250828T08093700131",
+    "session_start_time": "2025-08-28T13:09:37.256526+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 8:09 AM CST",
+    "session_end_time": "2025-08-28T13:13:38.874562+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 8:13 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 4,
+      "seconds": 1
+    }
+  },
+  {
+    "session_number": 132,
+    "id": "20250828T08133900132",
+    "session_start_time": "2025-08-28T13:13:39.690557+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 8:13 AM CST",
+    "session_end_time": "2025-08-28T13:16:22.038133+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 8:16 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 2,
+      "seconds": 42
+    }
+  },
+  {
+    "session_number": 133,
+    "id": "20250828T08162200133",
+    "session_start_time": "2025-08-28T13:16:22.798466+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 8:16 AM CST",
+    "session_end_time": "2025-08-28T13:16:22.800034+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 8:16 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 0
+    }
+  },
+  {
+    "session_number": 134,
+    "id": "20250828T08164900134",
+    "session_start_time": "2025-08-28T13:16:49.629243+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 8:16 AM CST",
+    "session_end_time": "2025-08-28T13:16:50.289587+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 8:16 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 0
+    }
+  },
+  {
+    "session_number": 135,
+    "id": "20250828T08172300135",
+    "session_start_time": "2025-08-28T13:17:23.703472+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 8:17 AM CST",
+    "session_end_time": "2025-08-28T13:17:55.510796+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 8:17 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 31
+    }
+  },
+  {
+    "session_number": 136,
+    "id": "20250828T08175600136",
+    "session_start_time": "2025-08-28T13:17:56.362744+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 8:17 AM CST",
+    "session_end_time": "2025-08-28T13:18:01.577743+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 8:18 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 5
+    }
+  },
+  {
+    "session_number": 137,
+    "id": "20250828T08202200137",
+    "session_start_time": "2025-08-28T13:20:22.530203+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 8:20 AM CST",
+    "session_end_time": "2025-08-28T13:23:46.356576+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 8:23 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 3,
+      "seconds": 23
+    }
+  },
+  {
+    "session_number": 138,
+    "id": "20250828T08234700138",
+    "session_start_time": "2025-08-28T13:23:47.221642+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 8:23 AM CST",
+    "session_end_time": "2025-08-28T13:28:00.580774+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 8:28 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 4,
+      "seconds": 13
+    }
+  },
+  {
+    "session_number": 139,
+    "id": "20250828T08280100139",
+    "session_start_time": "2025-08-28T13:28:01.427069+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 8:28 AM CST",
+    "session_end_time": "2025-08-28T13:32:03.706519+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 8:32 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 4,
+      "seconds": 2
+    }
+  },
+  {
+    "session_number": 140,
+    "id": "20250828T08320400140",
+    "session_start_time": "2025-08-28T13:32:04.544712+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 8:32 AM CST",
+    "session_end_time": "2025-08-28T13:34:33.927915+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 8:34 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 2,
+      "seconds": 29
+    }
+  },
+  {
+    "session_number": 141,
+    "id": "20250828T08343400141",
+    "session_start_time": "2025-08-28T13:34:34.809247+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 8:34 AM CST",
+    "session_end_time": "2025-08-28T13:36:41.826268+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 8:36 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 2,
+      "seconds": 7
+    }
+  },
+  {
+    "session_number": 142,
+    "id": "20250828T08364200142",
+    "session_start_time": "2025-08-28T13:36:42.966132+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 8:36 AM CST",
+    "session_end_time": "2025-08-28T13:46:01.464947+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 8:46 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 9,
+      "seconds": 18
+    }
+  },
+  {
+    "session_number": 143,
+    "id": "20250828T08460200143",
+    "session_start_time": "2025-08-28T13:46:02.363793+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 8:46 AM CST",
+    "session_end_time": "2025-08-28T13:48:38.970398+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 8:48 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 2,
+      "seconds": 36
+    }
+  },
+  {
+    "session_number": 144,
+    "id": "20250828T08483900144",
+    "session_start_time": "2025-08-28T13:48:39.675947+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 8:48 AM CST",
+    "session_end_time": "2025-08-28T13:51:51.287223+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 8:51 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 3,
+      "seconds": 11
+    }
+  },
+  {
+    "session_number": 145,
+    "id": "20250828T08515200145",
+    "session_start_time": "2025-08-28T13:51:52.141797+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 8:51 AM CST",
+    "session_end_time": "2025-08-28T13:53:19.096976+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 8:53 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 1,
+      "seconds": 26
+    }
+  },
+  {
+    "session_number": 146,
+    "id": "20250828T08531900146",
+    "session_start_time": "2025-08-28T13:53:19.991900+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 8:53 AM CST",
+    "session_end_time": "2025-08-28T13:56:26.344491+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 8:56 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 3,
+      "seconds": 6
+    }
+  },
+  {
+    "session_number": 147,
+    "id": "20250828T08563900147",
+    "session_start_time": "2025-08-28T13:56:39.445738+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 8:56 AM CST",
+    "session_end_time": "2025-08-28T13:57:02.495849+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 8:57 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 23
+    }
+  },
+  {
+    "session_number": 148,
+    "id": "20250828T09023700148",
+    "session_start_time": "2025-08-28T14:02:37.090310+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 9:02 AM CST",
+    "session_end_time": "2025-08-28T14:02:46.909432+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 9:02 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 9
+    }
+  },
+  {
+    "session_number": 149,
+    "id": "20250828T09064800149",
+    "session_start_time": "2025-08-28T14:06:48.781285+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 9:06 AM CST",
+    "session_end_time": "2025-08-28T14:06:57.024880+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 9:06 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 8
+    }
+  },
+  {
+    "session_number": 150,
+    "id": "20250828T09065900150",
+    "session_start_time": "2025-08-28T14:06:59.486390+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 9:06 AM CST",
+    "session_end_time": "2025-08-28T14:07:33.482693+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 9:07 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 33
+    }
+  },
+  {
+    "session_number": 151,
+    "id": "20250828T09074800151",
+    "session_start_time": "2025-08-28T14:07:48.749849+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 9:07 AM CST",
+    "session_end_time": "2025-08-28T14:07:52.547032+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 9:07 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 3
+    }
+  },
+  {
+    "session_number": 152,
+    "id": "20250828T09075400152",
+    "session_start_time": "2025-08-28T14:07:54.070111+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 9:07 AM CST",
+    "session_end_time": "2025-08-28T14:08:00.333297+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 9:08 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 6
+    }
+  },
+  {
+    "session_number": 153,
+    "id": "20250828T09080800153",
+    "session_start_time": "2025-08-28T14:08:08.454142+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 9:08 AM CST",
+    "session_end_time": "2025-08-28T14:08:10.443038+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 9:08 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 1
+    }
+  },
+  {
+    "session_number": 154,
+    "id": "20250828T09090200154",
+    "session_start_time": "2025-08-28T14:09:02.986340+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 9:09 AM CST",
+    "session_end_time": "2025-08-28T14:09:17.176117+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 9:09 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 14
+    }
+  },
+  {
+    "session_number": 155,
+    "id": "20250828T09092000155",
+    "session_start_time": "2025-08-28T14:09:20.203940+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 9:09 AM CST",
+    "session_end_time": "2025-08-28T14:09:24.572969+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 9:09 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 4
+    }
+  },
+  {
+    "session_number": 156,
+    "id": "20250828T09094200156",
+    "session_start_time": "2025-08-28T14:09:42.594034+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 9:09 AM CST",
+    "session_end_time": "2025-08-28T14:09:51.216347+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 9:09 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 8
+    }
+  },
+  {
+    "session_number": 157,
+    "id": "20250828T09100000157",
+    "session_start_time": "2025-08-28T14:10:00.910379+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 9:10 AM CST",
+    "session_end_time": "2025-08-28T14:10:03.962404+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 9:10 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 3
+    }
+  },
+  {
+    "session_number": 158,
+    "id": "20250828T09100500158",
+    "session_start_time": "2025-08-28T14:10:05.903142+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 9:10 AM CST",
+    "session_end_time": "2025-08-28T14:10:08.962349+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 9:10 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 3
+    }
+  },
+  {
+    "session_number": 159,
+    "id": "20250828T09231100159",
+    "session_start_time": "2025-08-28T14:23:11.894343+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 9:23 AM CST",
+    "session_end_time": "2025-08-28T14:24:02.319256+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 9:24 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 50
+    }
+  },
+  {
+    "session_number": 160,
+    "id": "20250828T09252700160",
+    "session_start_time": "2025-08-28T14:25:27.147375+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 9:25 AM CST",
+    "session_end_time": "2025-08-28T14:25:37.112579+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 9:25 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 9
+    }
+  },
+  {
+    "session_number": 161,
+    "id": "20250828T09263200161",
+    "session_start_time": "2025-08-28T14:26:32.891314+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 9:26 AM CST",
+    "session_end_time": "2025-08-28T14:26:39.017373+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 9:26 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 6
+    }
+  },
+  {
+    "session_number": 162,
+    "id": "20250828T09275100162",
+    "session_start_time": "2025-08-28T14:27:51.589726+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 9:27 AM CST",
+    "session_end_time": "2025-08-28T14:29:12.024425+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 9:29 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 1,
+      "seconds": 20
+    }
+  },
+  {
+    "session_number": 163,
+    "id": "20250828T09291200163",
+    "session_start_time": "2025-08-28T14:29:12.716065+00:00",
+    "formatted_cst_session_start_timestamp": "8/28/2025, 9:29 AM CST",
+    "session_end_time": "2025-08-28T14:29:39.240416+00:00",
+    "formatted_cst_session_end_timestamp": "8/28/2025, 9:29 AM CST",
+    "session_uptime": {
+      "days": 0,
+      "hours": 0,
+      "minutes": 0,
+      "seconds": 26
+    }
+  }
+]

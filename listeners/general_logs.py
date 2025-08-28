@@ -18,6 +18,7 @@ with open('config.json') as json_file:
 # Load the "join_dm_message" template
 join_dm_template = data["embed_templates"]["join_dm_message"]
 
+VSA_FAMILY_NAME = data["general"]["family_name"]
 # Bot configuration
 bot_prefix = data["general"]["bot_prefix"]
 embed_color = int(data["general"]["embed_color"].strip("#"), 16)
@@ -25,9 +26,6 @@ member_role_id = int(data["role_ids"]["unverified_vsa_member"])
 welcome_channel_id = int(data["text_channel_ids"]["welcome"])
 pre_embed_color = data["general"]["embed_color"].strip("#")
 logs_channel_id = int(data["text_channel_ids"]["bot_logs"])
-
-font_title = ImageFont.truetype("./assets/fonts/Minecraft.ttf", 20)
-font_footer = ImageFont.truetype("./assets/fonts/Minecraft.ttf", 15)
 
 
 class joinleave(commands.Cog):
@@ -54,7 +52,12 @@ class joinleave(commands.Cog):
             discord_profile = user_data.get("discord_profile", {})
             saved_roles = discord_profile.get("roles", [])
             saved_nick = discord_profile.get("nickname", "")
+            users_curr_points = 0
             first_join_str = discord_profile.get("first_time_joined", None)
+            
+            user_general = user_data.get("general")
+            first_name = user_general.get("first_name", "")
+            last_name = user_general.get("last_name", "")
 
             # Convert first join timestamp string to datetime object
             first_join_time = None
@@ -66,11 +69,11 @@ class joinleave(commands.Cog):
 
             # 1) Rename user if different nickname
             old_nick = member.display_name
-            await rename_user(member)
+            await rename_user(member, user_id_str, users_curr_points, first_name, last_name)
             new_nick = member.display_name  # might have changed after rename_user
 
             # 2) Assign saved roles (only add)
-            await assign_roles(member.id, saved_roles, member.guild)
+            await assign_roles(member, saved_roles)
             # Remove roles that the user currently has but are NOT in saved roles (except @everyone)
             current_roles = set(role.id for role in member.roles if role != member.guild.default_role)
             saved_role_ids = set(int(rid) for rid in saved_roles)
@@ -155,7 +158,7 @@ class joinleave(commands.Cog):
             member_count = len(member.guild.members)
 
             # Create the welcome image using your utility function
-            welcome_image_path = create_welcome_image(member, member_count, member.guild.name)
+            welcome_image_path = create_welcome_image(member, member_count, VSA_FAMILY_NAME)
 
             # Auto-role assignment
             role = member.guild.get_role(member_role_id)

@@ -55,9 +55,14 @@ class LeaderboardsCog(commands.Cog):
         description="View top EXP, coin holders, or coinflip wins",
         with_app_command=True
     )
-    @app_commands.describe(category="The category to view (exp, coins, coinflips)")
-    async def leaderboards(self, ctx, category: str):
-        category = category.lower()
+    @app_commands.choices(category=[
+        app_commands.Choice(name="EXP", value="exp"),
+        app_commands.Choice(name="Coins", value="coins"),
+        app_commands.Choice(name="Coinflips", value="coinflips")
+    ])
+    async def leaderboards(self, ctx: commands.Context, category: app_commands.Choice[str]):
+        # Use the selected value directly
+        category_value = category.value.lower()
         
         self.user_data = get_verified_users()
 
@@ -67,9 +72,8 @@ class LeaderboardsCog(commands.Cog):
         value_fn = lambda stats: ""
 
         total_members = len(ctx.guild.members)
-        #print(self.user_data)
 
-        if category == "exp":
+        if category_value == "exp":
             key = lambda x: x[1].get("stats", {}).get("level", 0)
             title = "EXP Server Members"
             value_fn = lambda stats: f"Total EXP: {int(stats.get('level',0))*100 + int(stats.get('exp',0))} (Lvl. {stats.get('level',0)})"

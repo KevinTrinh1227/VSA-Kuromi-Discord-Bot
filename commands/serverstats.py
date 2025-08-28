@@ -41,7 +41,7 @@ class ServerStats(commands.Cog):
 
         # Embed
         embed = discord.Embed(
-            title=f"📊 | {guild.name} Server Stats",
+            title=f"📊 | Server: {guild.name} Stats",
             color=int(cfg['general']['embed_color'].strip('#'), 16)
         )
 
@@ -50,29 +50,30 @@ class ServerStats(commands.Cog):
             embed.set_image(url=guild.banner.url)
 
         embed.description = (
-            f"**🪪 General Info**\n"
-            f"• Server ID: `{guild.id}`\n"
-            f"• Owner: {guild.owner.mention}`\n"
-            f"• Created: {created_at}\n\n"
+            f"**🪪 General Server Info**\n"
+            F"• Name: **{guild.name}**\n"
+            f"• ID: `{guild.id}`\n"
+            f"• Owner: {guild.owner.mention}\n"
+            f"• Created Timestamp: {created_at}\n\n"
 
-            f"**👥 Members**\n"
-            f"• Total Members: `{guild.member_count}`\n"
-            f"• Humans: `{len(humans)}`\n"
-            f"• Bots: `{len(bots)}`\n"
-            f"• Online: `{online}` | Idle: `{idle}` | DND: `{dnd}` | Offline: `{offline}`\n"
-            f"• % Online: `{(online / guild.member_count) * 100:.1f}%`\n\n"
+            f"**👥 Current Server Member(s) Info**\n"
+            f"• Total Members: **{guild.member_count}**\n"
+            f"• Total Humans: **{len(humans)}**\n"
+            f"• Total Bots: **{len(bots)}**\n"
+            f"• Statuses: Online: **{online}** | Idle: **{idle}** | DND: **{dnd}** | Offline: **{offline}**\n"
+            f"• Online Members: **{online}** ({(online / guild.member_count) * 100:.1f}%)\n\n"
 
-            f"**🏷️ Roles & Channels**\n"
-            f"• Total Roles: `{len(guild.roles)}`\n"
-            f"• Most Used Role: `{most_used_role.name}` ({len(most_used_role.members)} members)\n"
-            f"• Text Channels: `{text_channels}`\n"
-            f"• Voice Channels: `{voice_channels}`\n"
-            f"• AFK Channel: `{guild.afk_channel.name if guild.afk_channel else 'None'}`\n\n"
+            f"**🏷️ Roles & Channels Info**\n"
+            f"• Total Roles: **{len(guild.roles)}**\n"
+            f"• Role With Most Users: {most_used_role.mention} ({len(most_used_role.members)} Users - {(len(most_used_role.members) / guild.member_count) * 100:.1f}%)\n"
+            f"• Total Text Channels: **{text_channels}**\n"
+            f"• Total Voice Channels: **{voice_channels}**\n"
+            f"• AFK Channel: **{guild.afk_channel.name if guild.afk_channel else 'None'}**\n\n"
 
-            f"**✨ Boosts & Media**\n"
-            f"• Boost Level: `{boost_level}`\n"
-            f"• Boosts: `{boost_count}`\n"
-            f"• Vanity URL: `{guild.vanity_url_code or 'None'}`\n"
+            f"**✨ Boosts & Media Info**\n"
+            f"• Curr. Boost Level: **{boost_level}**\n"
+            f"• Boost(s) Count: **{boost_count}**\n"
+            f"• Vanity URL: **{guild.vanity_url_code or 'None'}**\n"
         )
 
         await ctx.send(embed=embed)

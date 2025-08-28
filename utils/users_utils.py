@@ -2,8 +2,11 @@
 import json
 import os
 
-
-VERIFIED_UNVERIFIED_USER_DATA_PATH = 'users_database.json'
+# Open the JSON file and read in the data
+with open('config.json') as json_file:
+    data = json.load(json_file)
+    
+VERIFIED_UNVERIFIED_USER_DATA_PATH = data['file_paths']['all_discord_user_member_database_json_path']
 
 def get_verified_users():
     with open(VERIFIED_UNVERIFIED_USER_DATA_PATH, 'r') as f:

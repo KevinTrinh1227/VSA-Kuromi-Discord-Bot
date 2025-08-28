@@ -1,28 +1,37 @@
 """
-    Project name: Hycord Discord Bot
-    Author: Kevin Huy Trinh
-    Date created: Dec, 2022
-    Native Version: 3.11.x
-    Link: https://www.hycord.net
+# 1. Create a new venv directory called “venv”
+python3 -m venv venv
+
+pip install -r requirements.txt
+
+
+# 2. Activate it
+source venv/bin/activate
 """
 
-from dotenv import load_dotenv
-import client
-import json
 import os
+import json
+from dotenv import load_dotenv
+from client import activateBot
 
 
+def load_config():
+    with open("config.json", "r") as f:
+        return json.load(f)
 
-load_dotenv()
-discord_bot_application_id = os.getenv("DISCORD_APPLICATION_ID")
-discord_bot_token = os.getenv("DISCORD_BOT_TOKEN")
+def main():
+    # Load environment variables
+    load_dotenv()
+    token = os.getenv("DISCORD_BOT_TOKEN")
+    application_id = int(os.getenv("DISCORD_APPLICATION_ID"))
+    server_guild_id = int(os.getenv("DISCORD_SERVER_GUILD_ID"))
 
-with open('config.json') as json_file:
-    data = json.load(json_file)
-    
+    # Load config.json to get the prefix
+    config = load_config()
+    prefix = config["general"].get("prefix", "!")
 
-# json data to run bot
-bot_prefix = data["general"]["bot_prefix"]
+    # Start the bot
+    activateBot(token, config, prefix, application_id, server_guild_id)
 
 if __name__ == "__main__":
-   client.activateBot(discord_bot_token, bot_prefix, discord_bot_application_id)
+    main()

@@ -14,8 +14,8 @@ with open('config.json') as f:
     cfg = json.load(f)
 FAMILY_ROLE_ID = int(cfg['role_ids']['family_member'])
 STAFF_ROLE_ID = int(cfg['role_ids']['staff_member'])
-TRANSCRIPTS_CHANNEL_ID = 1377170262130294834
-POLL_STORE = 'polls.json'
+TRANSCRIPTS_CHANNEL_ID = int(cfg['text_channel_ids']['bot_logs'])
+POLL_STORE = cfg['file_paths']['server_polls']
 
 # emoji numbers
 NUMBER_EMOJIS = ["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣","🔟"]

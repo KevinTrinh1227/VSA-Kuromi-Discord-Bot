@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "vsa-discord-sheets-reader",
+  "private_key_id": "f73cac36c1987492f0d6bca7b2275a4666c49586",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDCH4/xu+rQ1Hfc\ntXaW/IsOuG4XfJlnhVJiwzTj0lF+1G1QVd9Hj2rnaff/O1Wz6FWwpDfadeEdKZMQ\nCZ9KM60gI4fReJPBab3LHQ7mpRixdXOxjnCkEaDUeLV5s2U0ExJCVYKudmoOdUHq\neFpcBL5RyWoDzjhgMhnNZJ02OGSkKedQZD7zGgdrhAiqF3uAbMEjTB9B1yPgdpej\nS/uh8Qzne8yElSx7UrRsbeon9D/womZdQeAQm00oAbQs45Xr0L8MzUiuOc5zLoN9\nIugthH6yT2KmG7uEO37xuH4CCnUSCY0ZpBbEV8Bw9UKNiKqIO/RBTHetW+z2w0s4\nF0u9wQ6JAgMBAAECggEAFogQzlNMLDx5BBhY4SoDXuxHtPismpAmMZnsPeQ3utOf\ns4MgFR9/nkgVtZ12s1jMd2H8LKJhhF/CtsoTH8rzNYeCOG05IyopkhV3mQxBGznh\neZKpntV/+CFhmPRaUwrCpAnmTucmJLL1+WfKPyN6zqXk5Peu4fV2urkKqVQu1EHo\nG3g1RbU/VtIoW3AoD2Adxsa+uvYiFveD/btK6yaLggK20it7LWMoM65HLPJ0pgIY\njDWusyNDE+PCtVou+4Pqsb5OrinruxjKqVLnlPA+3HqlqF3koIvjUZf/di7njUBJ\nT0pk63Ge4JdBZHD8gfdCbLXDfX2kFyaaWudGVI9W4QKBgQDhMcTOAx0dNBX61xyt\nrRI5eDgHBFT52gn0UX4EFIk68PHAnw58mlzZkPxriTtMrLSofV0x/G1+d1/r+hVB\neuYpQX+Klg9tGSLDU1bofcp9/TIIPBlCAY+gfxfdVVwWKKLgOhnMkJgZVb7LLrhi\nLPBQfk8xZ8hLTpfO/srUrY1smQKBgQDcrbGMJljw6VOlbNru9QtJJowL//4yCA2V\nL1Dvp2ec57coR40Nhr0cWHYeVflnSjJtpAxT7Mmv24V73d25TgdTyMNB8dAjx9NW\nWaat5z7Ec0ULOZrJMGcicELQeXJqhGjvveMuP8/23CPdS1TzHsjP7PMwM+urHuvJ\nLJklokF3cQKBgByssqus19M1I6taIsu2owBwX2n9UjiyW9whWFN6rfK0ZYQqfLS/\nDx2hCZND2SotP5/Ivsozo1mcJ7mrkXNSC+aq8WubKgGxVqzaetGF2vfp+qnzxR+T\nhU9hf49uZBhqOjslCs3yh3uKYI4Mt+vAXyVQwBLBbU6xhkEUTo2AP+bZAoGBALjI\npLwDPER2TDlf3i9rdwjIw0olEFgakC0UksQqPEORb7fFuiHSajX7COU7/nv0ECfo\nzv3Tb8rWmX5v+IJ7CP2qRX3Jmwzq/Vb3+O7zjIZ5Mx5EHQ1Mf3/B2uCwYRM6Tpg5\nO6r1ehFuooVh1/9ADsy0z6nUQAlo+ezZcF+n7wOxAoGBALuWJSFW81p6nLfb57iu\nqX+tpPc0S4pVzdyIMWBDa811a5RaRQBYeXgZpF1XnCu2CJKlN79kfyk5crdA1rNq\n8fIOafijHm/+M7xX3AGAk1s3ascMXfZcj20dVEyH7mlmvSc5K0cYKu/OOmH84gMU\ntiYV1DryeMwqu4F2TQMfTcwK\n-----END PRIVATE KEY-----\n",
+  "client_email": "vsa-sheets-reader-discord-bot@vsa-discord-sheets-reader.iam.gserviceaccount.com",
+  "client_id": "107131404538200553555",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/vsa-sheets-reader-discord-bot%40vsa-discord-sheets-reader.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

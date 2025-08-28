@@ -6,9 +6,13 @@ from discord.ui import Modal, TextInput, View, Button
 import json
 import os
 import datetime
-from utils.family_utils import is_family_member
+from utils.family_utils import is_family_member, get_family_role
 from utils.users_utils import get_verified_users, save_verified_users, get_unverified_users, save_unverified_users
 
+
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Load configuration
 CONFIG_PATH = 'config.json'
@@ -17,7 +21,8 @@ CONFIG_PATH = 'config.json'
 with open(CONFIG_PATH) as f:
     cfg = json.load(f)
 
-GUILD_ID = int(cfg['general']['discord_server_guild_id'])
+
+GUILD_ID = int(os.getenv("DISCORD_SERVER_GUILD_ID"))
 VERIF_CHANNEL_ID = int(cfg['text_channel_ids']['verification'])
 FAM_ROLE_ID = int(cfg['role_ids']['family_member'])
 VERIFIED_ROLE_ID = int(cfg['role_ids']['verified_vsa_member'])
@@ -25,6 +30,8 @@ UNVER_ROLE_ID = int(cfg['role_ids']['unverified_vsa_member'])
 TICKET_CHANNEL_ID = int(cfg['text_channel_ids']['tickets_menu'])
 STAFF_ROLE_ID = int(cfg['role_ids']['staff_member'])
 FAMILY_LEAD_ROLE_ID = int(cfg['role_ids']['family_lead'])
+
+FAM_NAME = cfg['general']['family_name']
 
 # Modal for collecting user info
 class VerificationModal(Modal, title='📋 | VSA Member Verification'):
@@ -114,10 +121,14 @@ class VerificationModal(Modal, title='📋 | VSA Member Verification'):
 
         # Ask family membership
         embed = discord.Embed(
-            title='Are you a member of the Slytherin Family?',
+            title=f'Are you a member/psuedo of the {FAM_NAME}?',
             description=(
-                'Click **Yes** if you are a member of this family, and **No** if you aren\'t. '
-                '**Note** we will verify using your information. If there is an issue please contact the family chair **Peter Nguyen**.'
+                'Click **Yes** if you are a member/psuedo of this family, and **No** if you aren\'t. '
+                '\n\n**Note** we will verify using your information automatically after confirming. '
+                'If you click yes, note that you must already be on the psuedo/family member list for verification to work successfully. '
+                'Ignore this if you have already been assigned to this Fam or contacted a Fam Lead to psuedo. '
+                'If not please contact a fam lead to add you. '
+                '\n\nIf there is an issue please contact the family chair **Peter Nguyen**.'
             ),
             color=int(cfg['general']['embed_color'].strip('#'), 16)
         )
@@ -128,7 +139,7 @@ class VerificationModal(Modal, title='📋 | VSA Member Verification'):
             def __init__(self):
                 super().__init__(timeout=120)
 
-            @discord.ui.button(label="Yes, I'm in Slytherin Fam.", style=discord.ButtonStyle.green)
+            @discord.ui.button(label=f"Yes, I'm in {FAM_NAME} Fam.", style=discord.ButtonStyle.green)
             async def yes(self, interaction: discord.Interaction, button: Button):
                 await interaction.response.defer(ephemeral=True)
                 psid = interaction.client._verification_data.get("psid")
@@ -152,7 +163,7 @@ class VerificationModal(Modal, title='📋 | VSA Member Verification'):
             async def next_step(self, interaction: discord.Interaction, in_family: bool):
                 data = interaction.client._verification_data
                 data['in_family'] = in_family
-                fam_status = 'Yes (you were found on our family list)' if in_family else 'No'
+                fam_status = 'Yes (Successfully Validated)' if in_family else 'No'
 
                 # Confirmation embed
                 confirm = discord.Embed(
@@ -160,12 +171,12 @@ class VerificationModal(Modal, title='📋 | VSA Member Verification'):
                     description=(
                         'By proceeding you confirm this form is only to validate your VSA/family membership '
                         'and that all information is correct and valid. Incorrect info may result in denial or removal.\n\n'
-                        '**Please double check the following information:**\n'
-                        f"**First Name:** {data['first_name']}\n"
-                        f"**Last Name:** {data['last_name']}\n"
-                        f"**DOB:** {data['birthday']}\n"
+                        '**Double check the following information:**\n'
+                        f"**Full Name:** {data['first_name']} {data['last_name']}\n"
+                        f"**DOB:** {data['birthday']} (Only month & day will be visible)\n"
                         f"**PSID:** `{data['psid']}`\n"
-                        f"**In Slytherin Family?** {fam_status}\n\n"
+                        f"**In {FAM_NAME} Fam?** {fam_status}\n"
+                        f"**Family Role:** {get_family_role(psid)}\n\n"
                         'If it is **100% correct**, click **Confirm & Verify** below. Otherwise click **Restart Verification** to begin again or **Cancel** to abort.'
                     ),
                     color=int(cfg['general']['embed_color'].strip('#'), 16)
@@ -241,7 +252,7 @@ class VerificationModal(Modal, title='📋 | VSA Member Verification'):
 
 
                         # Send confirmation and close
-                        await interaction.response.send_message('✅ You have been verified!', ephemeral=True)
+                        await interaction.response.send_message('✅ You have been verified! All proper roles and permissions have been awarded to you. Use `/help` for command options!', ephemeral=True)
                         self.stop()
 
                     @discord.ui.button(label="Restart Verification", style=discord.ButtonStyle.gray)
@@ -295,7 +306,7 @@ class VerificationLobby(commands.Cog):
 
         # Create the new embed in advance for comparison
         new_description = (
-            f"To gain access to roles, permissions, and general server access including bot access, please verify your account below. Important information is listed below as well, and if you have any issues please contact a staff member or <@&{FAMILY_LEAD_ROLE_ID}>.\n\n"
+            f"To gain access to roles, permissions, and general server access including bot access, please verify your account below. Important information is listed below as well, and if you have any issues please contact a staff member or a Fam Lead.\n\n"
             "**Why Verify?**\n"
             "Verification helps us confirm that you're a student and lets us automatically assign appropriate roles based on whether you're a"
             "family member, paid VSA member, unpaid VSA member, non VSA member, or just a UH student, etc.\n\n"

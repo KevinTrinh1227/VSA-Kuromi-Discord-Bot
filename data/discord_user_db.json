@@ -1,0 +1,22 @@
+{
+  "verified_users": {
+    "1052324387845574687": {
+      "general": {
+        "first_name": "Kevin",
+        "last_name": "Trinh",
+        "birthday": "12/27/2002",
+        "psid": "2052873",
+        "timestamp": "2025-08-28T12:59:26.073351",
+        "in_family": true
+      },
+      "stats": {
+        "exp": 21.25,
+        "coins": 15,
+        "level": 0,
+        "total_messages_sent": 5,
+        "coinflips_won": 0,
+        "coinflips_lost": 0
+      }
+    }
+  }
+}

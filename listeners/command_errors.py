@@ -3,6 +3,8 @@ from discord.ext import commands
 import discord.ui
 import datetime
 import json
+import discord.errors
+
 
 # Open the JSON file and read in the data
 with open('config.json') as json_file:
@@ -11,6 +13,7 @@ with open('config.json') as json_file:
 #json data to run bot
 bot_prefix = data["general"]["bot_prefix"]
 embed_color = int(data["general"]["embed_color"].strip("#"), 16) #convert hex color to hexadecimal format
+bot_logs_channel_id = int(data["text_channel_ids"]["bot_logs"]) 
 
 
 class commend_error(commands.Cog):
@@ -74,6 +77,46 @@ class commend_error(commands.Cog):
             else:                   # if user DOES NOT have an avatar
                 embed.set_footer(text=f"Requested by {ctx.author}")
             await ctx.send(embed=embed)
+        elif isinstance(error, discord.errors.HTTPException) and getattr(error, 'status', None) == 429:
+            now = datetime.datetime.utcnow()
+            retry_after = getattr(error, 'retry_after', 'Unknown')
+            route_info = getattr(error, 'response', None)
+
+            # Prepare log embed
+            embed = discord.Embed(
+                title="⚠ Rate Limit Hit!",
+                description=f"Route: `{str(route_info.url) if route_info else 'Unknown'}`",
+                color=discord.Color.orange()
+            )
+            embed.add_field(name="Retry After", value=str(retry_after))
+            embed.timestamp = now
+
+            # Send to the channel where the command was used
+            try:
+                await ctx.send(embed=embed)
+            except discord.errors.Forbidden:
+                pass  # Ignore if the bot can't send in that channel
+
+            # Send to bot logs channel
+            log_channel = self.client.get_channel(bot_logs_channel_id)
+            if log_channel:
+                try:
+                    await log_channel.send(embed=embed)
+                except discord.errors.Forbidden:
+                    pass
+
+            # Save to file for permanent record
+            log_data = {
+                "time": now.strftime("%Y-%m-%d %H:%M:%S"),
+                "status": 429,
+                "retry_after": retry_after,
+                "route": str(route_info.url) if route_info else "Unknown",
+            }
+            with open("rate_limit_log.json", "a") as f:
+                f.write(json.dumps(log_data) + "\n")
+
+            print(f"[RATE LIMIT] {json.dumps(log_data, indent=2)}")
+
         else:
             print(error) # for other errors so they dont get suppressed
             await ctx.send("An error has occured, please contact the bot dev.")
