@@ -14,27 +14,36 @@ from utils import cache_utils
 
 def parse_event_titles(raw_titles, existing_events=None):
     """
-    Turn a list of strings like "3.18 Frame Your Future" into
-    structured dicts with date, name, and user‐preserved flags.
+    Turn a list of strings like "8-26-2025 Bake Sale" into
+    structured dicts with date, name, and user-preserved flags.
     """
     existing_map = {e["original"]: e for e in (existing_events or [])}
     parsed = []
+
     for idx, tag in enumerate(raw_titles, start=1):
-        parts   = tag.split(" ", 1)
-        date_raw= parts[0]               # e.g. "3.18"
-        name    = parts[1] if len(parts)>1 else ""
-        month, day = date_raw.split(".")
-        date_str = f"{int(month):02d}/{int(day):02d}"
-        old      = existing_map.get(tag, {})
+        parts = tag.split(" ", 1)
+        date_raw = parts[0]                # e.g. "8-26-2025"
+        name = parts[1] if len(parts) > 1 else ""
+
+        # Parse new date format
+        try:
+            month, day, year = map(int, date_raw.split("-"))
+            date_str = f"{month:02d}/{day:02d}/{year}"  # keeps full date MM/DD/YYYY
+        except ValueError:
+            # fallback if the cell is not in expected format
+            date_str = date_raw
+
+        old = existing_map.get(tag, {})
         parsed.append({
-            "id":                  idx,
-            "original":            tag,
-            "date":                date_str,
-            "name":                name,
-            "is_general_meeting":  old.get("is_general_meeting", False),
-            "is_tlp":              old.get("is_tlp", False),
-            "is_sale":             old.get("is_sale", False),
+            "id": idx,
+            "original": tag,
+            "date": date_str,
+            "name": name,
+            "is_general_meeting": old.get("is_general_meeting", False),
+            "is_tlp": old.get("is_tlp", False),
+            "is_sale": old.get("is_sale", False),
         })
+
     return parsed
 
 

@@ -7,7 +7,7 @@ import json
 with open('config.json') as f:
     cfg = json.load(f)
 
-ENABLE = bool(cfg["features"].get("server_stats", 0))
+ENABLE = bool(cfg["features"]["server_stats"]["enable_feature"])
 FAM_ID    = int(cfg["role_ids"]["family_member"])
 LEAD_ID   = int(cfg["role_ids"]["family_lead"])
 CHAN_MEM  = int(cfg["voice_channel_ids"]["member_count"])

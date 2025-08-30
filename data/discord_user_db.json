@@ -6,14 +6,25 @@
         "last_name": "Trinh",
         "birthday": "12/27/2002",
         "psid": "2052873",
-        "timestamp": "2025-08-28T12:59:26.073351",
+        "timestamp": "2025-08-30T11:39:25.271877",
         "in_family": true
       },
+      "discord_profile": {
+        "nickname": "Kevin Trinh \u2714",
+        "roles": [
+          "1377170324302463076",
+          "1377170289695133748",
+          "1377170307147890738"
+        ],
+        "first_time_joined": "2025-05-28T05:49:54.362000+00:00",
+        "last_updated": "2025-08-30T18:14:02.815212",
+        "still_in_server": true
+      },
       "stats": {
-        "exp": 21.25,
-        "coins": 15,
+        "exp": 54.25,
+        "coins": 36,
         "level": 0,
-        "total_messages_sent": 5,
+        "total_messages_sent": 13,
         "coinflips_won": 0,
         "coinflips_lost": 0
       }

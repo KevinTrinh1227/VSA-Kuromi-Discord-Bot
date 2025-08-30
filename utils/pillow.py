@@ -3,7 +3,7 @@ from io import BytesIO
 import requests
 import os
 import pytz
-from datetime import datetime
+from datetime import datetime, date
 
 def center(x, text, font):
     text = str(text)
@@ -162,3 +162,183 @@ def create_welcome_image(member, member_count, family_name):
     background_image.save(output_path)
 
     return output_path
+
+
+
+from PIL import Image, ImageDraw, ImageFont
+from datetime import date
+import os
+
+def generate_fam_weekly_stats_report(
+    start_date: date,
+    end_date: date,
+    output_path: str = "./assets/outputs/weekly_report.png",
+    # Weekly stats
+    weekly_points: int = 0,
+    weekly_contributors: int = 0,
+    total_family_members: int = 0,
+    weekly_pts_per_member: float = 0.0,
+    weekly_points_rank: int = 0,
+    weekly_points_rank_total: int = 0,
+    weekly_contrib_rank: int = 0,
+    weekly_contrib_rank_total: int = 0,
+    weekly_pts_per_member_rank: int = 0,
+    weekly_pts_per_member_rank_total: int = 0,
+    weekly_top5: list[dict] = None,  # [{"abbr": str, "first_name": str, "last_name": str, "points": int}]
+    # Overall stats
+    overall_points: int = 0,
+    overall_members: int = 0,
+    overall_pts_per_member: float = 0.0,
+    overall_points_rank: int = 0,
+    overall_points_rank_total: int = 0,
+    overall_members_rank: int = 0,
+    overall_pts_per_member_rank: int = 0,
+    overall_pts_per_member_rank_total: int = 0,
+    overall_top5: list[dict] = None,  # [{"abbr": str, "first_name": str, "last_name": str, "points": int}]
+) -> str | None:
+    """
+    Generate a weekly family stats report image.
+
+    Returns:
+        str | None: Path of saved image if successful, None otherwise.
+    """
+    try:
+        # --- Load images ---
+        background = Image.open("./assets/backgrounds/810_670.png").convert("RGBA")
+        overlay = Image.open("./assets/overlays/weekly_reports_overlay.png").convert("RGBA")
+        background = background.resize((810, 670))
+        overlay = overlay.resize((810, 670))
+
+        # --- Set overlay opacity to 35% ---
+        alpha = overlay.split()[3]  # get alpha channel
+        alpha = alpha.point(lambda p: int(p * 0.35))  # reduce opacity to 35%
+        overlay.putalpha(alpha)
+
+        # Paste overlay with new opacity
+        background.paste(overlay, (0, 0), overlay)
+
+        draw = ImageDraw.Draw(background)
+        font_path = "./assets/fonts/georgiaref.ttf"
+
+        # --- Font cache helper ---
+        fonts = {}
+        def get_font(size: int) -> ImageFont.FreeTypeFont:
+            if size not in fonts:
+                fonts[size] = ImageFont.truetype(font_path, size)
+            return fonts[size]
+
+        # --- Centered text helper ---
+        def draw_centered_text(text: str, y: int, font_size: int, x_override: int = None):
+            font = get_font(font_size)
+            bbox = draw.textbbox((0, 0), text, font=font)
+            text_w = bbox[2] - bbox[0]
+            x = (background.width - text_w) // 2 if x_override is None else x_override
+            draw.text((x, y), text, font=font, fill="white")
+
+        # --- Format dates ---
+        start_str_short = f"{start_date.month}/{start_date.day}"
+        end_str_short = f"{end_date.month}/{end_date.day}"
+        start_str_long = f"{start_date.month}/{start_date.day}/{start_date.year}"
+        end_str_long = f"{end_date.month}/{end_date.day}/{end_date.year}"
+
+        # --- Title & footer ---
+        draw_centered_text(f"WEEKLY REPORT ({start_str_short} - {end_str_short})", 24, 38)
+        draw_centered_text(f"Weekly family report for week {start_str_long} - {end_str_long}", 589, 18)
+        draw_centered_text("WWW.PROJECTKUROMI.COM", 638, 14)
+
+        # --- Section headers ---
+        draw_centered_text("THIS WEEK", 107, 20)
+        draw_centered_text("OVERALL", 228, 20)
+
+        # --- THIS WEEK STAT LINES ---
+        draw_centered_text(
+            f"Points Earned: {weekly_points:,}     Total Contributors: {weekly_contributors} / {total_family_members}     Pts / Member: {weekly_pts_per_member:.1f}",
+            136, 18
+        )
+        draw_centered_text(
+            f"Points Rank: #{weekly_points_rank} / {weekly_points_rank_total}     Contributor Rank: #{weekly_contrib_rank} / {weekly_contrib_rank_total}     Pts / Member Rank: #{weekly_pts_per_member_rank} / {weekly_pts_per_member_rank_total}",
+            168, 18
+        )
+
+        # --- OVERALL STAT LINES ---
+        draw_centered_text(
+            f"Total Points: {overall_points:,}     Members: {overall_members}     Pts / Member: {overall_pts_per_member:.1f}",
+            257, 18
+        )
+        draw_centered_text(
+            f"Points Rank: #{overall_points_rank} / {overall_points_rank_total}     Members Rank: {overall_members_rank}     Pts / Member Rank: #{overall_pts_per_member_rank} / {overall_pts_per_member_rank_total}",
+            284, 18
+        )
+
+        # --- Subtitles for member lists ---
+        # --- Subtitles for member lists ---
+        left_x_line = background.width // 4
+        right_x_line = (background.width * 3) // 4
+
+        font_sub = ImageFont.truetype(font_path, 16)
+        left_text = "TOP 5 WEEKLY MEMBERS"
+        lw = draw.textbbox((0, 0), left_text, font=font_sub)[2]
+        draw.text((left_x_line - lw // 2, 344), left_text, font=font_sub, fill="white")
+
+        right_text = "TOP 5 OVERALL MEMBERS"
+        rw = draw.textbbox((0, 0), right_text, font=font_sub)[2]
+        draw.text((right_x_line - rw // 2, 344), right_text, font=font_sub, fill="white")
+
+        # --- Top 5 weekly members ---
+        # --- Top 5 weekly members ---
+        if weekly_top5 is None:
+            weekly_top5 = []
+        y_start, y_end = 372, 554
+        y_spacing = (y_end - y_start) // max(len(weekly_top5), 5)
+        font_member = get_font(18)
+        line_width_chars = 53  # fixed line width
+
+        for idx, member in enumerate(weekly_top5[:5]):
+            line_num = f"#{idx+1}."
+            abbr = f"[{'Lead' if member['abbr'] == 'Family Leader' else 'Mem'}]"
+            name = f"{member['first_name']} {member['last_name']}"
+            points = f"{member['points']:,}"
+
+            # Calculate number of spaces needed to reach 53 chars
+            pre_len = len(line_num) + 1 + len(abbr) + 1 + len(name)
+            num_spaces = max(line_width_chars - pre_len - len(points), 0)
+            spaces = " " * num_spaces
+
+            text = f"{line_num} {abbr} {name}{spaces}{points}"
+
+            # Measure text width in pixels for true centering
+            bbox = draw.textbbox((0, 0), text, font=font_member)
+            text_width = bbox[2] - bbox[0]
+
+            draw.text((left_x_line - text_width // 2, y_start + idx * y_spacing), text, font=font_member, fill="white")
+
+        # --- Top 5 overall members ---
+        if overall_top5 is None:
+            overall_top5 = []
+        for idx, member in enumerate(overall_top5[:5]):
+            line_num = f"#{idx+1}."
+            abbr = f"[{'Lead' if member['abbr'] == 'Family Leader' else 'Mem'}]"
+            name = f"{member['first_name']} {member['last_name']}"
+            points = f"{member['points']:,}"
+
+            # Calculate number of spaces needed to reach 53 chars
+            pre_len = len(line_num) + 1 + len(abbr) + 1 + len(name)
+            num_spaces = max(line_width_chars - pre_len - len(points), 0)
+            spaces = " " * num_spaces
+
+            text = f"{line_num} {abbr} {name}{spaces}{points}".strip()
+
+            # Measure text width in pixels for true centering
+            bbox = draw.textbbox((0, 0), text, font=font_member)
+            text_width = bbox[2] - bbox[0]
+
+            draw.text((right_x_line - text_width // 2, y_start + idx * y_spacing), text, font=font_member, fill="white")
+
+        # --- Save image ---
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+        background.save(output_path)
+        return output_path if os.path.exists(output_path) else None
+
+    except Exception as e:
+        print(f"[ERROR] Failed to generate weekly stats report: {e}")
+        return None

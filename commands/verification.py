@@ -6,7 +6,7 @@ from discord.ui import Modal, TextInput, View, Button
 import json
 import os
 import datetime
-from utils.family_utils import is_family_member, get_family_role
+from utils.family_utils import is_family_member, get_family_role, get_total_verified_users
 from utils.users_utils import get_verified_users, save_verified_users, get_unverified_users, save_unverified_users
 
 
@@ -25,6 +25,7 @@ with open(CONFIG_PATH) as f:
 GUILD_ID = int(os.getenv("DISCORD_SERVER_GUILD_ID"))
 VERIF_CHANNEL_ID = int(cfg['text_channel_ids']['verification'])
 FAM_ROLE_ID = int(cfg['role_ids']['family_member'])
+PSUEDO_ROLE_ID = int(cfg['role_ids']['family_pseudo_member'])
 VERIFIED_ROLE_ID = int(cfg['role_ids']['verified_vsa_member'])
 UNVER_ROLE_ID = int(cfg['role_ids']['unverified_vsa_member'])
 TICKET_CHANNEL_ID = int(cfg['text_channel_ids']['tickets_menu'])
@@ -32,6 +33,8 @@ STAFF_ROLE_ID = int(cfg['role_ids']['staff_member'])
 FAMILY_LEAD_ROLE_ID = int(cfg['role_ids']['family_lead'])
 
 FAM_NAME = cfg['general']['family_name']
+
+BOT_LOGS_CHANNEL_ID = int(cfg['text_channel_ids']['bot_logs'])
 
 # Modal for collecting user info
 class VerificationModal(Modal, title='📋 | VSA Member Verification'):
@@ -196,6 +199,22 @@ class VerificationModal(Modal, title='📋 | VSA Member Verification'):
                         # Remove unverified role, add verified role
                         await user.remove_roles(user.guild.get_role(UNVER_ROLE_ID), reason='Verified')
                         await user.add_roles(user.guild.get_role(VERIFIED_ROLE_ID), reason='Verified')
+                        
+                        if in_family:
+                            await user.add_roles(user.guild.get_role(FAM_ROLE_ID), reason='In Family')
+                            fam_role = get_family_role(psid)
+                            if fam_role == "Psuedo (Unofficial Member)":
+                                await user.add_roles(user.guild.get_role(PSUEDO_ROLE_ID), reason='Verified')
+                            elif fam_role == "Member (Official)":
+                                await user.add_roles(user.guild.get_role(FAM_ROLE_ID), reason='Verified')
+                            elif fam_role == "Family Leader":
+                                await user.add_roles(user.guild.get_role(FAMILY_LEAD_ROLE_ID), reason='Verified')
+                            else:
+                                pass
+                        else:
+                            pass
+                        
+                        
 
                         # Build nickname
                         nickname_template = cfg.get("nickname_templates", {})
@@ -254,6 +273,41 @@ class VerificationModal(Modal, title='📋 | VSA Member Verification'):
                         # Send confirmation and close
                         await interaction.response.send_message('✅ You have been verified! All proper roles and permissions have been awarded to you. Use `/help` for command options!', ephemeral=True)
                         self.stop()
+                        
+                        # Create a second embed for the target channel (Bot Logs)
+                        total_verifications = get_total_verified_users()
+                        embed_public = discord.Embed(
+                            title=f"🪪 | New Verified User: {interaction.user} (#{total_verifications + 1})",
+                            description="A discord member has just verified themselves.",
+                            color=discord.Color.green(),
+                            timestamp=datetime.datetime.utcnow()
+                        )
+
+                        # Add fields with user data
+                        embed_public.add_field(name="First Name", value=rec["first_name"], inline=True)
+                        embed_public.add_field(name="Last Name", value=rec["last_name"], inline=True)
+                        embed_public.add_field(name="PSID", value=rec["psid"], inline=True)
+                        embed_public.add_field(name="Birthday", value=rec["birthday"], inline=True)
+                        embed_public.add_field(name="In Family", value="Yes" if rec.get("in_family") else "No", inline=True)
+
+                        fam_role = get_family_role(psid) if rec.get("in_family") else "N/A"
+                        embed_public.add_field(name="Family Role", value=fam_role, inline=True)
+
+                        # Footer and thumbnail (user avatar or guild icon)
+                        if interaction.user.avatar:
+                            embed_public.set_thumbnail(url=interaction.user.avatar.url)
+                        elif interaction.guild.icon:
+                            embed_public.set_thumbnail(url=interaction.guild.icon.url)
+
+                        embed_public.set_footer(
+                            text=f"{interaction.guild.name}",
+                            icon_url=interaction.guild.icon.url if interaction.guild.icon else None
+                        )
+
+                        # Send to bot logs channel
+                        channel = interaction.client.get_channel(BOT_LOGS_CHANNEL_ID)
+                        if channel:
+                            await channel.send(embed=embed_public)
 
                     @discord.ui.button(label="Restart Verification", style=discord.ButtonStyle.gray)
                     async def restart(self, interaction: discord.Interaction, button: Button):
@@ -302,62 +356,28 @@ class VerificationLobby(commands.Cog):
         if not chan:
             return
 
-        TARGET_TITLE = '📋 | VSA Member Verification'
-
-        # Create the new embed in advance for comparison
-        new_description = (
-            f"To gain access to roles, permissions, and general server access including bot access, please verify your account below. Important information is listed below as well, and if you have any issues please contact a staff member or a Fam Lead.\n\n"
-            "**Why Verify?**\n"
-            "Verification helps us confirm that you're a student and lets us automatically assign appropriate roles based on whether you're a"
-            "family member, paid VSA member, unpaid VSA member, non VSA member, or just a UH student, etc.\n\n"
-            "**We only ask for:**\n"
-            "• Your **First** and **Last Name** *(Cause everyone has diff. Discord names)*\n"
-            "• Your **Birthday** *(for birthday shoutouts, etc)*\n"
-            "• Your **PSID/PeopleSoft ID** *(to verify roles and permissions)*\n\n"
-            "**Your info stays private.**\n"
-            "It's only used for role assignment and internal verification."
-            " **Please note:** You **do not** need to be a Family Member or a paid VSA Member to verify — just a student with a valid PSID."
-            "Submitting **false information and or someone's information** may lead to **removal from the server**.\n\n"
-            "**Disclaimer Message: **Verification is highly encouraged for all students and especially **Family Members** or **VSA Members** if you want to get access to the entire server, but it is **not required**. You can still access some channels and commands/permissions etc.\n\n"
-            "**Need Help?**\n"
-            f"If something doesn't work or you're having trouble, please open a <#{TICKET_CHANNEL_ID}> and a <@&{STAFF_ROLE_ID}> will assist you shortly."
-        )
-
-        # Search for existing embed and collect messages to delete 
-        found_embed_msg = None
+        # Search for existing messages to delete
+        found_msg = None
         messages_to_delete = []
 
         async for msg in chan.history(limit=50):
-            if msg.embeds:
-                embed = msg.embeds[0]
-                if embed.title == TARGET_TITLE:
-                    if embed.description == new_description:
-                        found_embed_msg = msg
-                        continue
-                    else:
-                        # Embed exists but outdated → delete it
-                        await msg.delete()
-                else:
-                    messages_to_delete.append(msg)
-            else:
-                messages_to_delete.append(msg)
+            if msg.attachments:
+                if msg.attachments[0].filename == "verification_menu.png":
+                    found_msg = msg
+                    continue
+            messages_to_delete.append(msg)
 
-        # Delete non-embed messages
+        # Delete outdated messages
         if messages_to_delete:
             await chan.delete_messages(messages_to_delete)
 
-        # If no valid embed found, post new one
-        if not found_embed_msg:
-            embed = discord.Embed(
-                title=TARGET_TITLE,
-                description=new_description,
-                color=int(cfg['general']['embed_color'].strip('#'), 16)
-            )
-            embed.timestamp = datetime.datetime.utcnow()
-            embed.set_footer(text=f'©️ {self.bot.guilds[0].name}')
+        # If no valid image found, send new one
+        if not found_msg:
+            file_path = "assets/outputs/verification_menu.png"
             view = self.StartVerificationView()
-            await chan.send(embed=embed, view=view)
+            await chan.send(file=discord.File(file_path), view=view)
             
+
     @commands.hybrid_command(name="verifiedstats", description="Show server stats from verified user data.")
     async def verifiedstats(self, ctx: commands.Context):
         data = get_verified_users
