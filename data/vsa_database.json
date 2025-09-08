@@ -1,5 +1,5 @@
 {
-  "last_updated_and_parsed": "2025-08-30 13:14:04 CDT",
+  "last_updated_and_parsed": "2025-09-08 06:52:22 CDT",
   "family_stats": {
     "Badtz Maru": {
       "family": "Badtz Maru",
@@ -9,21 +9,21 @@
     },
     "Kuromi": {
       "family": "Kuromi",
-      "total_points": 575,
-      "member_count": 6,
-      "avg_points": 95
+      "total_points": 159,
+      "member_count": 1,
+      "avg_points": 159
     },
     "Pompompurin": {
       "family": "Pompompurin",
-      "total_points": 0,
-      "member_count": 1,
-      "avg_points": 0
-    },
-    "Keroppi": {
-      "family": "Keroppi",
       "total_points": 35,
       "member_count": 2,
       "avg_points": 17
+    },
+    "Keroppi": {
+      "family": "Keroppi",
+      "total_points": 162,
+      "member_count": 3,
+      "avg_points": 54
     },
     "Not in a family": {
       "family": "Not in a family",
@@ -77,6 +77,33 @@
         "is_tlp": false,
         "is_sale": false
       }
+    },
+    "9-8-2025 General Meeting": {
+      "date": "09/08/2025",
+      "name": "General Meeting",
+      "event_types": {
+        "is_general_meeting": false,
+        "is_tlp": false,
+        "is_sale": false
+      }
+    },
+    "9-10-2025 Bake Sale": {
+      "date": "09/10/2025",
+      "name": "Bake Sale",
+      "event_types": {
+        "is_general_meeting": false,
+        "is_tlp": false,
+        "is_sale": false
+      }
+    },
+    "9-12-2025 After Social": {
+      "date": "09/12/2025",
+      "name": "After Social",
+      "event_types": {
+        "is_general_meeting": false,
+        "is_tlp": false,
+        "is_sale": false
+      }
     }
   },
   "parsed_members": {
@@ -92,6 +119,9 @@
         35,
         0,
         0,
+        0,
+        0,
+        0,
         0
       ]
     },
@@ -100,14 +130,17 @@
       "first_name": "Mai",
       "last_name": "Vo",
       "role_key": "Officer",
-      "family_name": "Kuromi",
-      "points": 127,
+      "family_name": "",
+      "points": 31,
       "event_points": [
-        35,
         0,
-        67,
         0,
-        25
+        0,
+        0,
+        25,
+        0,
+        6,
+        0
       ]
     },
     "2376371": {
@@ -118,6 +151,9 @@
       "family_name": "Keroppi",
       "points": 0,
       "event_points": [
+        0,
+        0,
+        0,
         0,
         0,
         0,
@@ -137,6 +173,9 @@
         35,
         25,
         35,
+        0,
+        0,
+        0,
         0
       ]
     },
@@ -145,10 +184,13 @@
       "first_name": "Chester",
       "last_name": "Jacot",
       "role_key": "Returning Member",
-      "family_name": "Kuromi",
-      "points": 67,
+      "family_name": "",
+      "points": 0,
       "event_points": [
-        67,
+        0,
+        0,
+        0,
+        0,
         0,
         0,
         0,
@@ -167,6 +209,9 @@
         35,
         0,
         0,
+        0,
+        0,
+        0,
         0
       ]
     },
@@ -182,6 +227,9 @@
         0,
         0,
         0,
+        0,
+        0,
+        0,
         0
       ]
     },
@@ -190,11 +238,14 @@
       "first_name": "James",
       "last_name": "Mai",
       "role_key": "Officer",
-      "family_name": "Kuromi",
+      "family_name": "",
       "points": 60,
       "event_points": [
         35,
         25,
+        0,
+        0,
+        0,
         0,
         0,
         0
@@ -212,6 +263,9 @@
         0,
         25,
         0,
+        0,
+        0,
+        0,
         0
       ]
     },
@@ -227,6 +281,9 @@
         67,
         0,
         0,
+        0,
+        0,
+        0,
         0
       ]
     },
@@ -236,13 +293,16 @@
       "last_name": "Trinh",
       "role_key": "Family Leader",
       "family_name": "Kuromi",
-      "points": 134,
+      "points": 159,
       "event_points": [
         0,
         67,
         0,
         0,
-        67
+        67,
+        0,
+        25,
+        0
       ]
     },
     "2326566": {
@@ -250,14 +310,17 @@
       "first_name": "Jesus",
       "last_name": "Gamez",
       "role_key": "Officer",
-      "family_name": "Kuromi",
-      "points": 60,
+      "family_name": "Pompompurin",
+      "points": 35,
       "event_points": [
-        35,
         0,
         0,
-        25,
-        0
+        0,
+        0,
+        0,
+        30,
+        0,
+        5
       ]
     },
     "2466497": {
@@ -266,12 +329,15 @@
       "last_name": "Adams",
       "role_key": "Officer",
       "family_name": "",
-      "points": 60,
+      "points": 0,
       "event_points": [
         0,
-        35,
         0,
-        25,
+        0,
+        0,
+        0,
+        0,
+        0,
         0
       ]
     }
@@ -280,17 +346,17 @@
     "member_points": [
       "2273090",
       "2052873",
-      "2334253",
-      "2156972",
       "2367352",
       "2263899",
       "2315549",
-      "2326566",
-      "2466497",
       "2275007",
+      "2326566",
+      "2334253",
       "2456929",
       "2376371",
-      "2367375"
+      "2156972",
+      "2367375",
+      "2466497"
     ],
     "families_pts_mem": [
       "Kuromi",

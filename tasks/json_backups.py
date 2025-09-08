@@ -159,32 +159,35 @@ class JSONBackup(commands.Cog):
                     next_save_dt = datetime.utcnow().replace(tzinfo=ZoneInfo("UTC")) + timedelta(minutes=self.time_between_saves)
                     next_save_formatted = next_save_dt.astimezone(ZoneInfo("America/Chicago")).strftime("%-m/%-d/%Y @ %-I:%M %p CST")
 
-                    files_field_value = "\n".join(
-                        [f"- `{f}` (Changes detected 🟢)" for f in changed_files] +
-                        [f"- `{f}` (No changes detected 🔴)" for f in unchanged_files]
-                    )
+
+                    # true means include both, false means only include changed files
+                    INCLUDE_CHANGED_AND_UNCHANGED_FILES = False
+                    if INCLUDE_CHANGED_AND_UNCHANGED_FILES:
+                        files_field_value = "\n".join(
+                            [f"- `{f}` (Changes detected 🟢)" for f in changed_files] +
+                            [f"- `{f}` (No changes detected 🔴)" for f in unchanged_files]
+                        )
+                    else:
+                        files_field_value = "\n".join(
+                            [f"- `{f}` (Changes detected 🟢)" for f in changed_files]
+                        )
 
                     stats_field_value = (
                         f"- Changed: **{len(changed_files)}** / **{total_files}** "
-                        f"({(len(changed_files)/total_files)*100:.0f}%)\n"
-                        f"- Unchanged: **{len(unchanged_files)}** / **{total_files}** "
-                        f"({(len(unchanged_files)/total_files)*100:.0f}%)"
+                        f"({(len(changed_files)/total_files)*100:.0f}%) | Unchanged: **{len(unchanged_files)}** / **{total_files}** ({(len(unchanged_files)/total_files)*100:.0f}%)"
                     )
 
                     feature_field_value = (
-                        f"- Auto-save enabled: {'`On 🟢`' if self.enable_feature else '`Off 🔴`'}\n"
-                        f"- Save Interval: **{self.time_between_saves} min** (Next: {next_save_formatted})\n"
-                        f"- Show git outputs in terminal: `{'True 🟢' if self.show_terminal else 'False 🔴'}`\n"
-                        f"- Log alert in bot logs: `{'True 🟢' if self.log_in_channel else 'False 🔴'}`"
+                        f"Status: {'`On 🟢`' if self.enable_feature else '`Off 🔴`'} | Show in Terminal: `{'True 🟢' if self.show_terminal else 'False 🔴'}` | Log Alerts: `{'True 🟢' if self.log_in_channel else 'False 🔴'}`"
                     )
 
                     embed = discord.Embed(
                         title=f"💾 | All {total_files} JSON Files Backed Up!",
-                        description=f"**{total_files}** Files ({len(changed_files)} Changed / {len(unchanged_files)} Unchanged) were checked.",
-                        color=self.embed_color
+                        description=f"Save Interval: **{self.time_between_saves} min** (Next Save: {next_save_formatted})",
+                        color=discord.Color.green()
                     )
 
-                    embed.add_field(name=f"Files Backed Up ({total_files}):", value=files_field_value or "No files detected.", inline=False)
+                    embed.add_field(name=f"Saved Changed Files ({len(changed_files)}):", value=files_field_value or "No files detected.", inline=False)
                     embed.add_field(name="Data Backup Stats", value=stats_field_value, inline=False)
                     embed.add_field(name="Backup Feature Settings", value=feature_field_value, inline=False)
 

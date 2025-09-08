@@ -26,6 +26,7 @@ member_role_id = int(data["role_ids"]["unverified_vsa_member"])
 welcome_channel_id = int(data["text_channel_ids"]["welcome"])
 pre_embed_color = data["general"]["embed_color"].strip("#")
 logs_channel_id = int(data["text_channel_ids"]["bot_logs"])
+VERIFICATION_CHANNEL_ID = int(data["text_channel_ids"]["verification"])
 
 
 class joinleave(commands.Cog):
@@ -200,7 +201,7 @@ class joinleave(commands.Cog):
                 pass
 
             # Ping & purge in verification channel
-            verif_chan = self.client.get_channel(1377177401540218930)
+            verif_chan = self.client.get_channel(VERIFICATION_CHANNEL_ID)
             if verif_chan:
                 await verif_chan.send(f"{member.mention}")
                 await verif_chan.purge(limit=1)
@@ -249,37 +250,37 @@ class joinleave(commands.Cog):
                         except:
                             pass
 
-                # Build embed
-                embed = discord.Embed(
-                    title="⚠️ | User Rejoined But Not Verified",
-                    description=f"{member.mention} (`{member}`) rejoined the server but is not in verified data.",
-                    colour=discord.Colour.orange(),
-                    timestamp=now_time
-                )
-                embed.add_field(name="First Joined", value=first_join.isoformat(), inline=True)
-                embed.add_field(name="Last Left", value=left_at.isoformat() if left_at else "N/A", inline=True)
-                embed.add_field(name="Rejoined At", value=now_time.isoformat(), inline=True)
-                embed.add_field(name="Time Gone", value=diff_str, inline=False)
+                    # Build embed
+                    embed = discord.Embed(
+                        title="⚠️ | User Rejoined But Not Verified",
+                        description=f"{member.mention} (`{member}`) rejoined the server but is not in verified data.",
+                        colour=discord.Colour.orange(),
+                        timestamp=now_time
+                    )
+                    embed.add_field(name="First Joined", value=first_join.isoformat(), inline=True)
+                    embed.add_field(name="Last Left", value=left_at.isoformat() if left_at else "N/A", inline=True)
+                    embed.add_field(name="Rejoined At", value=now_time.isoformat(), inline=True)
+                    embed.add_field(name="Time Gone", value=diff_str, inline=False)
 
-                logs_channel = self.client.get_channel(logs_channel_id)
-                if logs_channel:
-                    await logs_channel.send(embed=embed)
+                    logs_channel = self.client.get_channel(logs_channel_id)
+                    if logs_channel:
+                        await logs_channel.send(embed=embed)
 
-                # Save or update unverified user entry
-                if user_id_str not in unverified_users:
-                    unverified_users[user_id_str] = {
-                        "discord_profile": {
-                            "discord_name": str(member),
-                            "nickname": member.nick,
-                            "first_time_joined": first_join.isoformat(),
-                            "user_left_timestamp": None
+                    # Save or update unverified user entry
+                    if user_id_str in unverified_users:
+                        unverified_users[user_id_str] = {
+                            "discord_profile": {
+                                "discord_name": str(member),
+                                "nickname": member.nick,
+                                "first_time_joined": first_join.isoformat(),
+                                "user_left_timestamp": None
+                            }
                         }
-                    }
-                else:
-                    # Clear left timestamp now that they're back
-                    unverified_users[user_id_str]["discord_profile"]["user_left_timestamp"] = None
-                    unverified_users[user_id_str]["discord_profile"]["nickname"] = member.nick
-                    unverified_users[user_id_str]["discord_profile"]["discord_name"] = str(member)
+                    else:
+                        # Clear left timestamp now that they're back
+                        unverified_users[user_id_str]["discord_profile"]["user_left_timestamp"] = None
+                        unverified_users[user_id_str]["discord_profile"]["nickname"] = member.nick
+                        unverified_users[user_id_str]["discord_profile"]["discord_name"] = str(member)
 
                 save_unverified_users(unverified_users)
 

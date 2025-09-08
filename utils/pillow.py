@@ -168,6 +168,7 @@ def create_welcome_image(member, member_count, family_name):
 from PIL import Image, ImageDraw, ImageFont
 from datetime import date
 import os
+from PIL import ImageDraw, Image, ImageFilter
 
 def generate_fam_weekly_stats_report(
     start_date: date,
@@ -192,6 +193,7 @@ def generate_fam_weekly_stats_report(
     overall_points_rank: int = 0,
     overall_points_rank_total: int = 0,
     overall_members_rank: int = 0,
+    overall_members_rank_total: int = 0,
     overall_pts_per_member_rank: int = 0,
     overall_pts_per_member_rank_total: int = 0,
     overall_top5: list[dict] = None,  # [{"abbr": str, "first_name": str, "last_name": str, "points": int}]
@@ -209,13 +211,20 @@ def generate_fam_weekly_stats_report(
         background = background.resize((810, 670))
         overlay = overlay.resize((810, 670))
 
+        # --- Add semi-transparent black layer ---
+        # New code
+        background = background.convert("RGBA")
+        #black_layer = Image.new("RGBA", background.size, (0, 0, 0, int(255 * 0.35)))
+        #background = Image.alpha_composite(background, black_layer)
+
+
         # --- Set overlay opacity to 35% ---
         alpha = overlay.split()[3]  # get alpha channel
-        alpha = alpha.point(lambda p: int(p * 0.35))  # reduce opacity to 35%
+        alpha = alpha.point(lambda p: int(p * 0.50))  # reduce overlay opacity to 35%
         overlay.putalpha(alpha)
 
-        # Paste overlay with new opacity
-        background.paste(overlay, (0, 0), overlay)
+        # Paste overlay with new opacity on top of background+black layer
+        background = Image.alpha_composite(background, overlay)
 
         draw = ImageDraw.Draw(background)
         font_path = "./assets/fonts/georgiaref.ttf"
@@ -226,14 +235,71 @@ def generate_fam_weekly_stats_report(
             if size not in fonts:
                 fonts[size] = ImageFont.truetype(font_path, size)
             return fonts[size]
+        
+        
 
         # --- Centered text helper ---
-        def draw_centered_text(text: str, y: int, font_size: int, x_override: int = None):
+        def draw_centered_text(draw, image, text: str, y: int, font_size: int, x_override: int = None,
+                            letter_spacing: int = 0, shadow_color=(0, 0, 0),
+                            shadow_opacity=0, shadow_blur=0, fill=(255, 255, 255),
+                            bold: bool = False):
+            """
+            Draws centered text on the image with optional shadow or bold effect.
+
+            Parameters:
+                draw (ImageDraw.Draw): The PIL draw object to draw on.
+                image (Image.Image): The PIL image object to apply shadow compositing.
+                text (str): The text to draw.
+                y (int): Vertical position.
+                font_size (int): Font size.
+                x_override (int, optional): If provided, use this X position instead of centering.
+                letter_spacing (int, optional): Pixels between letters.
+                shadow_color (tuple, optional): RGB shadow color.
+                shadow_opacity (int, optional): Shadow opacity in percent (0-100).
+                shadow_blur (int, optional): Shadow blur radius.
+                fill (tuple, optional): Text color.
+                bold (bool, optional): If True, applies a simple bold effect by offsetting text.
+            """
             font = get_font(font_size)
-            bbox = draw.textbbox((0, 0), text, font=font)
-            text_w = bbox[2] - bbox[0]
-            x = (background.width - text_w) // 2 if x_override is None else x_override
-            draw.text((x, y), text, font=font, fill="white")
+
+            # Calculate total text width with letter spacing
+            text_width = sum(font.getlength(char) + letter_spacing for char in text) - letter_spacing
+            x = (image.width - text_width) // 2 if x_override is None else x_override
+
+            # --- Draw shadow if requested ---
+            if shadow_opacity > 0:
+                shadow_layer = Image.new("RGBA", image.size, (0, 0, 0, 0))
+                shadow_draw = ImageDraw.Draw(shadow_layer)
+                shadow_alpha = int(shadow_opacity / 100 * 255)
+                shadow_fill = (*shadow_color, shadow_alpha)
+
+                x_offset = 0
+                shadow_distance = 4
+                offsets = [(0,0)]
+                if bold:
+                    offsets += [(1,0),(0,1),(1,1)]  # only add extra offsets if bold
+
+                for char in text:
+                    for dx, dy in offsets:
+                        shadow_draw.text((x + x_offset + shadow_distance + dx, y + shadow_distance + dy),
+                                        char, font=font, fill=shadow_fill)
+                    x_offset += font.getlength(char) + letter_spacing
+
+                shadow_layer = shadow_layer.filter(ImageFilter.GaussianBlur(radius=shadow_blur))
+                image.alpha_composite(shadow_layer)
+
+            # --- Draw main text ---
+            x_offset = 0
+            offsets = [(0,0)]
+            if bold:
+                offsets += [(1,0),(0,1),(1,1)]  # only add offsets if bold
+
+            for char in text:
+                for dx, dy in offsets:
+                    draw.text((x + x_offset + dx, y + dy), char, font=font, fill=fill)
+                x_offset += font.getlength(char) + letter_spacing
+
+
 
         # --- Format dates ---
         start_str_short = f"{start_date.month}/{start_date.day}"
@@ -242,32 +308,41 @@ def generate_fam_weekly_stats_report(
         end_str_long = f"{end_date.month}/{end_date.day}/{end_date.year}"
 
         # --- Title & footer ---
-        draw_centered_text(f"WEEKLY REPORT ({start_str_short} - {end_str_short})", 24, 38)
-        draw_centered_text(f"Weekly family report for week {start_str_long} - {end_str_long}", 589, 18)
-        draw_centered_text("WWW.PROJECTKUROMI.COM", 638, 14)
+        draw_centered_text(draw, background, f"WEEKLY REPORT ({start_str_short} - {end_str_short})", y=30, font_size=38, bold=True,
+                        letter_spacing=2, shadow_color=(255, 255, 255),
+                        shadow_opacity=50, shadow_blur=15, fill=(255, 255, 255))
+
+        draw_centered_text(draw, background, f"Weekly Report ({start_str_long} - {end_str_long})",
+                        y=592, font_size=18, letter_spacing=2,
+                        shadow_opacity=0, shadow_blur=0, fill=(255, 255, 255))
+
+        draw_centered_text(draw, background, "WWW.PROJECTKUROMI.COM", y=642, font_size=13,
+                        letter_spacing=4, shadow_opacity=0, shadow_blur=0, fill=(255, 255, 255))
+
 
         # --- Section headers ---
-        draw_centered_text("THIS WEEK", 107, 20)
-        draw_centered_text("OVERALL", 228, 20)
-
-        # --- THIS WEEK STAT LINES ---
-        draw_centered_text(
+        # New code
+        draw_centered_text(draw, background, "THIS WEEK", y=107, font_size=20, letter_spacing=2)
+        draw_centered_text(draw, background, "OVERALL", y=228, font_size=20, letter_spacing=2)
+        draw_centered_text(draw, background,
             f"Points Earned: {weekly_points:,}     Total Contributors: {weekly_contributors} / {total_family_members}     Pts / Member: {weekly_pts_per_member:.1f}",
-            136, 18
+            y=136, font_size=18, letter_spacing=1
         )
-        draw_centered_text(
+
+        draw_centered_text(draw, background,
             f"Points Rank: #{weekly_points_rank} / {weekly_points_rank_total}     Contributor Rank: #{weekly_contrib_rank} / {weekly_contrib_rank_total}     Pts / Member Rank: #{weekly_pts_per_member_rank} / {weekly_pts_per_member_rank_total}",
-            168, 18
+            y=168, font_size=18, letter_spacing=1
         )
 
         # --- OVERALL STAT LINES ---
-        draw_centered_text(
-            f"Total Points: {overall_points:,}     Members: {overall_members}     Pts / Member: {overall_pts_per_member:.1f}",
-            257, 18
+        draw_centered_text(draw, background,
+            f"Total Points: {overall_points:,}     Total Members: {overall_members}     Pts / Member: {overall_pts_per_member:.1f}",
+            y=257, font_size=18, letter_spacing=1
         )
-        draw_centered_text(
-            f"Points Rank: #{overall_points_rank} / {overall_points_rank_total}     Members Rank: {overall_members_rank}     Pts / Member Rank: #{overall_pts_per_member_rank} / {overall_pts_per_member_rank_total}",
-            284, 18
+
+        draw_centered_text(draw, background,
+            f"Points Rank: #{overall_points_rank} / {overall_points_rank_total}     Member Count Rank: #{overall_members_rank} / {overall_members_rank_total}     Pts / Member Rank: #{overall_pts_per_member_rank} / {overall_pts_per_member_rank_total}",
+            y=284, font_size=18, letter_spacing=1
         )
 
         # --- Subtitles for member lists ---
@@ -275,64 +350,83 @@ def generate_fam_weekly_stats_report(
         left_x_line = background.width // 4
         right_x_line = (background.width * 3) // 4
 
-        font_sub = ImageFont.truetype(font_path, 16)
+        font_sub = get_font(16)
         left_text = "TOP 5 WEEKLY MEMBERS"
         lw = draw.textbbox((0, 0), left_text, font=font_sub)[2]
-        draw.text((left_x_line - lw // 2, 344), left_text, font=font_sub, fill="white")
+        draw.text((left_x_line - lw // 2, 347), left_text, font=font_sub, fill="white")
 
         right_text = "TOP 5 OVERALL MEMBERS"
         rw = draw.textbbox((0, 0), right_text, font=font_sub)[2]
-        draw.text((right_x_line - rw // 2, 344), right_text, font=font_sub, fill="white")
+        draw.text((right_x_line - rw // 2, 347), right_text, font=font_sub, fill="white")
 
         # --- Top 5 weekly members ---
         # --- Top 5 weekly members ---
         if weekly_top5 is None:
             weekly_top5 = []
-        y_start, y_end = 372, 554
-        y_spacing = (y_end - y_start) // max(len(weekly_top5), 5)
+        y_start, y_end = 372 + 7, 554  # shift down first line by 7 pixels
+        y_spacing = (y_end - y_start) // 5
         font_member = get_font(18)
-        line_width_chars = 53  # fixed line width
 
-        for idx, member in enumerate(weekly_top5[:5]):
+        x_left_weekly = 32      # starting x for line_num, abbr, name
+        x_points_weekly = x_left_weekly + 330   # move points 10 pixels to the right
+
+        for idx in range(5):
+            if idx < len(weekly_top5):
+                member = weekly_top5[idx]
+                abbr = f"[{'Lead' if member['abbr'] == 'Family Leader' else 'Mem'}]"
+                name = f"{member['first_name']} {member['last_name']}"
+                points = f"{member['points']:,}"
+            else:
+                abbr = "[N/A]"
+                name = "Empty Fam Slot"
+                points = "-"
+
             line_num = f"#{idx+1}."
-            abbr = f"[{'Lead' if member['abbr'] == 'Family Leader' else 'Mem'}]"
-            name = f"{member['first_name']} {member['last_name']}"
-            points = f"{member['points']:,}"
+            prefix_text = f"{line_num} {abbr} {name}"
+            y_pos = y_start + idx * y_spacing
+            draw.text((x_left_weekly, y_pos), prefix_text, font=font_member, fill="white")
 
-            # Calculate number of spaces needed to reach 53 chars
-            pre_len = len(line_num) + 1 + len(abbr) + 1 + len(name)
-            num_spaces = max(line_width_chars - pre_len - len(points), 0)
-            spaces = " " * num_spaces
+            points_bbox = draw.textbbox((0, 0), points, font=font_member)
+            points_width = points_bbox[2] - points_bbox[0]
+            draw.text((x_points_weekly - points_width, y_pos), points, font=font_member, fill="white")
 
-            text = f"{line_num} {abbr} {name}{spaces}{points}"
-
-            # Measure text width in pixels for true centering
-            bbox = draw.textbbox((0, 0), text, font=font_member)
-            text_width = bbox[2] - bbox[0]
-
-            draw.text((left_x_line - text_width // 2, y_start + idx * y_spacing), text, font=font_member, fill="white")
 
         # --- Top 5 overall members ---
         if overall_top5 is None:
             overall_top5 = []
-        for idx, member in enumerate(overall_top5[:5]):
+        y_start, y_end = 372 + 7, 554  # shift down first line by 7 pixels
+        y_spacing = (y_end - y_start) // 5
+        font_member = get_font(18)
+
+        x_left_overall = 430     # starting x for line_num, abbr, name
+        x_points_overall = x_left_overall + 330   # move points 10 pixels to the right
+
+        for idx in range(5):
+            if idx < len(overall_top5):
+                member = overall_top5[idx]
+                abbr = f"[{'Lead' if member['abbr'] == 'Family Leader' else 'Mem'}]"
+                name = f"{member['first_name']} {member['last_name']}"
+                points = f"{member['points']:,}"
+            else:
+                abbr = "[N/A]"
+                name = "Empty Fam Slot"
+                points = "-"
+
             line_num = f"#{idx+1}."
-            abbr = f"[{'Lead' if member['abbr'] == 'Family Leader' else 'Mem'}]"
-            name = f"{member['first_name']} {member['last_name']}"
-            points = f"{member['points']:,}"
+            prefix_text = f"{line_num} {abbr} {name}"
+            y_pos = y_start + idx * y_spacing
+            draw.text((x_left_overall, y_pos), prefix_text, font=font_member, fill="white")
 
-            # Calculate number of spaces needed to reach 53 chars
-            pre_len = len(line_num) + 1 + len(abbr) + 1 + len(name)
-            num_spaces = max(line_width_chars - pre_len - len(points), 0)
-            spaces = " " * num_spaces
+            points_bbox = draw.textbbox((0, 0), points, font=font_member)
+            points_width = points_bbox[2] - points_bbox[0]
+            draw.text((x_points_overall - points_width, y_pos), points, font=font_member, fill="white")
 
-            text = f"{line_num} {abbr} {name}{spaces}{points}".strip()
+            
+        # Open base image (assuming you have it as `base_img`)
+        overlay = Image.open("./assets/resources/kuromi_logo_with_white_bg.png").convert("RGBA")
+        overlay = overlay.resize((73, 73))
+        background.paste(overlay, (725, 585), overlay)  # use overlay as mask for transparency
 
-            # Measure text width in pixels for true centering
-            bbox = draw.textbbox((0, 0), text, font=font_member)
-            text_width = bbox[2] - bbox[0]
-
-            draw.text((right_x_line - text_width // 2, y_start + idx * y_spacing), text, font=font_member, fill="white")
 
         # --- Save image ---
         os.makedirs(os.path.dirname(output_path), exist_ok=True)

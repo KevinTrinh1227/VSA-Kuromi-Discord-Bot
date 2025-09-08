@@ -17,8 +17,8 @@ class information(commands.Cog):
         # Define the buttons
         view = discord.ui.View()
         view.add_item(discord.ui.Button(label="Website", url="https://www.projectkuromi.com"))
-        view.add_item(discord.ui.Button(label="Photo Gallery", url="https://photos.projectkuromi.com"))
         view.add_item(discord.ui.Button(label="Instagram", url="https://instagram.com/project.kuromi"))
+        view.add_item(discord.ui.Button(label="TikTok", url="https://www.tiktok.com/@project.kuromi"))
 
         # Send the file with buttons
         file = discord.File("./assets/outputs/information.png", filename="information.png")

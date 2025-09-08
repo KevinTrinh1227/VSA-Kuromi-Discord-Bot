@@ -1,5 +1,5 @@
 {
-  "last_updated": "2025-08-30 13:14:04 CDT",
+  "last_updated": "2025-09-08 06:52:22 CDT",
   "family_stats": [
     [
       "Badtz Maru",
@@ -9,21 +9,21 @@
     ],
     [
       "Kuromi",
-      "575",
-      "6",
-      "95"
+      "159",
+      "1",
+      "159"
     ],
     [
       "Pompompurin",
-      "0",
-      "1",
-      "0"
-    ],
-    [
-      "Keroppi",
       "35",
       "2",
       "17"
+    ],
+    [
+      "Keroppi",
+      "162",
+      "3",
+      "54"
     ],
     [
       "Not in a family",
@@ -37,7 +37,10 @@
     "8-26-2025 Phamily Ties",
     "8-27-2025 Bake Sale",
     "8-28-2025 Unity Talent Show",
-    "8-29-2025 Paint the Wind"
+    "8-29-2025 Paint the Wind",
+    "9-8-2025 General Meeting",
+    "9-10-2025 Bake Sale",
+    "9-12-2025 After Social"
   ],
   "all_vsa_member_data": [
     [
@@ -55,13 +58,15 @@
       "Mai",
       "Vo",
       "Officer",
-      "Kuromi",
-      "127",
-      "35",
       "",
-      "67",
+      "31",
       "",
-      "25"
+      "",
+      "",
+      "",
+      "25",
+      "",
+      "6"
     ],
     [
       "2376371",
@@ -88,9 +93,8 @@
       "Chester",
       "Jacot",
       "Returning Member",
-      "Kuromi",
-      "67",
-      "67"
+      "",
+      "0"
     ],
     [
       "2263899",
@@ -115,7 +119,7 @@
       "James",
       "Mai",
       "Officer",
-      "Kuromi",
+      "",
       "60",
       "35",
       "25"
@@ -147,24 +151,30 @@
       "Trinh",
       "Family Leader",
       "Kuromi",
-      "134",
+      "159",
       "",
       "67",
       "",
       "",
-      "67"
+      "67",
+      "",
+      "25"
     ],
     [
       "2326566",
       "Jesus",
       "Gamez",
       "Officer",
-      "Kuromi",
-      "60",
+      "Pompompurin",
       "35",
       "",
       "",
-      "25"
+      "",
+      "",
+      "",
+      "30",
+      "",
+      "5"
     ],
     [
       "2466497",
@@ -172,11 +182,7 @@
       "Adams",
       "Officer",
       "",
-      "60",
-      "",
-      "35",
-      "",
-      "25"
+      "0"
     ]
   ]
 }

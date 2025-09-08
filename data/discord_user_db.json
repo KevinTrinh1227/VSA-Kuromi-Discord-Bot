@@ -6,8 +6,16 @@
         "last_name": "Trinh",
         "birthday": "12/27/2002",
         "psid": "2052873",
-        "timestamp": "2025-08-30T11:39:25.271877",
+        "timestamp": "2025-08-28T12:59:26.073351",
         "in_family": true
+      },
+      "stats": {
+        "exp": 58.5,
+        "coins": 118,
+        "level": 1,
+        "total_messages_sent": 44,
+        "coinflips_won": 0,
+        "coinflips_lost": 0
       },
       "discord_profile": {
         "nickname": "Kevin Trinh \u2714",
@@ -17,16 +25,196 @@
           "1377170307147890738"
         ],
         "first_time_joined": "2025-05-28T05:49:54.362000+00:00",
-        "last_updated": "2025-08-30T18:14:02.815212",
+        "last_updated": "2025-09-08T08:30:31.836968",
         "still_in_server": true
+      }
+    },
+    "326775802207404032": {
+      "general": {
+        "first_name": "Hermez",
+        "last_name": "Tejeda",
+        "birthday": "05/01/2006",
+        "psid": "2374990",
+        "timestamp": "2025-08-29T22:50:20.010034",
+        "in_family": true
       },
-      "stats": {
-        "exp": 54.25,
-        "coins": 36,
-        "level": 0,
-        "total_messages_sent": 13,
-        "coinflips_won": 0,
-        "coinflips_lost": 0
+      "discord_profile": {
+        "nickname": "Hermez Tejeda \u2714",
+        "roles": [
+          "1404050511287554139",
+          "1377175220569509960",
+          "1377175729283928104",
+          "1377173586728452128",
+          "1377173764760014951",
+          "1377173642848243784",
+          "1377170324302463076",
+          "1377170289695133748"
+        ],
+        "first_time_joined": "2025-08-26T22:09:19.793000+00:00",
+        "last_updated": "2025-09-08T08:30:31.836968",
+        "still_in_server": true
+      }
+    },
+    "503321762638069791": {
+      "general": {
+        "first_name": "Melissa",
+        "last_name": "Adams",
+        "birthday": "09/18/2006",
+        "psid": "2366497",
+        "timestamp": "2025-09-02T21:54:50.245145",
+        "in_family": false
+      },
+      "discord_profile": {
+        "discord_name": "christicq",
+        "nickname": "Melissa Adams \u2714",
+        "first_time_joined": "2025-09-02T21:54:19.391000+00:00",
+        "user_left_timestamp": null,
+        "roles": [
+          "1377170324302463076"
+        ],
+        "last_updated": "2025-09-08T08:30:31.836968",
+        "still_in_server": true
+      }
+    },
+    "439632714212179990": {
+      "general": {
+        "first_name": "Lylian",
+        "last_name": "Mai",
+        "birthday": "12/25/2004",
+        "psid": "2227056",
+        "timestamp": "2025-09-03T19:45:28.126108",
+        "in_family": false
+      },
+      "discord_profile": {
+        "nickname": "Lylian Mai \u2714",
+        "roles": [
+          "1411316609502548128",
+          "1411315778413658123",
+          "1411315293250125854",
+          "1411314852932092046",
+          "1377170324302463076"
+        ],
+        "first_time_joined": "2025-09-03T19:44:51.671000+00:00",
+        "last_updated": "2025-09-08T08:30:31.836968",
+        "still_in_server": true
+      }
+    },
+    "585693676727173169": {
+      "general": {
+        "first_name": "Sam",
+        "last_name": "Bustos",
+        "birthday": "08/05/2005",
+        "psid": "2277139",
+        "timestamp": "2025-09-03T21:09:46.689292",
+        "in_family": false
+      },
+      "discord_profile": {
+        "nickname": "Sam Bustos \u2714",
+        "roles": [
+          "1377170324302463076"
+        ],
+        "first_time_joined": "2025-09-03T21:09:12.111000+00:00",
+        "last_updated": "2025-09-08T08:30:31.836968",
+        "still_in_server": true
+      }
+    },
+    "734158506432921600": {
+      "general": {
+        "first_name": "Brendan",
+        "last_name": "Chen",
+        "birthday": "08/24/2005",
+        "psid": "2335658",
+        "timestamp": "2025-09-03T22:11:58.716264",
+        "in_family": false
+      },
+      "discord_profile": {
+        "nickname": "Brendan Chen \u2714",
+        "roles": [
+          "1411316609502548128",
+          "1411315778413658123",
+          "1411315293250125854",
+          "1411314852932092046",
+          "1377175729283928104",
+          "1377173586728452128",
+          "1377173764760014951",
+          "1377170324302463076"
+        ],
+        "first_time_joined": "2025-08-27T21:23:43.366000+00:00",
+        "last_updated": "2025-09-08T08:30:31.836968",
+        "still_in_server": true
+      }
+    },
+    "439461068730007563": {
+      "general": {
+        "first_name": "June",
+        "last_name": "Nguyen",
+        "birthday": "09/01/2003",
+        "psid": "2257675",
+        "timestamp": "2025-09-04T06:20:45.324313",
+        "in_family": false
+      },
+      "discord_profile": {
+        "discord_name": "whypengu",
+        "nickname": "June Nguyen \u2714",
+        "first_time_joined": "2025-09-02T18:44:30.672000+00:00",
+        "user_left_timestamp": null,
+        "roles": [
+          "1377170324302463076"
+        ],
+        "last_updated": "2025-09-08T08:30:31.836968",
+        "still_in_server": true
+      }
+    },
+    "341396832716324866": {
+      "general": {
+        "first_name": "Kathryn",
+        "last_name": "Tran",
+        "birthday": "02/21/2005",
+        "psid": "2271359",
+        "timestamp": "2025-09-04T06:49:21.436190",
+        "in_family": false
+      },
+      "discord_profile": {
+        "nickname": "Kathryn Tran \u2714",
+        "roles": [
+          "1411316428270731316",
+          "1411315770423640156",
+          "1411315293250125854",
+          "1411314852932092046",
+          "1377170324302463076"
+        ],
+        "first_time_joined": "2025-09-04T06:46:19.247000+00:00",
+        "last_updated": "2025-09-08T08:30:31.836968",
+        "still_in_server": true
+      }
+    },
+    "314377023684608000": {
+      "general": {
+        "first_name": "Jonathan",
+        "last_name": "Nguyen",
+        "birthday": "02/16/2004",
+        "psid": "2170547",
+        "timestamp": "2025-09-08T03:55:15.933887",
+        "in_family": false
+      },
+      "discord_profile": {
+        "nickname": "Jonathan Nguyen \u2714",
+        "roles": [
+          "1377170324302463076"
+        ],
+        "first_time_joined": "2025-09-08T03:54:19.482000+00:00",
+        "last_updated": "2025-09-08T08:30:31.836968",
+        "still_in_server": true
+      }
+    }
+  },
+  "unverified_users": {
+    "725807025967071372": {
+      "discord_profile": {
+        "discord_name": "kevn111a",
+        "nickname": null,
+        "first_time_joined": "2025-08-28T14:38:27.140740+00:00",
+        "user_left_timestamp": null
       }
     }
   }

@@ -6,6 +6,7 @@ with open("config.json") as f:
 
 # Global variable for easy filename change
 FAMILY_MEMBERS_JSON = cfg['file_paths']["vsa_family_db"]
+ALL_VERIFIED_DISCORD_MEMBERS_JSON = cfg['file_paths']['all_discord_user_member_database_json_path']
 
 def load_family_data() -> dict:
     """
@@ -47,10 +48,24 @@ def get_total_verified_users() -> int:
     Loads the verified users JSON and returns the total number of verified users.
     """
     try:
-        with open(FAMILY_MEMBERS_JSON, "r") as f:
+        with open(ALL_VERIFIED_DISCORD_MEMBERS_JSON, "r") as f:
             data = json.load(f)
         verified_users = data.get("verified_users", {})
         return len(verified_users)
     except Exception as e:
         print(f"Error reading verified users: {e}")
+        return 0
+
+
+def get_total_unverified_users() -> int:
+    """
+    Loads the verified users JSON and returns the total number of unverified users.
+    """
+    try:
+        with open(ALL_VERIFIED_DISCORD_MEMBERS_JSON, "r") as f:
+            data = json.load(f)
+        unverified_users = data.get("unverified_users", {})
+        return len(unverified_users)
+    except Exception as e:
+        print(f"Error reading unverified users: {e}")
         return 0

@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 import os
 
 from utils.pillow import generate_fam_weekly_stats_report  # <-- import your function
+from utils.stats_utils import *
 
 CONFIG_PATH = "config.json"
 
@@ -39,6 +40,10 @@ class FamilyStats(commands.Cog):
             self.vsa_db = {"parsed_members": {}, "family_stats": {}, "events_info": {}, "leaderboards": {}}
 
     async def send_weekly_report(self, start_date: datetime, end_date: datetime):
+        # Format the dates as MM/DD/YYYY
+        formatted_start_date = start_date.strftime("%m/%d/%Y")
+        formatted_end_date = end_date.strftime("%m/%d/%Y")
+        
         """Generate and send the weekly report image."""
         channel_id = int(self.config["text_channel_ids"]["family_stat_reports"])
         channel = self.bot.get_channel(channel_id)
@@ -125,6 +130,7 @@ class FamilyStats(commands.Cog):
         overall_pts_per_member = total_overall_points / total_overall_members if total_overall_members else 0
 
         # Generate report image
+        total_families_plus_not_in_fam = len(get_full_family_leaderboard())
         output_path = "./assets/outputs/weekly_fam_report.png"
         img_path = generate_fam_weekly_stats_report(
             start_date=start_date.date(),
@@ -132,16 +138,55 @@ class FamilyStats(commands.Cog):
             output_path=output_path,
             # Weekly stats
             weekly_points=total_weekly_points,
-            weekly_contributors=total_family_members,
+            weekly_contributors=len(get_family_contributors_in_timeframe(formatted_start_date, formatted_end_date)),
             total_family_members=total_family_members,
             weekly_pts_per_member=weekly_pts_per_member,
             weekly_top5=weekly_top5,
+
+            weekly_points_rank=next(
+                (i + 1 for i, (fam, _) in enumerate(get_family_points_rank_in_timeframe(formatted_start_date, formatted_end_date))
+                if fam == config["general"]["google_sheets_fam_name"]),
+                None
+            ),
+
+            weekly_points_rank_total=total_families_plus_not_in_fam,
+
+            weekly_contrib_rank=next(
+                (i + 1 for i, (fam, _) in enumerate(get_family_contributor_rank_in_timeframe(formatted_start_date, formatted_end_date))
+                if fam == config["general"]["google_sheets_fam_name"]),
+                None
+            ),
+
+            weekly_contrib_rank_total=total_families_plus_not_in_fam,
+
+            weekly_pts_per_member_rank=next(
+                (i + 1 for i, (fam, _) in enumerate(get_family_pts_per_member_rank_in_timeframe(formatted_start_date, formatted_end_date))
+                if fam == config["general"]["google_sheets_fam_name"]),
+                None
+            ),
+
+            weekly_pts_per_member_rank_total=total_families_plus_not_in_fam,
+
             # Overall stats
             overall_points=total_overall_points,
             overall_members=total_overall_members,
             overall_pts_per_member=overall_pts_per_member,
             overall_top5=overall_top5,
+
+            overall_points_rank=get_my_family_overall_rank(),
+            overall_points_rank_total=total_families_plus_not_in_fam,
+
+            overall_members_rank=get_family_size_rank(),
+            overall_members_rank_total=total_families_plus_not_in_fam,
+
+            overall_pts_per_member_rank = next(
+                (i + 1 for i, f in enumerate(get_family_pts_per_member_ranking()) 
+                if f["family"] == config["general"]["google_sheets_fam_name"]),
+                None),
+
+            overall_pts_per_member_rank_total=total_families_plus_not_in_fam
         )
+
 
         if img_path and os.path.exists(img_path):
             await channel.send(file=discord.File(img_path))
@@ -161,7 +206,7 @@ class FamilyStats(commands.Cog):
         ).time()
         week_day_name = now.strftime("%A")
 
-        test_mode = True
+        test_mode = False
         if (
             week_day_name == weekly_cfg.get("day_to_send")
             and now.time().hour == report_time.hour

@@ -2,6 +2,12 @@ import discord
 import json
 import os
 
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+SERVER_GUILD_ID = int(os.getenv("DISCORD_SERVER_GUILD_ID"))
+
 # ─── Load config safely ───────────────────────────────────────────
 try:
     with open("config.json", "r") as f:
@@ -41,19 +47,36 @@ async def rename_user(member: discord.Member, user_id_str: str, points: int, fir
     except Exception as e:
         print(f"[Rename] Unexpected error in rename_user for {user_id_str}: {e}")
 
-async def assign_roles(member: discord.Member, role_ids):
+async def assign_roles(member: discord.Member, role_ids, ignore_ids=None):
     """
-    Assign each role in role_ids to the member, ignoring any missing roles
-    or permission errors.
+    Assign each role in role_ids to the member, ignoring any missing roles,
+    permission errors, or if the member is in the ignore list.
     """
-    guild = member.guild  # we can always get guild from member
+    if ignore_ids is None:
+        ignore_ids = []
+
+    # Skip if member is in ignore list
+    if str(member.id) in ignore_ids:
+        print(f"[Roles] Skipping role assignment for ignored member {member.id}.")
+        return
+
+    # Ensure we're only working with the configured guild
+    guild = member.guild
+    if guild.id != SERVER_GUILD_ID:
+        guild = member._state._get_guild(SERVER_GUILD_ID)
+
+    if guild is None:
+        print(f"[Roles] Guild {SERVER_GUILD_ID} not found in bot cache.")
+        return
+
+    # Assign roles
     for role_id in role_ids:
         try:
-            role = discord.utils.get(guild.roles, id=role_id)
+            role = guild.get_role(int(role_id))
             if role:
                 await member.add_roles(role, reason="Verified VSA Member")
             else:
-                print(f"[Roles] Role ID {role_id} not found in guild {guild.id}.")
+                print(f"[Roles] Role ID {role_id} not found in guild {guild.id}. For member: {member.name}")
         except discord.Forbidden:
             print(f"[Roles] Permission denied adding role {role_id} to {member.id}.")
         except discord.HTTPException as http_err:

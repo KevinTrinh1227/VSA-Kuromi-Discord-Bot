@@ -57,7 +57,7 @@ class SelfRolesView(discord.ui.View):
         embed_color = int(self.cfg["general"]["embed_color"].strip("#"), 16)
         emoji = "🟢" if action == "claimed" else "🔴"
         verb = "claimed" if action == "claimed" else "unclaimed"
-        role_label = f"{role.mention} - (`{role.id}`)"
+        role_label = f"{role.mention} (`{role.id}`)"
         updated_roles = [r for r in interaction.user.roles if r.name != "@everyone"]
         roles_list = ", ".join(r.mention for r in updated_roles) or "None"
 
@@ -87,12 +87,12 @@ class SelfRolesView(discord.ui.View):
             embed = discord.Embed(
                 title=f"{emoji} | {interaction.user.name} {verb} a role from roles menu!",
                 description=(
-                    f"**User:** {interaction.user.mention} - (`{interaction.user.id}`)\n"
-                    f"**{action} Role:** {role_label}\n"
-                    f"**Current Roles ({len(updated_roles)}):** {roles_list}"
+                    f"**User:** {interaction.user.mention} (`{interaction.user.id}`)\n"
+                    f"**Role:** {role_label}\n"
+                    # f"**Current Roles ({len(updated_roles)}):** {roles_list}"
                 ),
-                color=embed_color,
-                timestamp=datetime.utcnow()
+                color=discord.Color.green() if action == "Claimed" else discord.Color.red(),
+                #timestamp=datetime.utcnow()
             )
             embed.set_footer(text=f"{dm_user_role_log_status}")
 

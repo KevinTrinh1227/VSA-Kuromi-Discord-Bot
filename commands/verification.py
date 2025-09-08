@@ -8,6 +8,7 @@ import os
 import datetime
 from utils.family_utils import is_family_member, get_family_role, get_total_verified_users
 from utils.users_utils import get_verified_users, save_verified_users, get_unverified_users, save_unverified_users
+from utils.stats_utils import is_vsa_officer
 
 
 from dotenv import load_dotenv
@@ -25,6 +26,7 @@ with open(CONFIG_PATH) as f:
 GUILD_ID = int(os.getenv("DISCORD_SERVER_GUILD_ID"))
 VERIF_CHANNEL_ID = int(cfg['text_channel_ids']['verification'])
 FAM_ROLE_ID = int(cfg['role_ids']['family_member'])
+VSA_OFFICER_ROLE_ID = int(cfg['role_ids']['vsa_officer_chair_member'])
 PSUEDO_ROLE_ID = int(cfg['role_ids']['family_pseudo_member'])
 VERIFIED_ROLE_ID = int(cfg['role_ids']['verified_vsa_member'])
 UNVER_ROLE_ID = int(cfg['role_ids']['unverified_vsa_member'])
@@ -190,6 +192,52 @@ class VerificationModal(Modal, title='📋 | VSA Member Verification'):
                 class ConfirmView(View):
                     def __init__(self):
                         super().__init__(timeout=120)
+                        
+                    async def verify_member(user, psid: int, in_family: bool):
+                        guild = user.guild
+                        roles_to_add = []
+                        roles_to_remove = []
+
+                        # Always remove unverified role, add verified role
+                        unverified_role = guild.get_role(UNVER_ROLE_ID)
+                        verified_role = guild.get_role(VERIFIED_ROLE_ID)
+
+                        if unverified_role:
+                            roles_to_remove.append(unverified_role)
+                        if verified_role:
+                            roles_to_add.append(verified_role)
+
+                        # Family roles
+                        if in_family:
+                            fam_role = get_family_role(psid)
+
+                            if fam_role == "Psuedo (Unofficial Member)":
+                                pseudo_role = guild.get_role(PSUEDO_ROLE_ID)
+                                if pseudo_role:
+                                    roles_to_add.append(pseudo_role)
+
+                            elif fam_role == "Member (Official)":
+                                fam_member_role = guild.get_role(FAM_ROLE_ID)
+                                if fam_member_role:
+                                    roles_to_add.append(fam_member_role)
+
+                            elif fam_role == "Family Leader":
+                                leader_role = guild.get_role(FAMILY_LEAD_ROLE_ID)
+                                if leader_role:
+                                    roles_to_add.append(leader_role)
+
+                        # Officer check
+                        if is_vsa_officer(psid):
+                            officer_role = guild.get_role(VSA_OFFICER_ROLE_ID)
+                            if officer_role:
+                                roles_to_add.append(officer_role)
+
+                        # Apply role changes in bulk
+                        if roles_to_remove:
+                            await user.remove_roles(*roles_to_remove, reason="Verification update")
+                        if roles_to_add:
+                            await user.add_roles(*roles_to_add, reason="Verification update")
+
 
                     @discord.ui.button(label="Confirm & Verify", style=discord.ButtonStyle.green)
                     async def confirm(self, interaction: discord.Interaction, button: Button):
@@ -197,23 +245,7 @@ class VerificationModal(Modal, title='📋 | VSA Member Verification'):
                         user = interaction.user
 
                         # Remove unverified role, add verified role
-                        await user.remove_roles(user.guild.get_role(UNVER_ROLE_ID), reason='Verified')
-                        await user.add_roles(user.guild.get_role(VERIFIED_ROLE_ID), reason='Verified')
-                        
-                        if in_family:
-                            await user.add_roles(user.guild.get_role(FAM_ROLE_ID), reason='In Family')
-                            fam_role = get_family_role(psid)
-                            if fam_role == "Psuedo (Unofficial Member)":
-                                await user.add_roles(user.guild.get_role(PSUEDO_ROLE_ID), reason='Verified')
-                            elif fam_role == "Member (Official)":
-                                await user.add_roles(user.guild.get_role(FAM_ROLE_ID), reason='Verified')
-                            elif fam_role == "Family Leader":
-                                await user.add_roles(user.guild.get_role(FAMILY_LEAD_ROLE_ID), reason='Verified')
-                            else:
-                                pass
-                        else:
-                            pass
-                        
+                        await self.verify_member(user, psid, in_family)
                         
 
                         # Build nickname
