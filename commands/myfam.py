@@ -120,14 +120,40 @@ class FamilyMembers(commands.Cog):
 
 
         elif action.value == "list":
-            all_members = {**self.db['fam_leads'], **self.db['fam_members'], **self.db['fam_psuedos']}
-            if not all_members:
+            fam_leads = self.db.get('fam_leads', {})
+            fam_members = self.db.get('fam_members', {})
+            fam_psuedos = self.db.get('fam_psuedos', {})
+
+            total_leads = len(fam_leads)
+            total_members = len(fam_members)
+            total_psuedos = len(fam_psuedos)
+            total_all = total_leads + total_members + total_psuedos
+
+            if total_all == 0:
                 await interaction.response.send_message("No members found.", ephemeral=True)
                 return
 
-            member_list = [f"{idx}. {name['first_name']} {name['last_name']} (PSID: {psid})"
-                           for idx, (psid, name) in enumerate(all_members.items())]
-            await interaction.response.send_message("\n".join(member_list), ephemeral=True)
+            msg_lines = []
+
+            # Family Leads
+            msg_lines.append(f"**Family Leads ({total_leads})**")
+            for idx, (psid, member) in enumerate(fam_leads.items(), start=1):
+                msg_lines.append(f"{idx}. {member['first_name']} {member['last_name']} `PSID: {psid}`")
+
+            # Family Members
+            msg_lines.append(f"\n**Family Members ({total_members})**")
+            for idx, (psid, member) in enumerate(fam_members.items(), start=1):
+                msg_lines.append(f"{idx}. {member['first_name']} {member['last_name']} `PSID: {psid}`")
+
+            # Psuedo Members
+            msg_lines.append(f"\n**Psuedo Members ({total_psuedos})**")
+            for idx, (psid, member) in enumerate(fam_psuedos.items(), start=1):
+                msg_lines.append(f"{idx}. {member['first_name']} {member['last_name']} `PSID: {psid}`")
+                
+            msg_lines.append(f"\nTotal Members ({total_all})")
+
+            await interaction.response.send_message("\n".join(msg_lines), ephemeral=True)
+
 
 
 async def setup(bot):

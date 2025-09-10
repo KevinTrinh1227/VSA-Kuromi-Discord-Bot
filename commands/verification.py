@@ -43,6 +43,7 @@ class VerificationModal(Modal, title='📋 | VSA Member Verification'):
     first_name = TextInput(label='First Name', placeholder='First name', required=True, max_length=30)
     last_name  = TextInput(label='Last Name', placeholder='Last name', required=True, max_length=30)
     birthday   = TextInput(label='Birthday (MM/DD/YYYY)', placeholder='MM/DD/YYYY', required=True, max_length=10)
+    instagram  = TextInput(label='Instagram Username (Optional)', placeholder='Instagram Username', required=False, max_length=24)
     psid       = TextInput(label='PeopleSoft ID (PSID)', placeholder='12345678', required=True, max_length=20)
 
     async def on_submit(self, interaction: discord.Interaction):
@@ -53,7 +54,7 @@ class VerificationModal(Modal, title='📋 | VSA Member Verification'):
         raw_last  = self.last_name.value.strip()
         first_name = raw_first.capitalize()
         last_name  = raw_last.capitalize()
-
+        instagram = self.instagram.value.strip()
         birthday_raw = self.birthday.value.strip()
         psid = self.psid.value.strip()
 
@@ -120,6 +121,7 @@ class VerificationModal(Modal, title='📋 | VSA Member Verification'):
             "birthday": birthdate_formatted_str,
             "psid": psid,
             "age": age,
+            "instagram": instagram,
             "timestamp": datetime.datetime.utcnow().isoformat()
         }
         interaction.client._verification_data = data
@@ -169,6 +171,11 @@ class VerificationModal(Modal, title='📋 | VSA Member Verification'):
                 data = interaction.client._verification_data
                 data['in_family'] = in_family
                 fam_status = 'Yes (Successfully Validated)' if in_family else 'No'
+                
+                if data['instagram']:
+                    instagram_handle = f"[@{data['instagram']}](https://www.instagram.com/{data['instagram']}/)"
+                else:
+                    instagram_handle = "N/A"
 
                 # Confirmation embed
                 confirm = discord.Embed(
@@ -180,6 +187,7 @@ class VerificationModal(Modal, title='📋 | VSA Member Verification'):
                         f"**Full Name:** {data['first_name']} {data['last_name']}\n"
                         f"**DOB:** {data['birthday']} (Only month & day will be visible)\n"
                         f"**PSID:** `{data['psid']}`\n"
+                        f"**Instagram:** {instagram_handle} (Optional)\n"
                         f"**In {FAM_NAME} Fam?** {fam_status}\n"
                         f"**Family Role:** {get_family_role(psid)}\n\n"
                         'If it is **100% correct**, click **Confirm & Verify** below. Otherwise click **Restart Verification** to begin again or **Cancel** to abort.'
@@ -193,7 +201,7 @@ class VerificationModal(Modal, title='📋 | VSA Member Verification'):
                     def __init__(self):
                         super().__init__(timeout=120)
                         
-                    async def verify_member(user, psid: int, in_family: bool):
+                    async def verify_member(self, user, psid: int, in_family: bool):
                         guild = user.guild
                         roles_to_add = []
                         roles_to_remove = []
@@ -270,9 +278,6 @@ class VerificationModal(Modal, title='📋 | VSA Member Verification'):
                         except discord.Forbidden:
                             pass
 
-                        if rec.get('in_family'):
-                            await user.add_roles(user.guild.get_role(FAM_ROLE_ID), reason='Family Member')
-
                         # Save record
                         verifs = get_verified_users()
                         formatted_birthday = datetime.datetime.strptime(
@@ -283,6 +288,7 @@ class VerificationModal(Modal, title='📋 | VSA Member Verification'):
                                 "first_name": rec["first_name"],
                                 "last_name": rec["last_name"],
                                 "birthday": formatted_birthday,
+                                "instagram": rec["instagram"],
                                 "psid": rec["psid"],
                                 "timestamp": rec["timestamp"],
                                 "in_family": rec["in_family"]
@@ -316,8 +322,8 @@ class VerificationModal(Modal, title='📋 | VSA Member Verification'):
                         )
 
                         # Add fields with user data
-                        embed_public.add_field(name="First Name", value=rec["first_name"], inline=True)
-                        embed_public.add_field(name="Last Name", value=rec["last_name"], inline=True)
+                        embed_public.add_field(name="Full Name", value=f"{rec["first_name"]} {rec["last_name"]}", inline=True)
+                        embed_public.add_field(name="Instagram", value=rec["instagram"], inline=True)
                         embed_public.add_field(name="PSID", value=rec["psid"], inline=True)
                         embed_public.add_field(name="Birthday", value=rec["birthday"], inline=True)
                         embed_public.add_field(name="In Family", value="Yes" if rec.get("in_family") else "No", inline=True)
