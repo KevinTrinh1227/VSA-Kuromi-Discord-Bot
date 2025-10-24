@@ -8,9 +8,11 @@ google_service.json
 # ignore everything in data/
 data/*
 assets/*
+secrets/*
 # keep the placeholder so the folder stays in the repo
 !data/.gitkeep
 !assets/.gitkeep
+!secrets/.gitkeep
 
 # Ignore PNG/TTF anywhere under assets/
 assets/**/*.png
