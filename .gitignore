@@ -5,6 +5,12 @@ __pycache__/
 # Google api keys / tokens
 google_service.json
 
+# ignore everything in data/
+data/*
+# keep the placeholder so the folder stays in the repo
+!data/.gitkeep
+
+
 
 # Environment Variables
 .env
