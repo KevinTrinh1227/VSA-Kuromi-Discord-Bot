@@ -2,6 +2,10 @@
 __pycache__/
 *.py[cod]
 
+# Google api keys / tokens
+google_service.json
+
+
 # Environment Variables
 .env
 
