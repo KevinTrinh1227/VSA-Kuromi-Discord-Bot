@@ -1,4 +1,4 @@
-# server_stats.py
+# server_stats_task.py
 import discord
 from discord.ext import tasks, commands
 import json
@@ -10,7 +10,7 @@ import asyncio
 # Logging
 # ─────────────────────────────────────────────────────────────────────────────
 log = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO, format="[%(asctime)s] [server_stats] %(message)s")
+logging.basicConfig(level=logging.INFO, format="[%(asctime)s] %(message)s")
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Config
@@ -55,7 +55,7 @@ def save_cache(data: dict) -> None:
 # ─────────────────────────────────────────────────────────────────────────────
 # Cog
 # ─────────────────────────────────────────────────────────────────────────────
-class ServerStats(commands.Cog):
+class ServerStatsTask(commands.Cog, name="ServerStatsTask"):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
@@ -161,15 +161,14 @@ class ServerStats(commands.Cog):
     @update_loop.before_loop
     async def before_update_loop(self):
         await self.bot.wait_until_ready()
-        log.info("ServerStats loop started.")
+        log.info("ServerStatsTask loop started.")
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Extension setup (dev-friendly: remove if already loaded)
 # ─────────────────────────────────────────────────────────────────────────────
 async def setup(bot: commands.Bot):
-    # If reloading during dev, remove the old cog instance to avoid
-    # "Cog named 'ServerStats' already loaded".
-    existing = bot.get_cog("ServerStats")
+    # Avoid duplicate-cog error on reloads
+    existing = bot.get_cog("ServerStatsTask")
     if existing:
-        bot.remove_cog("ServerStats")
-    await bot.add_cog(ServerStats(bot))
+        bot.remove_cog("ServerStatsTask")
+    await bot.add_cog(ServerStatsTask(bot))

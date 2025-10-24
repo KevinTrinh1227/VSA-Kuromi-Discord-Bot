@@ -7,6 +7,39 @@ with open("config.json") as f:
 # Global variable for easy filename change
 FAMILY_MEMBERS_JSON = cfg['file_paths']["vsa_family_db"]
 ALL_VERIFIED_DISCORD_MEMBERS_JSON = cfg['file_paths']['all_discord_user_member_database_json_path']
+ALL_INSTAGRAM_USERS_IN_GROUPCHAT_THREAD = cfg['file_paths']['instagram_db']
+
+# --- add this helper (right below your other load_* helpers) ---
+def _load_instagram_db() -> dict:
+    """
+    Load the Instagram DB JSON (participants live here).
+    Safe if file missing/corrupt.
+    """
+    try:
+        with open(ALL_INSTAGRAM_USERS_IN_GROUPCHAT_THREAD, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return {}
+
+
+def _instagram_participant_usernames() -> set[str]:
+    """
+    Return a lowercase set of usernames from the configured IG DM thread.
+    Expected schema (written by your IG sync cog):
+      {
+        "dm_sync": {
+          "participants": [
+            {"user_id": 123, "username": "alice", "full_name": "Alice ..."},
+            ...
+          ]
+        }
+      }
+    """
+    db = _load_instagram_db()
+    parts = (db.get("dm_sync") or {}).get("participants") or []
+    names = {str(p.get("username", "")).strip().lower() for p in parts if p.get("username")}
+    return {n for n in names if n}  # drop empties
+
 
 def load_family_data() -> dict:
     """
@@ -15,32 +48,59 @@ def load_family_data() -> dict:
     with open(FAMILY_MEMBERS_JSON, "r") as f:
         return json.load(f)
 
-def is_family_member(psid: str) -> bool:
+# --- update this: optional instagram_username & last-resort IG check ---
+def is_family_member(psid: str, instagram_username: str | None = None) -> bool:
     """
-    Check if the given PSID exists in any of the family JSON categories:
-    fam_leads, fam_members, or fam_psuedos.
+    True if PSID is in fam_leads/members/psuedos, OR (last resort)
+    if instagram_username is present in the IG DM participants list.
     """
     family_psid_map = load_family_data()
-    return (
+    in_core = (
         psid in family_psid_map.get("fam_leads", {}) or
         psid in family_psid_map.get("fam_members", {}) or
         psid in family_psid_map.get("fam_psuedos", {})
     )
+    if in_core:
+        return True
 
-def get_family_role(psid: str) -> str | None:
+    if instagram_username:
+        ig_names = _instagram_participant_usernames()
+        if instagram_username.strip().lower() in ig_names:
+            return True
+
+    return False
+
+
+# --- update this: allow optional instagram_username & add last-resort check ---
+def get_family_role(psid: str, instagram_username: str | None = None) -> str | None:
     """
-    Returns the family role for a given PSID.
-    Possible returns: "Family Leader", "Member (Official)", 
+    Returns the family role for a given PSID (or, last-resort, by IG username).
+    Possible returns: "Family Leader", "Member (Official)",
     "Psuedo (Unofficial Member)", or None if not found.
+
+    Order:
+      1) fam_leads
+      2) fam_members
+      3) fam_psuedos
+      4) LAST RESORT: if instagram_username is in IG participants -> "Psuedo (Unofficial Member)"
     """
     family_psid_map = load_family_data()
+
     if psid in family_psid_map.get("fam_leads", {}):
         return "Family Leader"
     elif psid in family_psid_map.get("fam_members", {}):
         return "Member (Official)"
     elif psid in family_psid_map.get("fam_psuedos", {}):
         return "Psuedo (Unofficial Member)"
+
+    # Last-resort IG participants check (only if username provided)
+    if instagram_username:
+        ig_names = _instagram_participant_usernames()
+        if instagram_username.strip().lower() in ig_names:
+            return "Psuedo (Unofficial Member)"
+
     return None
+
 
 
 def get_total_verified_users() -> int:

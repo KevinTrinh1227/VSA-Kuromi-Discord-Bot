@@ -76,7 +76,9 @@ class JSONBackup(commands.Cog):
                 ".env": Path(".env"),
                 f"{self.cfg.get('file_paths', {}).get('vsa_family_db')}": Path(self.cfg.get('file_paths', {}).get('vsa_family_db')),
                 f"{self.cfg.get('file_paths', {}).get('all_discord_user_member_database_json_path')}": Path(self.cfg.get('file_paths', {}).get('all_discord_user_member_database_json_path')),
-                f"{self.cfg.get('file_paths', {}).get('server_polls')}": Path(self.cfg.get('file_paths', {}).get('server_polls'))
+                f"{self.cfg.get('file_paths', {}).get('server_polls')}": Path(self.cfg.get('file_paths', {}).get('server_polls')),
+                f"{self.cfg.get('file_paths', {}).get('punishments_db')}": Path(self.cfg.get('file_paths', {}).get('punishments_db')),
+                f"{self.cfg.get('file_paths', {}).get('instagram_db')}": Path(self.cfg.get('file_paths', {}).get('instagram_db'))
             }
 
 

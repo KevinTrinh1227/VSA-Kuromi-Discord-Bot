@@ -151,7 +151,7 @@ class VerificationModal(Modal, title='📋 | VSA Member Verification'):
                 await interaction.response.defer(ephemeral=True)
                 psid = interaction.client._verification_data.get("psid")
 
-                if psid and is_family_member(psid):
+                if psid and is_family_member(psid, instagram):
                     await self.next_step(interaction, True)
                 else:
                     await interaction.followup.send(
@@ -189,7 +189,7 @@ class VerificationModal(Modal, title='📋 | VSA Member Verification'):
                         f"**PSID:** `{data['psid']}`\n"
                         f"**Instagram:** {instagram_handle} (Optional)\n"
                         f"**In {FAM_NAME} Fam?** {fam_status}\n"
-                        f"**Family Role:** {get_family_role(psid)}\n\n"
+                        f"**Family Role:** {get_family_role(psid, instagram)}\n\n"
                         'If it is **100% correct**, click **Confirm & Verify** below. Otherwise click **Restart Verification** to begin again or **Cancel** to abort.'
                     ),
                     color=int(cfg['general']['embed_color'].strip('#'), 16)
@@ -217,7 +217,7 @@ class VerificationModal(Modal, title='📋 | VSA Member Verification'):
 
                         # Family roles
                         if in_family:
-                            fam_role = get_family_role(psid)
+                            fam_role = get_family_role(psid, instagram)
 
                             if fam_role == "Psuedo (Unofficial Member)":
                                 pseudo_role = guild.get_role(PSUEDO_ROLE_ID)
@@ -329,7 +329,7 @@ class VerificationModal(Modal, title='📋 | VSA Member Verification'):
                         embed_public.add_field(name="Birthday", value=rec["birthday"], inline=True)
                         embed_public.add_field(name="In Family", value="Yes" if rec.get("in_family") else "No", inline=True)
 
-                        fam_role = get_family_role(psid) if rec.get("in_family") else "N/A"
+                        fam_role = get_family_role(psid, instagram) if rec.get("in_family") else "N/A"
                         embed_public.add_field(name="Family Role", value=fam_role, inline=True)
 
                         # Footer and thumbnail (user avatar or guild icon)
