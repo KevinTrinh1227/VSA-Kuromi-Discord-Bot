@@ -4,6 +4,8 @@ from discord import app_commands
 import json
 import os
 
+from utils.stats_utils import get_instagram_by_psid
+
 class FamilyMembers(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -120,6 +122,7 @@ class FamilyMembers(commands.Cog):
 
 
         elif action.value == "list":
+            self.load_db()
             fam_leads = self.db.get('fam_leads', {})
             fam_members = self.db.get('fam_members', {})
             fam_psuedos = self.db.get('fam_psuedos', {})
@@ -138,17 +141,29 @@ class FamilyMembers(commands.Cog):
             # Family Leads
             msg_lines.append(f"**Family Leads ({total_leads})**")
             for idx, (psid, member) in enumerate(fam_leads.items(), start=1):
-                msg_lines.append(f"{idx}. {member['first_name']} {member['last_name']} `PSID: {psid}`")
+                ig_user = get_instagram_by_psid(psid)
+                if ig_user:
+                    msg_lines.append(f"{idx}. `PSID: {psid}` {member['first_name']} {member['last_name']} - IG: [@{ig_user}](https://www.instagram.com/{ig_user}/)")
+                else:
+                    msg_lines.append(f"{idx}. `PSID: {psid}` {member['first_name']} {member['last_name']} - IG: Not Set")
 
             # Family Members
             msg_lines.append(f"\n**Family Members ({total_members})**")
             for idx, (psid, member) in enumerate(fam_members.items(), start=1):
-                msg_lines.append(f"{idx}. {member['first_name']} {member['last_name']} `PSID: {psid}`")
+                ig_user = get_instagram_by_psid(psid)
+                if ig_user:
+                    msg_lines.append(f"{idx}. `PSID: {psid}` {member['first_name']} {member['last_name']} - IG: [@{ig_user}](https://www.instagram.com/{ig_user}/)")
+                else:
+                    msg_lines.append(f"{idx}. `PSID: {psid}` {member['first_name']} {member['last_name']} - IG: Not Set")
 
             # Psuedo Members
             msg_lines.append(f"\n**Psuedo Members ({total_psuedos})**")
             for idx, (psid, member) in enumerate(fam_psuedos.items(), start=1):
-                msg_lines.append(f"{idx}. {member['first_name']} {member['last_name']} `PSID: {psid}`")
+                ig_user = get_instagram_by_psid(psid)
+                if ig_user:
+                    msg_lines.append(f"{idx}. `PSID: {psid}` {member['first_name']} {member['last_name']} - IG: [@{ig_user}](https://www.instagram.com/{ig_user}/)")
+                else:
+                    msg_lines.append(f"{idx}. `PSID: {psid}` {member['first_name']} {member['last_name']} - IG: Not Set")
                 
             msg_lines.append(f"\nTotal Members ({total_all})")
 

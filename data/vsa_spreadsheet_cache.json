@@ -1,17 +1,17 @@
 {
-  "last_updated": "2025-09-09 23:22:46 CDT",
+  "last_updated": "2025-10-02 08:19:52 CDT",
   "family_stats": [
     [
       "Badtz Maru",
-      "127",
-      "2",
-      "63"
+      "210",
+      "4",
+      "52"
     ],
     [
       "Kuromi",
-      "159",
-      "1",
-      "159"
+      "342",
+      "5",
+      "68"
     ],
     [
       "Pompompurin",
@@ -21,9 +21,9 @@
     ],
     [
       "Keroppi",
-      "162",
+      "197",
       "3",
-      "54"
+      "65"
     ],
     [
       "Not in a family",
@@ -33,14 +33,17 @@
     ]
   ],
   "event_titles": [
-    "8-26-2025 Bake Sale",
-    "8-26-2025 Phamily Ties",
-    "8-27-2025 Bake Sale",
-    "8-28-2025 Unity Talent Show",
-    "8-29-2025 Paint the Wind",
-    "9-8-2025 General Meeting",
-    "9-10-2025 Bake Sale",
-    "9-12-2025 After Social"
+    "8/26/2025 Bake Sale",
+    "8/26/2025 Phamily Ties",
+    "8/27/2025 Bake Sale",
+    "8/28/2025 Unity Talent Show",
+    "8/29/2025 Paint the Wind",
+    "9/8/2025 GM 1",
+    "9/10/2025 Bake Sale",
+    "9/12/2025 After Social",
+    "25",
+    "35",
+    "67"
   ],
   "all_vsa_member_data": [
     [
@@ -58,7 +61,7 @@
       "Mai",
       "Vo",
       "Officer",
-      "",
+      "Kuromi",
       "31",
       "",
       "",
@@ -81,7 +84,7 @@
       "Anh",
       "Bui",
       "Officer",
-      "",
+      "Keroppi",
       "162",
       "67",
       "35",
@@ -93,7 +96,7 @@
       "Chester",
       "Jacot",
       "Returning Member",
-      "",
+      "Pompompurin",
       "0"
     ],
     [
@@ -111,7 +114,7 @@
       "Vincent",
       "Thai",
       "Officer",
-      "Pompompurin",
+      "Kuromi",
       "0"
     ],
     [
@@ -119,7 +122,7 @@
       "James",
       "Mai",
       "Officer",
-      "",
+      "Badtz Maru",
       "60",
       "35",
       "25"
@@ -129,7 +132,7 @@
       "Tyler",
       "Hoang",
       "New Member",
-      "",
+      "Kuromi",
       "25",
       "",
       "",
@@ -181,8 +184,10 @@
       "Melissa",
       "Adams",
       "Officer",
+      "Badtz Maru",
+      "23",
       "",
-      "0"
+      "23"
     ]
   ]
 }

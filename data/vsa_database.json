@@ -1,17 +1,17 @@
 {
-  "last_updated_and_parsed": "2025-09-09 23:22:46 CDT",
+  "last_updated_and_parsed": "2025-10-02 08:19:52 CDT",
   "family_stats": {
     "Badtz Maru": {
       "family": "Badtz Maru",
-      "total_points": 127,
-      "member_count": 2,
-      "avg_points": 63
+      "total_points": 210,
+      "member_count": 4,
+      "avg_points": 52
     },
     "Kuromi": {
       "family": "Kuromi",
-      "total_points": 159,
-      "member_count": 1,
-      "avg_points": 159
+      "total_points": 342,
+      "member_count": 5,
+      "avg_points": 68
     },
     "Pompompurin": {
       "family": "Pompompurin",
@@ -21,9 +21,9 @@
     },
     "Keroppi": {
       "family": "Keroppi",
-      "total_points": 162,
+      "total_points": 197,
       "member_count": 3,
-      "avg_points": 54
+      "avg_points": 65
     },
     "Not in a family": {
       "family": "Not in a family",
@@ -33,76 +33,92 @@
     }
   },
   "events_info": {
-    "8-26-2025 Bake Sale": {
+    "8/26/2025 Bake Sale": {
+      "event_number": 1,
       "date": "08/26/2025",
       "name": "Bake Sale",
       "event_types": {
         "is_general_meeting": false,
         "is_tlp": false,
-        "is_sale": false
+        "is_sale": true,
+        "is_volunteering": false
       }
     },
-    "8-26-2025 Phamily Ties": {
+    "8/26/2025 Phamily Ties": {
+      "event_number": 2,
       "date": "08/26/2025",
       "name": "Phamily Ties",
       "event_types": {
         "is_general_meeting": false,
         "is_tlp": false,
-        "is_sale": false
+        "is_sale": false,
+        "is_volunteering": false
       }
     },
-    "8-27-2025 Bake Sale": {
+    "8/27/2025 Bake Sale": {
+      "event_number": 3,
       "date": "08/27/2025",
       "name": "Bake Sale",
       "event_types": {
         "is_general_meeting": false,
         "is_tlp": false,
-        "is_sale": false
+        "is_sale": true,
+        "is_volunteering": false
       }
     },
-    "8-28-2025 Unity Talent Show": {
+    "8/28/2025 Unity Talent Show": {
+      "event_number": 4,
       "date": "08/28/2025",
       "name": "Unity Talent Show",
       "event_types": {
         "is_general_meeting": false,
         "is_tlp": false,
-        "is_sale": false
+        "is_sale": false,
+        "is_volunteering": false
       }
     },
-    "8-29-2025 Paint the Wind": {
+    "8/29/2025 Paint the Wind": {
+      "event_number": 5,
       "date": "08/29/2025",
       "name": "Paint the Wind",
       "event_types": {
         "is_general_meeting": false,
         "is_tlp": false,
-        "is_sale": false
+        "is_sale": false,
+        "is_volunteering": false
       }
     },
-    "9-8-2025 General Meeting": {
+    "9/8/2025 GM 1": {
+      "event_number": 6,
       "date": "09/08/2025",
-      "name": "General Meeting",
+      "name": "GM 1",
       "event_types": {
-        "is_general_meeting": false,
+        "is_general_meeting": true,
         "is_tlp": false,
-        "is_sale": false
+        "is_sale": false,
+        "is_volunteering": false
       }
     },
-    "9-10-2025 Bake Sale": {
+    "9/10/2025 Bake Sale": {
+      "event_number": 7,
       "date": "09/10/2025",
       "name": "Bake Sale",
       "event_types": {
         "is_general_meeting": false,
         "is_tlp": false,
-        "is_sale": false
+        "is_sale": true,
+        "is_volunteering": false
       }
     },
-    "9-12-2025 After Social": {
+    "9/12/2025 After Social": {
+      "event_number": 8,
       "date": "09/12/2025",
       "name": "After Social",
       "event_types": {
         "is_general_meeting": false,
         "is_tlp": false,
-        "is_sale": false
+        "is_sale": false,
+        "is_volunteering": false
       }
     }
   },
@@ -122,6 +138,9 @@
         0,
         0,
         0,
+        0,
+        0,
+        0,
         0
       ]
     },
@@ -130,7 +149,7 @@
       "first_name": "Mai",
       "last_name": "Vo",
       "role_key": "Officer",
-      "family_name": "",
+      "family_name": "Kuromi",
       "points": 31,
       "event_points": [
         0,
@@ -140,6 +159,9 @@
         25,
         0,
         6,
+        0,
+        0,
+        0,
         0
       ]
     },
@@ -158,6 +180,9 @@
         0,
         0,
         0,
+        0,
+        0,
+        0,
         0
       ]
     },
@@ -166,13 +191,16 @@
       "first_name": "Anh",
       "last_name": "Bui",
       "role_key": "Officer",
-      "family_name": "",
+      "family_name": "Keroppi",
       "points": 162,
       "event_points": [
         67,
         35,
         25,
         35,
+        0,
+        0,
+        0,
         0,
         0,
         0,
@@ -184,9 +212,12 @@
       "first_name": "Chester",
       "last_name": "Jacot",
       "role_key": "Returning Member",
-      "family_name": "",
+      "family_name": "Pompompurin",
       "points": 0,
       "event_points": [
+        0,
+        0,
+        0,
         0,
         0,
         0,
@@ -212,6 +243,9 @@
         0,
         0,
         0,
+        0,
+        0,
+        0,
         0
       ]
     },
@@ -220,9 +254,12 @@
       "first_name": "Vincent",
       "last_name": "Thai",
       "role_key": "Officer",
-      "family_name": "Pompompurin",
+      "family_name": "Kuromi",
       "points": 0,
       "event_points": [
+        0,
+        0,
+        0,
         0,
         0,
         0,
@@ -238,11 +275,14 @@
       "first_name": "James",
       "last_name": "Mai",
       "role_key": "Officer",
-      "family_name": "",
+      "family_name": "Badtz Maru",
       "points": 60,
       "event_points": [
         35,
         25,
+        0,
+        0,
+        0,
         0,
         0,
         0,
@@ -256,12 +296,15 @@
       "first_name": "Tyler",
       "last_name": "Hoang",
       "role_key": "New Member",
-      "family_name": "",
+      "family_name": "Kuromi",
       "points": 25,
       "event_points": [
         0,
         0,
         25,
+        0,
+        0,
+        0,
         0,
         0,
         0,
@@ -279,6 +322,9 @@
       "event_points": [
         0,
         67,
+        0,
+        0,
+        0,
         0,
         0,
         0,
@@ -302,6 +348,9 @@
         67,
         0,
         25,
+        0,
+        0,
+        0,
         0
       ]
     },
@@ -320,7 +369,10 @@
         0,
         30,
         0,
-        5
+        5,
+        0,
+        0,
+        0
       ]
     },
     "2466497": {
@@ -328,9 +380,12 @@
       "first_name": "Melissa",
       "last_name": "Adams",
       "role_key": "Officer",
-      "family_name": "",
-      "points": 0,
+      "family_name": "Badtz Maru",
+      "points": 23,
       "event_points": [
+        0,
+        23,
+        0,
         0,
         0,
         0,
@@ -353,15 +408,15 @@
       "2326566",
       "2334253",
       "2456929",
+      "2466497",
       "2376371",
       "2156972",
-      "2367375",
-      "2466497"
+      "2367375"
     ],
     "families_pts_mem": [
       "Kuromi",
-      "Badtz Maru",
       "Keroppi",
+      "Badtz Maru",
       "Pompompurin",
       "Not in a family"
     ]

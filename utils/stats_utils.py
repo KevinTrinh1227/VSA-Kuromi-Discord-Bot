@@ -16,6 +16,7 @@ import json
 with open("config.json", "r") as f:
     config = json.load(f)
 VSA_PARSED_ALL_MEMBER_DATA_JSON_PATH = config["file_paths"]["parsed_vsa_member_data_and_events_info_file"]
+DISCORD_VERIFIED_MEMBERS_DB = config["file_paths"]["all_discord_user_member_database_json_path"]
 CONFIG_JSON_PATH = "config.json"
 
 
@@ -24,6 +25,220 @@ def load_json(path):
     with open(path, "r") as f:
         return json.load(f)
 
+
+def get_instagram_by_psid(psid: str) -> str | None:
+    """
+    Look up the Instagram username of a verified member by PSID.
+
+    Args:
+        psid (str): The PSID of the user to search for.
+
+    Returns:
+        str | None: The Instagram username if available, else None.
+    """
+    data = load_json(DISCORD_VERIFIED_MEMBERS_DB)
+    verified_users = data.get("verified_users", {})
+
+    for user in verified_users.values():
+        general = user.get("general", {})
+        if str(general.get("psid")) == str(psid):
+            ig = general.get("instagram")
+            if ig and str(ig).strip().lower() != "null":
+                return ig.strip()
+            return None
+    return None
+    
+def get_pseudo_family_members() -> list[dict]:
+    """
+    Get all pseudo family members from the vsa_family_db JSON.
+
+    Loads the family_and_pseudos_db.json file (path from config.json),
+    extracts the "fam_psuedos" section, and returns it as a list of dicts
+    including PSID, first_name, and last_name.
+
+    Returns:
+        list[dict]: List of pseudo members, each with keys:
+                    - psid (str)
+                    - first_name (str)
+                    - last_name (str)
+    """
+    # Load config
+    config = load_json(CONFIG_JSON_PATH)
+    fam_db_path = config["file_paths"]["vsa_family_db"]
+
+    # Load family db
+    fam_db = load_json(fam_db_path)
+    fam_pseudos = fam_db.get("fam_psuedos", {})
+
+    # Convert to list of dicts
+    pseudos_list = []
+    for psid, info in fam_pseudos.items():
+        pseudos_list.append({
+            "psid": str(psid),
+            "first_name": info.get("first_name", ""),
+            "last_name": info.get("last_name", "")
+        })
+
+    return pseudos_list
+
+
+def count_total_family_members(member_dicts: list[dict]) -> int:
+    """
+    Count the total number of unique family members across both
+    family_and_pseudos_db.json and the provided list of parsed member dictionaries.
+
+    Args:
+        member_dicts (list[dict]): List of member dictionaries (parsed members).
+
+    Returns:
+        int: Total unique people across fam_leads, fam_members, fam_pseudos,
+             and the provided member_dicts list.
+    """
+    # Load config
+    config = load_json(CONFIG_JSON_PATH)
+    fam_db_path = config["file_paths"]["vsa_family_db"]
+
+    # Load family db
+    fam_db = load_json(fam_db_path)
+    fam_leads = fam_db.get("fam_leads", {})
+    fam_members = fam_db.get("fam_members", {})
+    fam_pseudos = fam_db.get("fam_psuedos", {})
+
+    # Collect PSIDs
+    parsed_psids = {str(m["psid"]) for m in member_dicts}
+    leads_psids = set(fam_leads.keys())
+    members_psids = set(fam_members.keys())
+    pseudos_psids = set(fam_pseudos.keys())
+
+    # Combine all into one big set of unique psids
+    all_unique_psids = leads_psids | members_psids | pseudos_psids | parsed_psids
+
+    return len(all_unique_psids)
+
+
+def sync_family_members(member_dicts: list[dict]):
+    """
+    Sync the given list of member dictionaries with the fam_members section
+    of the vsa_family_db JSON file.
+
+    Rules:
+    - Skip Family Leaders (role_key == "Family Leader"). They belong in fam_leads only.
+    - All other roles are synced into fam_members.
+    - If the JSON already matches exactly, no changes are made and a message is logged.
+    - Otherwise, fam_members is updated: new members added, removed ones deleted.
+
+    Args:
+        member_dicts (list[dict]): List of parsed member dictionaries to sync.
+    """
+    # Load config
+    config = load_json(CONFIG_JSON_PATH)
+    fam_name_from_config = config["general"]["google_sheets_fam_name"]
+
+    if not member_dicts:
+        print("⚠️ No members provided, skipping sync.")
+        return
+
+    # Ensure family match (case-insensitive)
+    fam_names = {m.get("family_name", "").lower() for m in member_dicts if m.get("family_name")}
+    if fam_name_from_config.lower() not in fam_names:
+        print(f"❌ Family mismatch: provided list families = {fam_names}, "
+              f"but config expects '{fam_name_from_config}'. Skipping sync.")
+        return
+
+    # Load family DB
+    fam_db_path = config["file_paths"]["vsa_family_db"]
+    fam_db = load_json(fam_db_path)
+    fam_members = fam_db.get("fam_members", {})
+
+    # Build desired state: members that should be in fam_members
+    desired_fam_members = {}
+    for member in member_dicts:
+        role = member.get("role_key", "").lower()
+        if role == "family leader":
+            # Skip leaders
+            continue
+        psid = str(member["psid"])
+        desired_fam_members[psid] = {
+            "first_name": member.get("first_name", ""),
+            "last_name": member.get("last_name", "")
+        }
+
+    # Compare current vs desired
+    if fam_members == desired_fam_members:
+        #print(f"✅ JSON looks good. No changes needed. All {len(desired_fam_members)} / {len(desired_fam_members)} members already synced. Skipping...")
+        return
+
+    # Otherwise, sync changes
+    input_psids = set(desired_fam_members.keys())
+    current_psids = set(fam_members.keys())
+
+    # Add/update members
+    for psid, info in desired_fam_members.items():
+        if psid not in fam_members or fam_members[psid] != info:
+            fam_members[psid] = info
+            print(f"✅ Synced member {psid}: {info['first_name']} {info['last_name']}")
+
+    # Remove members not in desired list
+    to_remove = current_psids - input_psids
+    for psid in to_remove:
+        removed = fam_members.pop(psid, None)
+        if removed:
+            print(f"🗑️ Removed member {psid}: {removed['first_name']} {removed['last_name']}")
+
+    # Save updated JSON
+    fam_db["fam_members"] = fam_members
+    with open(fam_db_path, "w", encoding="utf-8") as f:
+        json.dump(fam_db, f, indent=2, ensure_ascii=False)
+
+    print(f"✅ Finished syncing fam_members for '{fam_name_from_config}'. "
+          f"Now {len(fam_members)} members are in sync.")
+
+
+
+def get_family_members(family_name: str) -> list[dict]:
+    """
+    Get all member records belonging to a specific family.
+
+    This function loads the parsed VSA member data JSON (defined by
+    VSA_PARSED_ALL_MEMBER_DATA_JSON_PATH) and searches the "parsed_members"
+    section. It collects the full member dictionaries for all members whose
+    "family_name" matches the provided family_name argument.
+
+    Args:
+        family_name (str): The family name to search for (case-insensitive match).
+
+    Returns:
+        list[dict]: A list of member dictionaries belonging to the given family.
+                    If no members match, returns an empty list.
+
+    Notes:
+        - Members with empty or null "family_name" are ignored.
+        - Family name comparison is case-insensitive.
+    """
+    data = load_json(VSA_PARSED_ALL_MEMBER_DATA_JSON_PATH)
+    parsed_members = data.get("parsed_members", {})
+
+    results = []
+    for member in parsed_members.values():
+        fam = member.get("family_name")
+        if fam and fam.strip() and fam.lower() == family_name.lower():
+            results.append(member)
+
+    return results
+
+
+def get_family_total_points(family_name: str) -> int:
+    """
+    Calculate the total points for all members in a specific family.
+
+    Args:
+        family_name (str): The family name to search for (case-insensitive).
+
+    Returns:
+        int: The total sum of 'points' across all members in the family.
+    """
+    members = get_family_members(family_name)
+    return sum(member.get("points", 0) for member in members)
 
 def is_vsa_officer(psid: int) -> bool:
 

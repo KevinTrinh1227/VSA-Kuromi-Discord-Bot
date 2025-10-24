@@ -92,44 +92,51 @@ def sync_family_settings() -> bool:
     Returns True if any modifications occurred.
     """
     modified = False
+    #print(f"Family Stats(): '{get_family_stats()}'")
     parsed_families = set(get_family_stats().keys()) - {'Not in a family'}
+    
+    if parsed_families:
+        #print(f"parsed families: '{parsed_families}'")
+        # Load and mutate config in memory
+        cfg_path = Path(CONFIG)
+        full_cfg = json.loads(cfg_path.read_text())
+        fs = full_cfg.setdefault('family_settings', {})
+        cfg_fams = set(fs.keys())
 
-    # Load and mutate config in memory
-    cfg_path = Path(CONFIG)
-    full_cfg = json.loads(cfg_path.read_text())
-    fs = full_cfg.setdefault('family_settings', {})
-    cfg_fams = set(fs.keys())
+        # Add new families skeleton
+        for fam in parsed_families - cfg_fams:
+            fs[fam] = {
+                'short_name':       None,
+                'abbreviation':     None,
+                'family_role_id':   None,
+                'family_emoji':     None,
+                'logo_image_url':   None,
+                'banner_image_url': None,
+                'discord_link':     None,
+                'instagram':        None,
+                'website':          None,
+                'description':      None,
+                'leads':           []
+            }
+            modified = True
+        # Remove old families
+        for fam in cfg_fams - parsed_families:
+            fs.pop(fam, None)
+            modified = True
 
-    # Add new families skeleton
-    for fam in parsed_families - cfg_fams:
-        fs[fam] = {
-            'short_name':       None,
-            'abbreviation':     None,
-            'family_role_id':   None,
-            'family_emoji':     None,
-            'logo_image_url':   None,
-            'banner_image_url': None,
-            'discord_link':     None,
-            'instagram':        None,
-            'website':          None,
-            'description':      None,
-            'leads':           []
-        }
-        modified = True
-    # Remove old families
-    for fam in cfg_fams - parsed_families:
-        fs.pop(fam, None)
-        modified = True
+        # Persist key sync if changed
+        if modified:
+            tmp = cfg_path.with_suffix('.json.tmp')
+            tmp.write_text(json.dumps(full_cfg, indent=2))
+            os.replace(tmp, cfg_path)
 
-    # Persist key sync if changed
-    if modified:
-        tmp = cfg_path.with_suffix('.json.tmp')
-        tmp.write_text(json.dumps(full_cfg, indent=2))
-        os.replace(tmp, cfg_path)
+        # Always sync leads
+        leads_modified = sync_family_leads()
+        return modified or leads_modified
 
-    # Always sync leads
-    leads_modified = sync_family_leads()
-    return modified or leads_modified
+    else:
+        #print(f"parsed_families was empty now retuning None.... \n\n{parsed_families}")
+        return modified
 
 
 def sync_family_leads() -> bool:
@@ -151,41 +158,43 @@ def sync_family_leads() -> bool:
     fs = full_cfg.get('family_settings', {})
 
     for fam, new_leads in parsed_leads.items():
-        if fam not in fs:
-            continue
-        existing = fs[fam].setdefault('leads', [])
-        for nl in new_leads:
-            psid = nl['psid']
-            first_n = nl['first_name'] or ''
-            last_n  = nl['last_name'] or ''
-            # 1) Match by PSID
-            for ex in existing:
-                if ex.get('psid') == psid:
-                    # update names if changed
-                    if (ex.get('first_name') != nl['first_name'] or
-                        ex.get('last_name')  != nl['last_name']):
-                        ex['first_name'] = nl['first_name']
-                        ex['last_name']  = nl['last_name']
-                        modified = True
-                    break
-            else:
-                # 2) single name-only match (case-insensitive) and no PSID
-                name_matches = [ex for ex in existing
-                                if not ex.get('psid')
-                                and ex.get('first_name', '').strip().lower() == first_n.strip().lower()
-                                and ex.get('last_name',  '').strip().lower() == last_n.strip().lower()]
-                if len(name_matches) == 1:
-                    name_matches[0]['psid'] = psid
-                    modified = True
+        if fs:
+            if fam not in fs:
+                continue
+            existing = fs[fam].setdefault('leads', [])
+            for nl in new_leads:
+                psid = nl['psid']
+                first_n = nl['first_name'] or ''
+                last_n  = nl['last_name'] or ''
+                # 1) Match by PSID
+                for ex in existing:
+                    if ex.get('psid') == psid:
+                        # update names if changed
+                        if (ex.get('first_name') != nl['first_name'] or
+                            ex.get('last_name')  != nl['last_name']):
+                            ex['first_name'] = nl['first_name']
+                            ex['last_name']  = nl['last_name']
+                            modified = True
+                        break
                 else:
-                    # 3) new lead
-                    existing.append({
-                        'first_name': nl['first_name'],
-                        'last_name':  nl['last_name'],
-                        'psid':       psid
-                    })
-                    modified = True
-
+                    # 2) single name-only match (case-insensitive) and no PSID
+                    name_matches = [ex for ex in existing
+                                    if not ex.get('psid')
+                                    and ex.get('first_name', '').strip().lower() == first_n.strip().lower()
+                                    and ex.get('last_name',  '').strip().lower() == last_n.strip().lower()]
+                    if len(name_matches) == 1:
+                        name_matches[0]['psid'] = psid
+                        modified = True
+                    else:
+                        # 3) new lead
+                        existing.append({
+                            'first_name': nl['first_name'],
+                            'last_name':  nl['last_name'],
+                            'psid':       psid
+                        })
+                        modified = True
+        else:
+            pass
     # Persist leads sync if changed
     if modified:
         tmp = cfg_path.with_suffix('.json.tmp')

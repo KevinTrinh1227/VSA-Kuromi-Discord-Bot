@@ -8,7 +8,7 @@ import os
 import datetime
 from utils.family_utils import is_family_member, get_family_role, get_total_verified_users
 from utils.users_utils import get_verified_users, save_verified_users, get_unverified_users, save_unverified_users
-from utils.stats_utils import is_vsa_officer
+from utils.stats_utils import is_vsa_officer, get_family_members, get_family_total_points, count_total_family_members, get_pseudo_family_members
 
 
 from dotenv import load_dotenv
@@ -43,7 +43,7 @@ class VerificationModal(Modal, title='📋 | VSA Member Verification'):
     first_name = TextInput(label='First Name', placeholder='First name', required=True, max_length=30)
     last_name  = TextInput(label='Last Name', placeholder='Last name', required=True, max_length=30)
     birthday   = TextInput(label='Birthday (MM/DD/YYYY)', placeholder='MM/DD/YYYY', required=True, max_length=10)
-    instagram  = TextInput(label='Instagram Username (Optional)', placeholder='Instagram Username', required=False, max_length=24)
+    instagram  = TextInput(label='Instagram Username', placeholder='Instagram Username', required=True, max_length=24)
     psid       = TextInput(label='PeopleSoft ID (PSID)', placeholder='12345678', required=True, max_length=20)
 
     async def on_submit(self, interaction: discord.Interaction):
@@ -321,8 +321,9 @@ class VerificationModal(Modal, title='📋 | VSA Member Verification'):
                             timestamp=datetime.datetime.utcnow()
                         )
 
+                        fullname = f"{rec['first_name']} {rec['last_name']}"
                         # Add fields with user data
-                        embed_public.add_field(name="Full Name", value=f"{rec["first_name"]} {rec["last_name"]}", inline=True)
+                        embed_public.add_field(name="Full Name", value=fullname, inline=True)
                         embed_public.add_field(name="Instagram", value=rec["instagram"], inline=True)
                         embed_public.add_field(name="PSID", value=rec["psid"], inline=True)
                         embed_public.add_field(name="Birthday", value=rec["birthday"], inline=True)
@@ -415,12 +416,29 @@ class VerificationLobby(commands.Cog):
             view = self.StartVerificationView()
             await chan.send(file=discord.File(file_path), view=view)
             
-
     @commands.hybrid_command(name="verifiedstats", description="Show server stats from verified user data.")
     async def verifiedstats(self, ctx: commands.Context):
-        data = get_verified_users
+        
+        my_vsa_googlesheets_fam_name = cfg['general']['google_sheets_fam_name']
+        
+        official_vsa_fam_members_list = get_family_members(my_vsa_googlesheets_fam_name) # gets list of dict of all members in fam from google sheets
+        #print(official_vsa_fam_members_list)
+        official_fam_members_count = len(official_vsa_fam_members_list) # offical member count only (no psuedos)
+        official_fam_mem_total_points = get_family_total_points(my_vsa_googlesheets_fam_name)
+        
+        psuedos_fam_mems_list = get_pseudo_family_members()
+        psuedos_mem_count = len(psuedos_fam_mems_list)
+        
+        # gets total offical, and unoffical psuedos + fam leads count
+        total_fam_members = count_total_family_members(official_vsa_fam_members_list)
+        
+        # ============================================
+        data = get_verified_users() # discord verified members in discord db json
 
         total_users = len(data)
+        total_members = ctx.guild.member_count  # ✅ FIX: get total members in the guild
+        percent_verified = (total_users / total_members) * 100 if total_members > 0 else 0
+
         users_with_stats = sum(1 for u in data.values() if "stats" in u)
         total_in_family = sum(1 for u in data.values() if u["general"].get("in_family", False))
         total_not_in_family = total_users - total_in_family
@@ -444,26 +462,38 @@ class VerificationLobby(commands.Cog):
         newest = max(data.values(), key=lambda u: u["general"]["timestamp"])
         oldest = min(data.values(), key=lambda u: u["general"]["timestamp"])
 
-        # Birth months
+        # Birth months + names
         from collections import Counter
         import datetime
         birth_months = Counter()
-        name_counter = Counter()
+        total_birthdays = 0
+        missing_birthdays = 0
 
         for u in data.values():
-            # Birth month
-            try:
-                dt = datetime.datetime.strptime(u["general"]["birthday"], "%m/%d/%Y")
-                birth_months[dt.strftime("%B")] += 1
-            except:
-                pass
-            # Name counts
-            name_counter[u["general"]["first_name"]] += 1
+            birthday = u["general"].get("birthday", None)
+            if birthday and birthday.strip() not in ["", "null", "None"]:
+                try:
+                    dt = datetime.datetime.strptime(birthday, "%m/%d/%Y")
+                    birth_months[dt.strftime("%B")] += 1
+                    total_birthdays += 1
+                except:
+                    missing_birthdays += 1
+            else:
+                missing_birthdays += 1
 
         most_common_month = birth_months.most_common(1)[0][0] if birth_months else "N/A"
-        most_common_name = name_counter.most_common(1)[0][0] if name_counter else "N/A"
         current_month = datetime.datetime.now().strftime("%B")
         current_month_bdays = birth_months.get(current_month, 0)
+
+        # Instagram stats
+        users_with_instagram = 0
+        users_without_instagram = 0
+        for u in data.values():
+            ig = u["general"].get("instagram", None)
+            if ig and str(ig).strip() != "" and ig.lower() != "null":
+                users_with_instagram += 1
+            else:
+                users_without_instagram += 1
 
         # Format embed
         embed = discord.Embed(
@@ -473,36 +503,36 @@ class VerificationLobby(commands.Cog):
 
         embed.description = (
             f"**👥 General Info**\n"
-            f"• Total Verified Users: `{total_users}`\n"
-            f"• Newest Verified: `{newest['general']['first_name']} {newest['general']['last_name']}`\n"
-            f"• Oldest Verified: `{oldest['general']['first_name']} {oldest['general']['last_name']}`\n\n"
+            f"• Verified Users: `{total_users}` / `{total_members}` ({percent_verified:.1f}%)\n"
+            f"• Instagrams Saved: `{users_with_instagram}` / `{total_members}` | Missing: `{users_without_instagram}` / `{total_members}`\n"
+            f"• Recent Verify: `{newest['general']['first_name']} {newest['general']['last_name']}` | Oldest: `{oldest['general']['first_name']} {oldest['general']['last_name']}`\n\n"
 
-            f"**🏠 Family Membership**\n"
-            f"• In Family: `{total_in_family}` ({percent_in_family:.1f}%)\n"
-            f"• Not in Family: `{total_not_in_family}`\n\n"
+            f"**🏠 {my_vsa_googlesheets_fam_name} Fam Membership**\n"
+            f"• Fam Members: `{total_fam_members}` | (Official: `{official_fam_members_count}` | Unofficial: `{psuedos_mem_count}`)\n"
+            f"• Total VSA Points: `{official_fam_mem_total_points}` (Cumalative)\n"
+            f"• In Fam &  Discord Server: `{total_in_family}` | Not in Family: `{total_not_in_family}`\n\n"
 
-            f"**📈 EXP & 💰 Coins**\n"
-            f"• Total EXP: `{round(total_exp, 2)}`\n"
-            f"• Avg EXP: `{round(avg_exp, 2)}`\n"
-            f"• Most EXP: `{top_exp_user[1]['general']['first_name']} {top_exp_user[1]['general']['last_name']}` ({top_exp_user[1].get('stats', {}).get('exp', 0)} EXP)\n"
-            f"• Total Coins: `{total_coins}`\n"
-            f"• Avg Coins: `{round(avg_coins, 2)}`\n"
-            f"• Richest User: `{top_coin_user[1]['general']['first_name']} {top_coin_user[1]['general']['last_name']}` ({top_coin_user[1].get('stats', {}).get('coins', 0)} coins)\n\n"
+            f"**📈 Server EXP & Coins**\n"
+            f"• Total Server EXP: `{round(total_exp, 2)}` | Avg EXP: `{round(avg_exp, 2)}`\n"
+            f"• Most EXP: `{top_exp_user[1]['general']['first_name']} {top_exp_user[1]['general']['last_name']}` "
+            f"({top_exp_user[1].get('stats', {}).get('exp', 0)} EXP)\n"
+            f"• Total Coins: `{total_coins}` | Avg Coins: `{round(avg_coins, 2)}`\n"
+            f"• Richest User: `{top_coin_user[1]['general']['first_name']} {top_coin_user[1]['general']['last_name']}` "
+            f"({top_coin_user[1].get('stats', {}).get('coins', 0)} coins)\n\n"
 
-            f"**💬 Activity**\n"
+            f"**💬 Server Activity**\n"
             f"• Users with Activity Stats: `{users_with_stats}`\n"
-            f"• Total Messages Sent: `{total_msgs}`\n"
-            f"• Avg Messages/User: `{round(avg_msgs, 2)}`\n"
-            f"• Top Chatter: `{top_msg_user[1]['general']['first_name']} {top_msg_user[1]['general']['last_name']}` ({top_msg_user[1].get('stats', {}).get('total_messages_sent', 0)} messages)\n\n"
+            f"• Total Messages Sent: `{total_msgs}` | Avg/User: `{round(avg_msgs, 2)}`\n"
+            f"• Top Chatter: `{top_msg_user[1]['general']['first_name']} {top_msg_user[1]['general']['last_name']}` "
+            f"({top_msg_user[1].get('stats', {}).get('total_messages_sent', 0)} messages)\n\n"
 
-            f"**🎂 Birthdays & Names**\n"
-            f"• Most Common First Name: `{most_common_name}`\n"
+            f"**🎂 Birthdays**\n"
+            f"• B-days Saved: `{total_birthdays}` / `{total_users}` | Missing: `{missing_birthdays}` / `{total_users}`\n"
             f"• Most Common Birth Month: `{most_common_month}`\n"
             f"• Birthdays This Month ({current_month}): `{current_month_bdays}`\n"
         )
 
         await ctx.send(embed=embed)
-
 
 
 async def setup(bot):

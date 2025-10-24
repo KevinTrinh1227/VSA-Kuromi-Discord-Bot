@@ -2,10 +2,18 @@ import os
 import re
 import random
 import requests
-from io import BytesIO
 from datetime import date
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
+import aiohttp
+from io import BytesIO
+
+async def fetch_image(session, url: str) -> Image.Image:
+    async with session.get(url) as resp:
+        resp.raise_for_status()
+        data = await resp.read()
+        img = Image.open(BytesIO(data)).convert("RGBA")
+        return img
 
 def get_font_path(font_name_ttf: str):
     base_path = os.path.join("assets", "fonts")
@@ -18,7 +26,6 @@ def center_text_x(draw: ImageDraw.Draw, text: str, font: ImageFont.FreeTypeFont,
     text_width, _ = draw.textsize(text, font=font)
     return center_x - (text_width // 2)
 
-from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 def draw_text_with_blurred_shadow(
     image: Image.Image,
@@ -107,45 +114,20 @@ def pick_background(prefix: str, randomize: bool) -> str:
     return os.path.join(bd, chosen)
 
 
-def paste_image_from_url(
-    background_path: str,
-    overlay_url: str,
-    position: tuple[int, int] = (0, 0),
-    size: tuple[int, int] | None = None
-) -> Image.Image:
-    """
-    Fetch an image from a URL and paste it onto a local background.
+async def paste_image_from_url(background_path: str, overlay_url: str, position=(0, 0), size=None) -> Image.Image:
+    """Fetch an image from URL and paste onto background using aiohttp."""
+    bg = Image.open(background_path).convert("RGBA")
 
-    :param background_path: path to the background image file
-    :param overlay_url:      URL of the overlay image to download
-    :param position:         (x, y) top-left position to paste the overlay
-    :param size:             optional (width, height) to resize the overlay
-    :returns:                new PIL Image combining background + overlay
-    :raises:                 requests.HTTPError on download failure,
-                            OSError on image‐loading issues
-    """
-    # Load background
-    try:
-        bg = Image.open(background_path).convert("RGBA")
-    except Exception as e:
-        raise OSError(f"Cannot open background '{background_path}': {e}")
+    async with aiohttp.ClientSession() as session:
+        ov = await fetch_image(session, overlay_url)
 
-    # Download overlay
-    resp = requests.get(overlay_url, timeout=10)
-    resp.raise_for_status()  # HTTPError if bad status
-
-    # Open overlay
-    try:
-        ov = Image.open(BytesIO(resp.content)).convert("RGBA")
-    except Exception as e:
-        raise OSError(f"Cannot decode overlay from '{overlay_url}': {e}")
-
-    # Resize if requested
     if size:
-        ov = ov.resize(size, Image.ANTIALIAS)
+        ov = ov.resize(size, Image.LANCZOS)
 
-    # Composite
     bg.paste(ov, position, ov)
+
+    # Explicit cleanup
+    ov.close()
     return bg
 
 
@@ -203,6 +185,7 @@ def generate_leaderboard_image(members, leaderboard="Leaderboards", config_pillo
     if not available_bgs:
         raise FileNotFoundError("No valid background images found in assets/backgrounds")
 
+    # Choose background file
     if random_bg_enabled and len(available_bgs) > 1:
         bg_file = random.choice(available_bgs)
     else:
@@ -211,19 +194,19 @@ def generate_leaderboard_image(members, leaderboard="Leaderboards", config_pillo
             bg_file = available_bgs[0]
 
     bg_path = os.path.join(backgrounds_dir, bg_file)
-    background = Image.open(bg_path).convert("RGBA")
 
+    # Open background safely
+    with Image.open(bg_path).convert("RGBA") as bg:
+        background = bg.copy()  # copy keeps image in memory, closes file handle
+
+    # Apply overlay safely if exists
     overlay_path = os.path.join(overlays_dir, "leaderboards_overlay.png")
     if os.path.isfile(overlay_path):
-        overlay = Image.open(overlay_path).convert("RGBA")
-        
-        # Reduce overlay opacity to 50%
-        alpha = overlay.split()[3]
-        alpha = alpha.point(lambda p: int(p * 0.65))
-        overlay.putalpha(alpha)
-        
-        # Composite overlay onto background
-        background = Image.alpha_composite(background, overlay)
+        with Image.open(overlay_path).convert("RGBA") as ov:
+            alpha = ov.split()[3].point(lambda p: int(p * 0.65))  # 65% opacity
+            ov.putalpha(alpha)
+            background = Image.alpha_composite(background, ov)
+
 
     width, height = background.size
 
@@ -301,17 +284,27 @@ def generate_leaderboard_image(members, leaderboard="Leaderboards", config_pillo
 
 
         # Family value, centered with Family title using correct logic
-        fam_name = member.get("family_name", "No Family")
+        fam_name = member.get("family_name") or "No Family"
         short_name = fam_name
         if config_family and fam_name in config_family:
-            family_data = config_family[fam_name]
-            short_name = family_data.get("short_name", fam_name)
-        use_name = fam_name if len(fam_name) <= 10 else short_name
+            family_data = config_family[fam_name] or {}
+            short_name = family_data.get("short_name") or fam_name
+
+        # Always coerce to string and give fallback
+        use_name = str(fam_name if len(fam_name) <= 10 else short_name) or "No Family"
+
         fam_width = draw.textsize(use_name, font=font_family)[0]
         fam_x = family_center_x - (fam_width // 2)
-        draw_text_with_blurred_shadow(background, (fam_x, y_row), use_name, font_family,
-    shadow_color=(255,255,255,100), fill=(255,255,255,255), bold=True
-)
+        draw_text_with_blurred_shadow(
+            background,
+            (fam_x, y_row),
+            use_name,
+            font_family,
+            shadow_color=(255,255,255,100),
+            fill=(255,255,255,255),
+            bold=True
+        )
+
 
         # Role value, centered with Role title
         role_key = member.get("role_key", "")
@@ -399,7 +392,7 @@ def generate_qotd_image(question: str, pillow_conf: dict) -> str:
     return out
 
 
-def generate_family_leaderboard_image(
+async def generate_family_leaderboard_image(
     families: list[dict],
     pillow_conf: dict,
     config_family: dict,
@@ -483,27 +476,32 @@ def generate_family_leaderboard_image(
         logo_url = meta.get("logo_image_url") or fallback_logo_url
         logo = None
 
+        # inside generate_family_leaderboard_image()
         if logo_url:
             try:
-                if os.path.isfile(logo_url):  # Check if it's a local file
+                if os.path.isfile(logo_url):
                     logo = Image.open(logo_url).convert("RGBA")
                 else:
-                    resp = requests.get(logo_url, timeout=5)
-                    logo = Image.open(BytesIO(resp.content)).convert("RGBA")
-                
-                # 1) resize to 35×35
+                    async with aiohttp.ClientSession() as session:
+                        async with session.get(logo_url, timeout=5) as resp:
+                            resp.raise_for_status()
+                            data = await resp.read()
+                            logo = Image.open(BytesIO(data)).convert("RGBA")
+
+
+
+                # resize and round corners
                 logo = logo.resize((35, 35), Image.LANCZOS)
-                # 2) rounded corners radius=10
                 mask = Image.new("L", (35, 35), 0)
-                mdraw = ImageDraw.Draw(mask)
-                mdraw.rounded_rectangle((0, 0, 35, 35), radius=10, fill=255)
+                ImageDraw.Draw(mask).rounded_rectangle((0, 0, 35, 35), radius=10, fill=255)
                 logo.putalpha(mask)
-                # 3) position: first row y=133, then +41px per idx
+
                 x_logo = 60
                 y_logo = 133 + (idx - 1) * 41
                 bg.alpha_composite(logo, dest=(x_logo, y_logo))
-            except Exception:
-                pass
+                logo.close()
+            except Exception as e:
+                print(f"❌ Failed to load logo {logo_url}: {e}")
 
 
         # b) Pos
@@ -572,44 +570,42 @@ def generate_family_info_image(
     WIDTH, HEIGHT = 600, 240
 
     # helper to load/resize from URL
+    # helper to load/resize from URL (sync)
     def _load_image_from_url(url: str, size: tuple[int, int] | None = None) -> Image.Image:
-        """
-        Load an image from a local file path if it exists, otherwise fetch from the URL.
-        Resize to `size` if provided.
-        """
-        # Determine source: local file or remote URL
-        if os.path.isfile(url):
-            img = Image.open(url).convert("RGBA")
-        else:
-            resp = requests.get(url, timeout=5)
-            resp.raise_for_status()
-            img = Image.open(BytesIO(resp.content)).convert("RGBA")
+        try:
+            if os.path.isfile(url):
+                img = Image.open(url).convert("RGBA")
+            else:
+                resp = requests.get(url, timeout=5)
+                resp.raise_for_status()
+                img = Image.open(BytesIO(resp.content)).convert("RGBA")
 
-        # Resize if requested
-        if size:
-            img = img.resize(size, Image.LANCZOS)
-        return img
+            if size:
+                img = img.resize(size, Image.LANCZOS)
+            return img
+        except Exception as e:
+            print(f"❌ Failed to load image from {url}: {e}")
+            return None
 
     # 1) Background or fallback to black
-    try:
-        bg = _load_image_from_url(banner_url, (WIDTH, HEIGHT))
-    except Exception:
-        try:
-            bg = _load_image_from_url(fallback_banner_url, (WIDTH, HEIGHT))
-        except Exception:
-            bg = Image.new("RGBA", (WIDTH, HEIGHT), "black")
+    bg = _load_image_from_url(banner_url, (WIDTH, HEIGHT))
+    if bg is None:
+        bg = _load_image_from_url(fallback_banner_url, (WIDTH, HEIGHT))
+    if bg is None:
+        bg = Image.new("RGBA", (WIDTH, HEIGHT), "black")
 
     # 2) Overlay at 55%
     ov_path = os.path.join("assets", "overlays", "family_info_overlay.png")
     if os.path.isfile(ov_path):
-        ov = Image.open(ov_path).convert("RGBA")
-        alpha = ov.split()[3].point(lambda p: int(p * 0.65))
-        ov.putalpha(alpha)
-        bg = Image.alpha_composite(bg, ov)
+        with Image.open(ov_path).convert("RGBA") as ov:
+            alpha = ov.split()[3].point(lambda p: int(p * 0.65))
+            ov.putalpha(alpha)
+            bg = Image.alpha_composite(bg, ov)
 
     draw = ImageDraw.Draw(bg)
 
     # 3) Fonts
+
     heavy_fp = get_font_path(pillow_conf.get("font_name_ttf", "Nexa-Heavy.ttf"))
     light_fp = get_font_path(pillow_conf.get("font_name_light_ttf", "Nexa-ExtraLight.ttf")) or heavy_fp
 

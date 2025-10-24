@@ -5,8 +5,12 @@ pytz==2024.1
 chat-exporter==2.7.1
 pillow==8.4.0
 python-dateutil==2.9.0
+gspread==6.1.2
 google-auth==2.37.0
 google-api-python-client==2.172.0
 google-auth-httplib2==0.2.0
 google-auth-oauthlib==1.2.2
 instagrapi==1.19.8
+psutil==6.0.0
+objgraph==3.6.0
+aiohttp

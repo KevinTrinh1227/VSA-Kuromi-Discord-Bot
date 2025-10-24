@@ -2,34 +2,49 @@ import os
 import json
 from datetime import datetime
 from zoneinfo import ZoneInfo
-import re
+import traceback  # add at top of file
+import asyncio
 
 import discord
 from discord.ext import commands, tasks
 
-from google.oauth2 import service_account
-from googleapiclient.discovery import build
+import gspread
+from google.oauth2.service_account import Credentials
 
 from utils import stats_utils
 from utils.leaderboard_utils import regenerate_leaderboard_pages
 from utils import cache_utils
+from utils import profile_utils
 
 # ── CONFIG & SHEETS CLIENT SETUP ─────────────────────────────────────────────
 
 CONFIG_PATH = os.path.join(os.path.dirname(__file__), '..', 'config.json')
-with open(CONFIG_PATH, 'r') as f:
-    config = json.load(f)
+    
+def get_config():
+    with open(CONFIG_PATH, 'r') as f:
+        return json.load(f)
+
+# ✅ Load config here so global vars below work
+config = get_config()
+
 
 SPREADSHEET_ID        = config['google_sheets']['spreadsheet_id']
 RAW_CACHE_PATH        = config['file_paths']['vsa_google_spreadsheet_save_file']
 PARSED_CACHE_PATH     = config['file_paths']['parsed_vsa_member_data_and_events_info_file']
+
+
 SERVICE_ACCOUNT_FILE  = config['file_paths']['vsa_google_service_account_file']
 SCOPES                = ['https://www.googleapis.com/auth/spreadsheets.readonly']
 
-credentials = service_account.Credentials.from_service_account_file(
-    SERVICE_ACCOUNT_FILE, scopes=SCOPES
-)
-service = build('sheets', 'v4', credentials=credentials)
+# Build gspread client
+def get_gspread_client():
+    creds = Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+    return gspread.authorize(creds)
+
+FAMILY_CELL_RANGE     = config['google_sheets']['family_data_cell_range']
+MEMBER_CELL_RANGE     = config['google_sheets']['member_data_cell_range']
+
+
 
 # ── COG ───────────────────────────────────────────────────────────────────────
 
@@ -41,37 +56,24 @@ class SheetsCacheUpdater(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         if not self.update_cache.is_running():
-            await self.update_cache()   # run first immediately
+            # await self.update_cache()   # run first immediately
             self.update_cache.start()   # then start loop
 
 
     def cog_unload(self):
         self.update_cache.cancel()
 
-    @tasks.loop(minutes=1.0)
+    @tasks.loop(minutes=5.0)
     async def update_cache(self):
+        config = get_config()
         try:
             # ── 1) FETCH RAW DATA ────────────────────────────────
-            family_stats_raw = self._get_data("Sheet9FamTracker!A2:D6")
-            #print(family_stats_raw)
-            full_master_data = self._get_data("Sheet9!A1:LA50")
-
-            # Print header
-            #print(f"{'PSID':<10} | {'First Name':<12} | {'Last Name':<12} | {'Membership':<15} | {'VSA Family':<12} | {'Total Points':<12}")
-            #print("-" * 85)
-
-            # Print rows
-            for row in full_master_data[1:]:
-                psid = row[0] if len(row) > 0 else ""
-                first = row[1] if len(row) > 1 else ""
-                last = row[2] if len(row) > 2 else ""
-                membership = row[3] if len(row) > 3 else ""
-                vsa_family = row[4] if len(row) > 4 and row[4].strip() else "Not In Fam"
-                total_points = row[5] if len(row) > 5 else "0"
-
-                #print(f"{psid:<10} | {first:<12} | {last:<12} | {membership:<15} | {vsa_family:<12} | {total_points:<12}")
-
+            family_stats_raw = await self._get_data(FAMILY_CELL_RANGE)  # "Family Tracker!B3:E9"
+            full_master_data = await self._get_data(MEMBER_CELL_RANGE)  # "Master Sheet!D1:DZ1000"
             raw_member_data  = full_master_data[2:]
+
+            #print("------------------\n\n")
+            #print(full_master_data[0])
 
             # a) Dedupe master_data by PSID, keeping highest points
             psid_map = {}
@@ -89,17 +91,16 @@ class SheetsCacheUpdater(commands.Cog):
                     psid_map[psid] = (row, pts)
             master_data_with_psid = [entry[0] for entry in psid_map.values()]
 
-
             # b) Extract and dedupe event titles (cols 7+ of first two header rows)
             raw_titles = []
-            for header in full_master_data[:1]:
+            for header in full_master_data[:2]:
                 raw_titles.extend(header[6:])
-
             seen = set()
-            valid_event_titles = [
-                t for t in raw_titles
-                if t and re.match(r"\d{1,2}-\d{1,2}-\d{4}", t) and t not in seen and not seen.add(t)
-            ]
+            valid_event_titles = []
+            for t in raw_titles:
+                if t and t not in seen:
+                    valid_event_titles.append(t.strip())
+                    seen.add(t)
 
             # c) Compute CST timestamp
             cst_now   = datetime.now(ZoneInfo("America/Chicago"))
@@ -119,12 +120,16 @@ class SheetsCacheUpdater(commands.Cog):
             # ── 3) PARSE & STRUCTURE DATA ────────────────────────
             parsed_family_stats = stats_utils.parse_family_tracker_data(family_stats_raw)
 
-            # b) carry over existing flags for events
-            try:
-                old_parsed     = json.load(open(PARSED_CACHE_PATH))
-                raw_old_events = old_parsed.get("events_info", {})
-            except:
-                raw_old_events = {}
+            # a) carry over existing flags for events
+            # ── cache state lives on the cog instance ──
+            if not hasattr(self, "_parsed_cache_state"):
+                self._parsed_cache_state = {}
+
+            old_parsed = self._parsed_cache_state or {}
+            raw_old_events = old_parsed.get("events_info", {})
+            old_mem_psids  = old_parsed.get("leaderboards", {}).get("member_points", [])
+            old_fam_names  = old_parsed.get("leaderboards", {}).get("families_pts_mem", [])
+
 
             existing_events = []
             if isinstance(raw_old_events, dict):
@@ -141,22 +146,38 @@ class SheetsCacheUpdater(commands.Cog):
             elif isinstance(raw_old_events, list):
                 existing_events = raw_old_events
 
-            parsed_events_list = stats_utils.parse_event_titles(
-                valid_event_titles,
-                existing_events=existing_events
-            )
-            parsed_events_map = {
-                evt["original"]: {
-                    "date":        evt["date"],
-                    "name":        evt["name"],
-                    "event_types": {
-                        "is_general_meeting": evt.get("is_general_meeting", False),
-                        "is_tlp":             evt.get("is_tlp", False),
-                        "is_sale":            evt.get("is_sale", False),
+            # b) Parse event titles into structured dict format (MM/DD/YYYY + name + event_number)
+            parsed_events_map = {}
+            for idx, evt in enumerate(valid_event_titles, start=1):  # start counting from 1
+                try:
+                    parts = evt.split(" ", 1)
+                    if len(parts) < 2:
+                        continue
+                    raw_date, raw_name = parts[0].strip(), parts[1].strip()
+
+                    try:
+                        dt = datetime.strptime(raw_date, "%m/%d/%Y")
+                        formatted_date = dt.strftime("%m/%d/%Y")  # normalize to MM/DD/YYYY
+                    except ValueError:
+                        continue  # skip if not a valid date
+
+                    # 🔑 Use helper functions from profile_utils to set flags dynamically
+                    parsed_events_map[evt] = {
+                        "event_number": idx,   # new attribute
+                        "date": formatted_date,
+                        "name": raw_name or "Unnamed Event",
+                        "event_types": {
+                            "is_general_meeting": profile_utils.is_gm_event(raw_name),
+                            "is_tlp":             profile_utils.is_tlp_event(raw_name),
+                            "is_sale":            profile_utils.is_sale_event(raw_name),
+                            "is_volunteering":    profile_utils.is_volunteering_event(raw_name),
+                        }
                     }
-                }
-                for evt in parsed_events_list
-            }
+                except Exception as e:
+                    print(f"[update_cache] Failed to parse event '{evt}': {e}")
+
+                    
+            #print(parsed_events_map)
 
             # c) Build parsed_members
             parsed_members_list = []
@@ -178,11 +199,11 @@ class SheetsCacheUpdater(commands.Cog):
                 ]
 
                 parsed_members_list.append({
-                    "psid":         psid,
-                    "first_name":   first,
-                    "last_name":    last,
-                    "role_key":     role,
-                    "family_name":  family,
+                    "psid":         psid or "N/A",
+                    "first_name":   first or "N/A",
+                    "last_name":    last or "N/A",
+                    "role_key":     role or "N/A",
+                    "family_name":  family or "No Family",
                     "points":       total_pts,
                     "event_points": event_points
                 })
@@ -205,15 +226,6 @@ class SheetsCacheUpdater(commands.Cog):
             )
             new_fam_names = [f["family"] for f in family_leaderboard]
 
-            # pull old leaderboards out of disk
-            try:
-                old_data      = json.load(open(PARSED_CACHE_PATH))
-                old_mem_psids = old_data.get("leaderboards", {}).get("member_points", [])
-                old_fam_names = old_data.get("leaderboards", {}).get("families_pts_mem", [])
-            except:
-                old_mem_psids = []
-                old_fam_names = []
-
             # ── 5) WRITE PARSED CACHE ─────────────────────────────
             os.makedirs(os.path.dirname(PARSED_CACHE_PATH), exist_ok=True)
             parsed_cache = {
@@ -228,18 +240,20 @@ class SheetsCacheUpdater(commands.Cog):
             }
             with open(PARSED_CACHE_PATH, "w") as f:
                 json.dump(parsed_cache, f, indent=2)
+                
+            # later, after writing parsed_cache:
+            self._parsed_cache_state = parsed_cache
 
             # ── 6) REGENERATE CHANGED PAGE IMAGES ─────────────────
-            """
             pillow_conf = config["features"]["leaderboards"]["pillow_image_template"]["leaderboards"]
             family_conf = config["family_settings"]
             out_dir     = os.path.join("assets", "outputs", "leaderboards")
             # use the first connected guild’s icon URL if available
             guild   = next(iter(self.client.guilds), None)
-            fallback = guild.icon.url if guild and guild.icon else None
+            fallback = guild.icon.url if guild and guild.icon else "assets/overlays/default_logo.png"
 
-            
-            regenerate_leaderboard_pages(
+
+            await regenerate_leaderboard_pages(
                 old_mem_psids,
                 new_mem_psids,
                 parsed_members_map,
@@ -250,21 +264,46 @@ class SheetsCacheUpdater(commands.Cog):
                 family_conf,
                 out_dir,
                 fallback
-            ) """
+            )
             
             # ── 7) SYNC FAMILIES FROM GOOGLE SHEETS TO CONFIG.JSON ─────────────────
-            #updated_family_settings_in_config = cache_utils.sync_family_settings()
+            updated_family_settings_in_config = cache_utils.sync_family_settings()
+            if updated_family_settings_in_config:  
+                print(f"Updated Family Settings Config: {updated_family_settings_in_config}")
+            
 
         except Exception as e:
-            print(f"[{datetime.now()}] ERROR: failed to update spreadsheet cache: {e}")
+            print(f"[{datetime.now()}] Failed to update spreadsheet cache: {e}")
+            traceback.print_exc()
+            
+        finally:
+            del raw_member_data, psid_map, master_data_with_psid
+            del parsed_members_list, parsed_family_stats_map, parsed_members_map
 
-    def _get_data(self, sheet_range):
-        sheet  = service.spreadsheets()
-        result = sheet.values().get(
-            spreadsheetId=SPREADSHEET_ID,
-            range=sheet_range
-        ).execute()
-        return result.get('values', [])
+
+
+    async def _get_data(self, sheet_range: str):
+        """Return values for given range using gspread (non-blocking, thread offload)."""
+        try:
+            def fetch():
+                gc = get_gspread_client()
+                sh = gc.open_by_key(SPREADSHEET_ID)
+
+                # Split into sheet name + range if present
+                if "!" in sheet_range:
+                    sheet_name, cell_range = sheet_range.split("!", 1)
+                    ws = sh.worksheet(sheet_name.replace("'", "").strip())
+                    return ws.get(cell_range.strip())
+                else:
+                    # no explicit cell range, just return entire sheet
+                    ws = sh.worksheet(sheet_range.replace("'", "").strip())
+                    return ws.get_all_values()
+
+            return await asyncio.to_thread(fetch)
+
+        except Exception as e:
+            print(f"[get_data] Failed fetching {sheet_range}: {e}")
+            return []
 
 async def setup(client):
     await client.add_cog(SheetsCacheUpdater(client))
