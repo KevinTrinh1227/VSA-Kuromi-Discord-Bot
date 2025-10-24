@@ -200,11 +200,13 @@ class joinleave(commands.Cog):
             except:
                 pass
 
+            """
             # Ping & purge in verification channel
             verif_chan = self.client.get_channel(VERIFICATION_CHANNEL_ID)
             if verif_chan:
                 await verif_chan.send(f"{member.mention}")
                 await verif_chan.purge(limit=1)
+            """
 
             # Send welcome image and embed
             await channel.send(f"||{member.mention}||")
@@ -362,26 +364,54 @@ class joinleave(commands.Cog):
                     await channel.send(embed=embed)
 
     # Log edited messages
+    # Log edited messages (safe, lightweight, and embed-limit aware)
     @commands.Cog.listener()
-    async def on_message_edit(self, message_before, message_after):
-        if not message_before.author.bot:
-            embed = discord.Embed(
-                title=f"✂️ | A message was edited in #{message_before.channel.name}",
-                description=(
-                    f"**Old Message:**\n```{message_before.content}```\n"
-                    f"**New Message:**\n```{message_after.content}```"
-                ),
-                color=embed_color
-            )
-            embed.set_author(
-                name=f"{message_before.author.name} ({message_before.author.display_name})",
-                icon_url=message_before.author.avatar.url
-            )
-            embed.add_field(name="Message Author", value=message_before.author.mention, inline=True)
-            embed.add_field(name="Author Name", value=message_before.author.name, inline=True)
-            embed.add_field(name="Author ID", value=message_before.author.id, inline=True)
-            channel = self.client.get_channel(logs_channel_id)
-            await channel.send(embed=embed)
+    async def on_message_edit(self, before: discord.Message, after: discord.Message):
+        # 0) Ignore bots & DMs; skip if nothing textual actually changed
+        if before.author.bot or before.guild is None:
+            return
+        if before.content == after.content:
+            return
+
+        # 1) Safely read content (may be None without MESSAGE_CONTENT intent)
+        old_content = before.content or ""
+        new_content = after.content or ""
+
+        # 2) Trim to fit embed field limits (1024 chars/value; keep code fences)
+        def trim_for_field(text: str, limit: int = 1000) -> str:
+            if len(text) <= limit:
+                return text
+            extra = len(text) - limit
+            return text[:limit] + f"\n… (+{extra} chars)"
+
+        old_block = f"```{trim_for_field(old_content)}```" if old_content else "*[No text]*"
+        new_block = f"```{trim_for_field(new_content)}```" if new_content else "*[No text]*"
+
+        # 3) Build embed (avoid pings; add jump link + timestamps)
+        embed = discord.Embed(
+            title=f"✏️ Message Edited in #{before.channel.name}",
+            colour=embed_color,
+            timestamp=after.edited_at or discord.utils.utcnow(),
+            description=f"[Jump to message]({after.jump_url})"
+        )
+        embed.set_author(
+            name=f"{before.author} • ID {before.author.id}",
+            icon_url=before.author.display_avatar.url
+        )
+        embed.add_field(name="Before", value=old_block, inline=False)
+        embed.add_field(name="After", value=new_block, inline=False)
+        embed.add_field(name="Author", value=before.author.mention, inline=True)
+        embed.add_field(name="Channel", value=before.channel.mention, inline=True)
+
+        # 4) Send to logs channel (no mentions)
+        log_channel = self.client.get_channel(logs_channel_id)
+        if log_channel:
+            try:
+                await log_channel.send(embed=embed, allowed_mentions=discord.AllowedMentions.none())
+            except Exception as e:
+                # Don't crash the listener on send errors
+                print(f"[on_message_edit] Failed to send log: {e}")
+
 
 
 async def setup(client):
