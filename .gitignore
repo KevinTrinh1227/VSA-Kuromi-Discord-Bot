@@ -7,9 +7,14 @@ google_service.json
 
 # ignore everything in data/
 data/*
+assets/*
 # keep the placeholder so the folder stays in the repo
 !data/.gitkeep
+!assets/.gitkeep
 
+# Ignore PNG/TTF anywhere under assets/
+assets/**/*.png
+assets/**/*.ttf
 
 
 # Environment Variables
